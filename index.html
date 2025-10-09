@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDC Games</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #D2D2D2;
+      background-image:
+        repeating-linear-gradient(to right, transparent 0 100px, #25283b22 100px 101px),
+        repeating-linear-gradient(to bottom, transparent 0 100px, #25283b22 100px 101px);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    body::before {
+      position: absolute;
+      width: min(1400px, 90vw);
+      top: 10%;
+      left: 50%;
+      height: 90%;
+      transform: translateX(-50%);
+      content: '';
+      background-image: url(images/bg.png);
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: top center;
+      pointer-events: none;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      transition: all 0.4s ease;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    nav:hover {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    nav h2 {
+      color: #fff;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 35px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #00ff88;
+    }
+
+    /* ===== EXISTING CONTENT ===== */
+    .banner {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    /* ===== TECH HACKER INTRO ===== */
+    .intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: black;
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      overflow: hidden;
+      animation: fadeOut 3.2s ease-in-out forwards;
+      animation-delay: 2.8s;
+    }
+
+    .intro-terminal {
+      width: 80%;
+      max-width: 600px;
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.4rem;
+      opacity: 0.85;
+    }
+
+    .glitch-title {
+      font-size: 2.8rem;
+      color: #00ff88;
+      letter-spacing: 2px;
+      position: relative;
+      margin-top: 30px;
+      text-align: center;
+      animation: glitchAnim 1.2s infinite;
+    }
+
+    .glitch-title::before,
+    .glitch-title::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      width: 100%;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .glitch-title::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff0066;
+      animation: glitchClip1 0.7s infinite linear alternate-reverse;
+    }
+
+    .glitch-title::after {
+      left: -2px;
+      text-shadow: -2px 0 cyan;
+      animation: glitchClip2 0.8s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitchClip1 {
+      0% { clip: rect(10px, 9999px, 30px, 0); }
+      50% { clip: rect(50px, 9999px, 70px, 0); }
+      100% { clip: rect(20px, 9999px, 90px, 0); }
+    }
+
+    @keyframes glitchClip2 {
+      0% { clip: rect(40px, 9999px, 60px, 0); }
+      50% { clip: rect(10px, 9999px, 30px, 0); }
+      100% { clip: rect(70px, 9999px, 100px, 0); }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    @keyframes glitchAnim {
+      0%, 100% { transform: none; }
+      20% { transform: skew(2deg); }
+      40% { transform: skew(-2deg); }
+      60% { transform: translateX(3px); }
+      80% { transform: translateX(-3px); }
+    }
+
+    /* blinking cursor */
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #00ff88;
+      margin-left: 4px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  </style>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== TECH HACKER INTRO ===== -->
+  <div class="intro-screen" id="intro">
+    <div class="intro-terminal" id="terminal">
+      <!-- Dynamic hacker text appears here -->
+    </div>
+    <div class="glitch-title" data-text="SDC GAMES">SDC GAMES</div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <h2>SDC GAMES</h2>
+    <ul>
+      <li><a href="lets-begin.html">Let's Begin</a></li>
+      <li><a href="participants.html">Participants</a></li>
+      <li><a href="game-hosts.html">Game Hosts</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="banner">
+    <div class="slider" style="--quantity: 10">
+      <div class="item" style="--position: 1"><img src="images/dragon_1.jpg" alt=""></div>
+      <div class="item" style="--position: 2"><img src="images/dragon_2.jpg" alt=""></div>
+      <div class="item" style="--position: 3"><img src="images/dragon_3.jpg" alt=""></div>
+      <div class="item" style="--position: 4"><img src="images/dragon_4.jpg" alt=""></div>
+      <div class="item" style="--position: 5"><img src="images/dragon_5.jpg" alt=""></div>
+      <div class="item" style="--position: 6"><img src="images/dragon_6.jpg" alt=""></div>
+      <div class="item" style="--position: 7"><img src="images/dragon_7.jpg" alt=""></div>
+      <div class="item" style="--position: 8"><img src="images/dragon_8.jpg" alt=""></div>
+      <div class="item" style="--position: 9"><img src="images/dragon_9.jpg" alt=""></div>
+      <div class="item" style="--position: 10"><img src="images/dragon_10.jpg" alt=""></div>
+    </div>
+    <div class="content">
+        <h1 data-content="SDC GAMES">
+            SDC<br>GAMES
+        </h1>
+        <div class="author">
+            <h2>SDC GAMES</h2>
+            <p><b>Technozion 2025</b></p>
+            <p>Experience the ultimate battle of minds where code meets creativity.</p>
+        </div>
+        <div class="model"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // hacker-style typing effect
+    const terminal = document.getElementById('terminal');
+    const lines = [
+      '[INIT] System booting...',
+      '[OK] Loading game environment...',
+      '[OK] Connecting to SDC server...',
+      '[INFO] Fetching participants data...',
+      '[ACCESS GRANTED] Welcome to SDC GAMES_'
+    ];
+    let lineIndex = 0;
+
+    function typeLine() {
+      if (lineIndex < lines.length) {
+        const line = document.createElement('div');
+        let charIndex = 0;
+        const text = lines[lineIndex];
+        terminal.appendChild(line);
+
+        const interval = setInterval(() => {
+          line.textContent = text.slice(0, charIndex);
+          charIndex++;
+          if (charIndex > text.length) {
+            clearInterval(interval);
+            lineIndex++;
+            setTimeout(typeLine, 200);
+          }
+        }, 40);
+      } else {
+        // add blinking cursor
+        const cursor = document.createElement('span');
+        cursor.classList.add('cursor');
+        terminal.appendChild(cursor);
+      }
+    }
+
+    window.addEventListener('load', () => {
+      typeLine();
+      // hide intro after 6 seconds
+      setTimeout(() => {
+        document.getElementById('intro').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }, 6000);
+    });
+  </script>
+</body>
+</html>
