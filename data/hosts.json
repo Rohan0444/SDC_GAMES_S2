@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Alice Smith",
+    "position": "Event Coordinator",
+    "quote": "Making events unforgettable!",
+    "photo": "host1.jpg"
+  },
+  {
+    "name": "Bob Lee",
+    "position": "Tech Lead",
+    "quote": "Tech is life!",
+    "photo": "host2.jpg"
+  },
+  {
+    "name": "Charlie Tan",
+    "position": "Design Head",
+    "quote": "Design is everything.",
+    "photo": "host3.jpg"
+  }
+]

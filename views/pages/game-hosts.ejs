@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <section class="hosts-section">
+        <h2>Meet Our Hosts</h2>
+
+        <div class="hosts-grid">
+            <!-- Example Host Card -->
+            <% hosts.forEach(host=>{ %>
+                <div class="host-card">
+                    <img src="<%= host.photo %>" alt="<%= host.name %>" class="host-photo">
+                    <h3 class="host-name">
+                        <%= host.name %>
+                    </h3>
+                    <p class="host-position">
+                        <%= host.position %>
+                    </p>
+                    <p class="host-quote">"<%= host.quote %>"</p>
+                </div>
+                <%})%>
+        </div>
+    </section>
+
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -4,7 +4,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
 import indexRoutes from "./routes/index.js";
-
+//importing host data from json file
+import hosts from "./data/hosts.json";
 dotenv.config();
 connectDB();
 
@@ -27,6 +28,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/", indexRoutes);
+app.get('/hosts', (req, res) => {
+  res.render('game-hosts', { hosts });
+});
 
 // Handle 404
 app.use((req, res) => {
