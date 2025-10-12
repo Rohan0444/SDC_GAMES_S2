@@ -8,8 +8,10 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #f4f4f8;
+    background: radial-gradient(1200px 800px at 20% -10%, rgba(255, 10, 122, 0.15), transparent 60%),
+                radial-gradient(1000px 700px at 120% 10%, rgba(0, 255, 209, 0.12), transparent 55%),
+                linear-gradient(135deg, #0a0b11 0%, #0f0f17 50%, #0a0b11 100%);
     min-height: 100vh;
 }
 
@@ -28,14 +30,16 @@ body {
 
 .main-title {
     font-size: 2.5rem;
-    font-weight: 700;
-    color: #2c3e50;
+    font-weight: 800;
+    color: #ff0a7a;
     margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(255, 10, 122, 0.6), 0 0 30px rgba(255, 10, 122, 0.3);
 }
 
 .subtitle {
     font-size: 1.2rem;
-    color: #7f8c8d;
+    color: #c0c3cf;
     font-weight: 300;
 }
 
@@ -46,9 +50,9 @@ body {
 }
 
 .game-master-card {
-    background: white;
+    background: #13131d;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(255, 10, 122, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
     padding: 2.5rem;
     display: flex;
     gap: 2rem;
@@ -60,7 +64,7 @@ body {
 
 .game-master-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgba(255, 10, 122, 0.15);
 }
 
 .game-master-card::before {
@@ -70,7 +74,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #3498db, #e74c3c, #f39c12);
+    background: linear-gradient(90deg, #ff0a7a, #00ffd1, #ff0a7a);
 }
 
 .gm-image-container {
@@ -83,22 +87,12 @@ body {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #3498db;
-    transition: transform 0.3s ease;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 3rem;
-    font-weight: bold;
+    border: 4px solid #ff0a7a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #0f0f17;
+    box-shadow: 0 0 20px rgba(255, 10, 122, 0.3);
 }
 
-.gm-photo[src=""],
-.gm-photo:not([src]),
-.gm-photo[src="#"] {
-    content: attr(alt);
-}
 
 .game-master-card:hover .gm-photo {
     transform: scale(1.05);
@@ -108,13 +102,13 @@ body {
     position: absolute;
     bottom: -5px;
     right: -5px;
-    background: #e74c3c;
+    background: linear-gradient(135deg, #ff0a7a, #ff3a9b);
     color: white;
     font-size: 0.8rem;
     font-weight: bold;
     padding: 0.3rem 0.6rem;
     border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 2px 12px rgba(255, 10, 122, 0.35);
 }
 
 .gm-content {
@@ -123,23 +117,23 @@ body {
 
 .gm-name {
     font-size: 2rem;
-    font-weight: 700;
-    color: #2c3e50;
+    font-weight: 800;
+    color: #ffffff;
     margin-bottom: 0.5rem;
 }
 
 .gm-role {
     font-size: 1.1rem;
-    color: #3498db;
-    font-weight: 600;
+    color: #00ffd1;
+    font-weight: 700;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
 }
 
 .gm-description {
     font-size: 1rem;
-    color: #555;
+    color: #c9cbd6;
     margin-bottom: 1rem;
     line-height: 1.7;
 }
@@ -147,8 +141,8 @@ body {
 .gm-tagline {
     font-size: 1.1rem;
     font-style: italic;
-    color: #e74c3c;
-    font-weight: 500;
+    color: #ff3a9b;
+    font-weight: 600;
     margin-bottom: 1.5rem;
 }
 
@@ -191,9 +185,10 @@ body {
 .section-title {
     text-align: center;
     font-size: 2rem;
-    color: #2c3e50;
+    color: #ff0a7a;
     margin-bottom: 2.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    text-shadow: 0 0 12px rgba(255, 10, 122, 0.4);
 }
 
 .hosts-grid {
@@ -203,9 +198,9 @@ body {
 }
 
 .host-card {
-    background: white;
+    background: #161624;
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 24px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
     padding: 1.5rem;
     transition: all 0.3s ease;
     animation: fadeInUp 0.8s ease-out both;
@@ -216,7 +211,7 @@ body {
 
 .host-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 18px 40px rgba(255, 10, 122, 0.12);
 }
 
 .host-image-container {
@@ -228,20 +223,16 @@ body {
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #ecf0f1;
-    transition: all 0.3s ease;
-    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
+    border: 3px solid #ff0a7a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #0f0f17;
+    box-shadow: 0 0 16px rgba(255, 10, 122, 0.25);
 }
 
 .host-card:hover .host-photo {
-    border-color: #3498db;
-    transform: scale(1.1);
+    border-color: #00ffd1;
+    transform: scale(1.08);
+    box-shadow: 0 0 24px rgba(0, 255, 209, 0.35);
 }
 
 .host-content {
@@ -251,33 +242,33 @@ body {
 
 .host-name {
     font-size: 1.3rem;
-    color: #2c3e50;
+    color: #ffffff;
     margin-bottom: 0.3rem;
-    font-weight: 600;
+    font-weight: 700;
     margin-top: 0;
 }
 
 .host-role {
-    color: #3498db;
+    color: #00ffd1;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
     margin-bottom: 0.8rem;
 }
 
 .host-description {
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    color: #c9cbd6;
+    font-size: 0.95rem;
+    line-height: 1.7;
     margin-bottom: 0.8rem;
 }
 
 .host-quote {
-    color: #e74c3c;
+    color: #ff3a9b;
     font-style: italic;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 /* Animations */
@@ -365,11 +356,29 @@ body {
     margin-top: 4rem;
     padding: 2rem 0;
     text-align: center;
-    background: linear-gradient(135deg, #2c3e50, #34495e);
+    background: linear-gradient(135deg, #141427, #1c1c33);
     border-radius: 15px;
     color: white;
     animation: fadeInUp 1s ease-out 0.9s both;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 28px rgba(255, 10, 122, 0.08);
+}
+
+.footer .footer-logo {
+    display: block;
+    margin: 0 auto 12px auto;
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 209, 0.25));
+    opacity: 0.95;
+    transition: transform 0.25s ease, filter 0.25s ease;
+    border-radius: 50%;
+    border: 3px solid #230edb;
+}
+.footer .footer-logo:hover {
+    transform: translateY(-2px) scale(1.03);
+    filter: drop-shadow(0 0 14px rgba(0, 255, 209, 0.40));
+    border: 3px solid #0eb2df;
 }
 
 .footer p {
@@ -385,4 +394,22 @@ body {
 .footer p:last-child {
     color: #bdc3c7;
     font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+    .footer .footer-logo {
+        height: 44px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Participants page extensions */
+.participants-grid {
+    /* Ensures decent spacing on small screens too */
+    grid-auto-rows: 1fr;
+}
+
+.participant-card.eliminated {
+    /* reinforce greyscale in case of specificity issues */
+    filter: grayscale(1);
 }

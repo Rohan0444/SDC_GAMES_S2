@@ -31,6 +31,11 @@ app.use("/", indexRoutes);
 app.get('/hosts', (req, res) => {
   res.render('game-hosts', { hosts });
 });
+// Squid Game participants page
+app.get('/partispants', (req, res) => {
+    // Render the participants grid; data is fetched client-side from Firestore
+    res.render('partispants');
+});
 
 // Handle 404
 app.use((req, res) => {

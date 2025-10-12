@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participants 〇 △ □</title>
+    <link rel="stylesheet" href="/css/hosts.css">
+    <style>
+        /* Page-scoped Squid Game themed styles */
+        .participants-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .participants-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+        .participants-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #00ffd1; /* cyan */
+            text-shadow: 0 0 12px rgba(0, 255, 209, 0.35);
+        }
+        .participants-subtitle {
+            color: #c0c3cf;
+            margin-top: 0.25rem;
+        }
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 28px; /* more spacing for diamond corners */
+            margin-top: 24px;
+            animation: fadeInUp 0.8s ease-out;
+            justify-items: center;
+        }
+        /* Diamond card: rotate the card 45deg, counter-rotate its contents */
+        .participant-card {
+            width: 100%;
+            aspect-ratio: 1/1;
+            transform: rotate(45deg);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #141427, #1c1c33);
+            border: 3px solid #ff0a7a; /* pink diamond border */
+            box-shadow: 0 10px 30px rgba(255, 10, 122, 0.10);
+        }
+        .participant-card:hover {
+            transform: rotate(45deg) translateY(-4px);
+            box-shadow: 0 20px 45px rgba(255, 10, 122, 0.18);
+        }
+        .card-rotator {
+            position: absolute;
+            inset: 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+        .participant-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0f17, #1a1a2f);
+        }
+        .participant-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .participant-overlay-number {
+            position: absolute;
+            bottom: 8px;
+            right: 10px;
+            font-weight: 900;
+            font-size: 1.6rem;
+            color: #00ffd1;
+            opacity: 0.9;
+            text-shadow: 0 0 10px rgba(0, 255, 209, 0.35);
+            user-select: none;
+        }
+        .participant-number-fallback {
+            font-weight: 900;
+            font-size: 2.2rem;
+            color: #00ffd1;
+            opacity: 0.85;
+            text-shadow: 0 0 10px rgba(0, 255, 209, 0.35);
+        }
+        .participant-card.eliminated {
+            filter: grayscale(1);
+            opacity: 0.65;
+            border-color: #555a6a;
+        }
+        .legend {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 10px;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+        .legend .alive-dot,
+        .legend .dead-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .legend .alive-dot { background: #00ffd1; box-shadow: 0 0 6px rgba(0,255,209,0.5); }
+        .legend .dead-dot { background: #7b7f8f; }
+    </style>
+</head>
+<body>
+    <div class="participants-page">
+        <header class="participants-header">
+            <h1 class="participants-title">Participants 〇 △ □</h1>
+            <p class="participants-subtitle">Live status from the Frontman: alive vs eliminated</p>
+            <div class="legend">
+                <span><span class="alive-dot"></span>Alive</span>
+                <span><span class="dead-dot"></span>Eliminated</span>
+            </div>
+        </header>
+        <section>
+            <div id="participants-grid" class="participants-grid"></div>
+        </section>
+    </div>
+    <script type="module" src="/js/participants.js"></script>
+</body>
+</html>

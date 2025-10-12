@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet Our Event Team</title>
-    <link rel="stylesheet" href="/SDC_GAMES_S2/public/css/hosts.css">
+    <link rel="stylesheet" href="/css/hosts.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
             <h1 class="main-title">Meet Our Event Team</h1>
-            <p class="subtitle">The amazing people who bring our SDC Games 2025 to life</p>
+            <p class="subtitle">The amazing people who bring our events to life</p>
         </header>
 
         <!-- Game Master Highlight Section -->
         <section class="game-master-section">
             <div class="game-master-card">
                 <div class="gm-image-container">
-                    <div class="gm-photo">
-                        <%= data.gameMaster.name.split(' ').map(n => n[0]).join('') %>
-                    </div>
+                    <img class="gm-photo" src="/css/images/host_image.jpg" alt="<%= data.gameMaster.name %>">
                     <div class="gm-badge">Game Master</div>
                 </div>
                 <div class="gm-content">
-                    <h2 class="gm-name"><%= data.gameMaster.name %></h2>
-                    <p class="gm-role"><%= data.gameMaster.role %></p>
-                    <p class="gm-description"><%= data.gameMaster.description %></p>
+                    <h2 class="gm-name">
+                        <%= data.gameMaster.name %>
+                    </h2>
+                    <p class="gm-role">
+                        <%= data.gameMaster.role %>
+                    </p>
+                    <p class="gm-description">
+                        <%= data.gameMaster.description %>
+                    </p>
                     <p class="gm-tagline">"<%= data.gameMaster.tagline %>"</p>
                     <div class="gm-social-links">
                         <% if (data.gameMaster.socialLinks && data.gameMaster.socialLinks.linkedin) { %>
-                            <a href="<%= data.gameMaster.socialLinks.linkedin %>" target="_blank" class="social-link linkedin">
+                            <a href="<%= data.gameMaster.socialLinks.linkedin %>" target="_blank"
+                                class="social-link linkedin">
                                 <span>LinkedIn</span>
                             </a>
-                        <% } %>
-                        <% if (data.gameMaster.socialLinks && data.gameMaster.socialLinks.twitter) { %>
-                            <a href="<%= data.gameMaster.socialLinks.twitter %>" target="_blank" class="social-link twitter">
-                                <span>Twitter</span>
-                            </a>
-                        <% } %>
+                            <% } %>
+                                <% if (data.gameMaster.socialLinks && data.gameMaster.socialLinks.twitter) { %>
+                                    <a href="<%= data.gameMaster.socialLinks.twitter %>" target="_blank"
+                                        class="social-link twitter">
+                                        <span>Insta</span>
+                                    </a>
+                                    <% } %>
                     </div>
                 </div>
             </div>
@@ -48,31 +56,38 @@
         <section class="hosts-section">
             <h2 class="section-title">Our Team</h2>
             <div class="hosts-grid">
-                <% data.hosts.forEach((host, index) => { %>
+                <% data.hosts.forEach((host, index)=> { %>
                     <div class="host-card">
                         <div class="host-image-container">
-                            <div class="host-photo">
-                                <%= host.name.split(' ').map(n => n[0]).join('') %>
-                            </div>
+                            <img class="host-photo" data-random-avatar="true" alt="<%= host.name %>">
                         </div>
                         <div class="host-content">
-                            <h3 class="host-name"><%= host.name %></h3>
-                            <p class="host-role"><%= host.role %></p>
-                            <p class="host-description"><%= host.description %></p>
+                            <h3 class="host-name">
+                                <%= host.name %>
+                            </h3>
+                            <p class="host-role">
+                                <%= host.role %>
+                            </p>
+                            <p class="host-description">
+                                <%= host.description %>
+                            </p>
                             <% if (host.quote) { %>
                                 <p class="host-quote">"<%= host.quote %>"</p>
-                            <% } %>
+                                <% } %>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </div>
         </section>
 
         <!-- footer -->
         <footer class="footer">
+            <img class="footer-logo" src="/css/images/SDC_logo.jpg" alt="Software Development Club logo">
             <p>Powered by the Software Development Club • Designed by the SDC Web Team</p>
             <p>&copy; SDC 2025</p>
         </footer>
     </div>
+    <script src="/js/main.js"></script>
 </body>
+
 </html>
