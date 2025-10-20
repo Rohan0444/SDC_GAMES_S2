@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Among Us Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
+      color: #fff;
+      overflow-x: hidden;
+      background-image: url('/images/among_us_background.svg');
+      background-size: cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: rgba(15, 15, 35, 0.8);
+      border-radius: 15px;
+      border: 2px solid #FF6B6B;
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(45deg, #FF6B6B, #FF0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .admin-subtitle {
+      font-size: 18px;
+      color: #A0AEC0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .admin-card {
+      background: rgba(15, 15, 35, 0.8);
+      border-radius: 15px;
+      padding: 30px;
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .admin-card:hover {
+      border-color: #FF6B6B;
+      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+    }
+
+    .timer-section {
+      background: linear-gradient(45deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timer-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('/images/among_us_background.svg') center/cover;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .timer-section > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .timer-title {
+      color: #FF6B6B;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .timer-display {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #FF6B6B;
+      border-radius: 10px;
+      color: #FF6B6B;
+      font-size: 24px;
+      font-weight: 700;
+      padding: 15px;
+      text-align: center;
+      margin-bottom: 15px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .timer-controls .btn {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    .card-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FF6B6B;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #E2E8F0;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(26, 26, 46, 0.6);
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #FF6B6B;
+      box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(26, 26, 46, 0.6);
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      min-height: 100px;
+      resize: vertical;
+      transition: all 0.3s ease;
+    }
+
+    .form-textarea:focus {
+      outline: none;
+      border-color: #FF6B6B;
+      box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .timer-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .timer-display {
+      background: rgba(26, 26, 46, 0.8);
+      border: 2px solid #FF6B6B;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .timer-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 32px;
+      font-weight: 900;
+      color: #FF6B6B;
+      margin-bottom: 10px;
+    }
+
+    .timer-label {
+      font-size: 14px;
+      color: #A0AEC0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #FF6B6B, #FF0000);
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(45deg, #FF0000, #FF6B6B);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #FF6B6B;
+      color: #FF6B6B;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 107, 107, 0.1);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-live {
+      background: #68D391;
+      box-shadow: 0 0 10px rgba(104, 211, 145, 0.6);
+    }
+
+    .status-offline {
+      background: #FF6B6B;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+    }
+
+    .live-updates {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(15, 15, 35, 0.9);
+      border: 2px solid #68D391;
+      border-radius: 10px;
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+
+    .live-status {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #68D391;
+    }
+
+    .file-upload {
+      border: 2px dashed rgba(255, 107, 107, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .file-upload:hover {
+      border-color: #FF6B6B;
+      background: rgba(255, 107, 107, 0.05);
+    }
+
+    .file-upload input {
+      display: none;
+    }
+
+    .upload-text {
+      color: #A0AEC0;
+      font-size: 14px;
+    }
+
+    .attachment-list {
+      margin-top: 15px;
+    }
+
+    .attachment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(26, 26, 46, 0.6);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .attachment-name {
+      color: #E2E8F0;
+      font-size: 14px;
+    }
+
+    .attachment-remove {
+      background: #FF6B6B;
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .timer-controls {
+        grid-template-columns: 1fr;
+      }
+      
+      .admin-container {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Live Updates Indicator -->
+  <div class="live-updates">
+    <div class="live-status">
+      <span class="status-indicator status-live"></span>
+      LIVE UPDATES
+    </div>
+  </div>
+
+  <div class="admin-container">
+    <!-- Admin Header -->
+    <div class="admin-header">
+      <h1 class="admin-title">ADMIN PANEL</h1>
+      <p class="admin-subtitle">Control the Among Us Game Experience</p>
+    </div>
+
+    <div class="admin-grid">
+      <!-- Current Round Management -->
+      <div class="admin-card" id="currentRoundCard" style="display: none;">
+        <h2 class="card-title">Current Round Settings</h2>
+        <p style="color: #A0AEC0; margin-bottom: 20px;">Set up the current round after countdown finishes</p>
+        
+        <div class="form-group">
+          <label class="form-label">Round Name</label>
+          <input type="text" id="roundName" class="form-input" placeholder="Enter round name..." value="Mission Alpha">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Round Details</label>
+          <textarea id="roundDetails" class="form-textarea" placeholder="Enter round details...">Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Round Duration (Minutes)</label>
+          <input type="number" id="roundDuration" class="form-input" placeholder="Enter duration in minutes..." min="1" max="60" value="5">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Attachments & Links</label>
+          <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" multiple accept="image/*,.pdf,.doc,.docx">
+            <div class="upload-text">Click to upload files or drag & drop</div>
+          </div>
+          
+          <div style="margin-top: 15px;">
+            <label class="form-label">Add Link</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="linkUrl" class="form-input" placeholder="Enter URL..." style="flex: 1;">
+              <input type="text" id="linkName" class="form-input" placeholder="Link name..." style="flex: 1;">
+              <button class="btn" onclick="addLink()">Add Link</button>
+            </div>
+          </div>
+          
+          <div class="attachment-list" id="attachmentList"></div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" onclick="startCurrentRound()">Start Current Round</button>
+          <button class="btn btn-secondary" onclick="updateRound()">Update Settings</button>
+        </div>
+      </div>
+
+      <!-- Pre-Game Countdown Controls -->
+      <div class="admin-card">
+        <h2 class="card-title">Pre-Game Countdown</h2>
+        
+        <div class="form-group">
+          <label class="form-label">Game Start Countdown</label>
+          <div class="timer-display" style="margin-bottom: 20px;">
+            <div class="timer-value" id="preGameTimer">00:00:00:00</div>
+            <div class="timer-label">Days : Hours : Minutes : Seconds</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quick Set Countdown</label>
+          <div class="btn-group" style="margin-bottom: 20px;">
+            <button class="btn" onclick="setPreGameTimer(0, 0, 1, 0)">1 Min</button>
+            <button class="btn" onclick="setPreGameTimer(0, 0, 5, 0)">5 Min</button>
+            <button class="btn" onclick="setPreGameTimer(0, 0, 10, 0)">10 Min</button>
+            <button class="btn" onclick="setPreGameTimer(0, 1, 0, 0)">1 Hour</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Custom Countdown</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+            <input type="number" id="customDays" placeholder="Days" min="0" max="30" class="form-input" style="text-align: center;">
+            <input type="number" id="customHours" placeholder="Hours" min="0" max="23" class="form-input" style="text-align: center;">
+            <input type="number" id="customMinutes" placeholder="Minutes" min="0" max="59" class="form-input" style="text-align: center;">
+            <input type="number" id="customSeconds" placeholder="Seconds" min="0" max="59" class="form-input" style="text-align: center;">
+          </div>
+          <button class="btn" onclick="setCustomPreGameTimer()">Set Custom Timer</button>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" onclick="startPreGameCountdown()">Start Countdown</button>
+          <button class="btn btn-secondary" onclick="pausePreGameCountdown()">Pause</button>
+          <button class="btn btn-secondary" onclick="resetPreGameCountdown()">Reset</button>
+        </div>
+      </div>
+
+      <!-- Round Timer Controls -->
+      <div class="admin-card" id="roundTimerCard" style="display: none;">
+        <h2 class="card-title">Round Timer Controls</h2>
+        
+        <!-- Current Round Update -->
+        <div class="timer-section">
+          <h3 class="timer-title">Update Current Round</h3>
+          <div class="form-group">
+            <label class="form-label">Round Name</label>
+            <input type="text" id="updateRoundName" class="form-input" placeholder="Enter round name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Round Details</label>
+            <textarea id="updateRoundDetails" class="form-textarea" placeholder="Enter round details..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Round Duration (Minutes)</label>
+            <input type="number" id="updateRoundDuration" class="form-input" placeholder="Enter duration..." min="1" max="60">
+          </div>
+          <div class="btn-group">
+            <button class="btn" onclick="updateCurrentRound()">Update Current Round</button>
+          </div>
+        </div>
+
+        <!-- Current Round Timer -->
+        <div class="timer-section">
+          <h3 class="timer-title">Current Round Timer</h3>
+          <div class="timer-display" id="currentTimerDisplay">05:00</div>
+          <div class="timer-controls">
+            <button class="btn" onclick="setCurrentTimer(1)">1 Min</button>
+            <button class="btn" onclick="setCurrentTimer(3)">3 Min</button>
+            <button class="btn" onclick="setCurrentTimer(5)">5 Min</button>
+            <button class="btn" onclick="setCurrentTimer(10)">10 Min</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Custom Timer (Minutes)</label>
+            <input type="number" id="customCurrentTimer" class="form-input" placeholder="Enter minutes..." min="1" max="60" value="5">
+            <button class="btn" onclick="setCustomCurrentTimer()">Set Custom</button>
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin-top: 20px;">
+          <button class="btn" onclick="startNextRoundEarly()">Start Next Round Early</button>
+          <button class="btn btn-secondary" onclick="pauseGame()">Pause Game</button>
+          <button class="btn btn-secondary" onclick="resetGame()">Reset Game</button>
+        </div>
+      </div>
+
+      <!-- Next Round Selection -->
+      <div class="admin-card" id="nextRoundCard" style="display: none;">
+        <h2 class="card-title">Next Round Settings</h2>
+        <p style="color: #A0AEC0; margin-bottom: 20px;">Set up the next round while current round is running</p>
+        
+        <div class="form-group">
+          <label class="form-label">Next Round Name</label>
+          <input type="text" id="nextRoundName" class="form-input" placeholder="Enter next round name..." value="Mission Beta">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Next Round Details</label>
+          <textarea id="nextRoundDetails" class="form-textarea" placeholder="Enter next round details...">New challenges await! Complete the reactor tasks and identify the impostor before time runs out.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Next Round Duration (Minutes)</label>
+          <input type="number" id="nextRoundDuration" class="form-input" placeholder="Enter duration in minutes..." min="1" max="60" value="3">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Next Round Attachments & Links</label>
+          <div class="file-upload" onclick="document.getElementById('nextFileInput').click()">
+            <input type="file" id="nextFileInput" multiple accept="image/*,.pdf,.doc,.docx">
+            <div class="upload-text">Click to upload files for next round</div>
+          </div>
+          
+          <div style="margin-top: 15px;">
+            <label class="form-label">Add Link for Next Round</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="nextLinkUrl" class="form-input" placeholder="Enter URL..." style="flex: 1;">
+              <input type="text" id="nextLinkName" class="form-input" placeholder="Link name..." style="flex: 1;">
+              <button class="btn" onclick="addNextRoundLink()">Add Link</button>
+            </div>
+          </div>
+          
+          <div class="attachment-list" id="nextRoundAttachmentList"></div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" onclick="updateNextRound()">Update Next Round</button>
+          <button class="btn btn-secondary" onclick="startNextRound()">Start Next Round</button>
+        </div>
+      </div>
+
+      <!-- Game Status -->
+      <div class="admin-card">
+        <h2 class="card-title">Game Status</h2>
+        
+        <div class="form-group">
+          <label class="form-label">Current Status</label>
+          <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <span class="status-indicator" id="gameStatusIndicator"></span>
+            <span id="gameStatusText" style="font-weight: 600;">Game Waiting</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Current Round</label>
+          <div style="font-size: 18px; color: #E2E8F0;" id="currentRoundDisplay">Mission Alpha</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Round Timer</label>
+          <div style="font-size: 24px; font-weight: 700; color: #FF6B6B;" id="liveRoundTimer">05:00</div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" onclick="viewGame()">View Game</button>
+          <button class="btn btn-secondary" onclick="emergencyMeeting()">Emergency Meeting</button>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="admin-card">
+        <h2 class="card-title">Quick Actions</h2>
+        
+        <div class="form-group">
+          <label class="form-label">Cooldown Settings</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <input type="number" id="cooldownMinutes" class="form-input" placeholder="Minutes" min="0" max="60" value="5" style="flex: 1;">
+            <button class="btn" onclick="setCooldown()">Set Cooldown</button>
+            <button class="btn btn-secondary" onclick="clearCooldown()">Clear Cooldown</button>
+          </div>
+          <div id="cooldownStatus" style="color: #A0AEC0; font-size: 14px;"></div>
+        </div>
+        
+        <div class="btn-group" style="flex-direction: column; gap: 10px;">
+          <button class="btn" onclick="triggerSabotage()">Trigger Sabotage</button>
+          <button class="btn btn-secondary" onclick="eliminatePlayer()">Eliminate Player</button>
+          <button class="btn btn-secondary" onclick="revealImpostor()">Reveal Impostor</button>
+          <button class="btn" onclick="endGame()">End Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Game state - will be loaded from database
+    let gameState = {
+      roundName: 'Mission Alpha',
+      roundDetails: 'Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!',
+      currentTimer: 300, // 5 minutes in seconds
+      nextTimer: 180, // 3 minutes in seconds
+      isActive: false,
+      attachments: [],
+      nextRound: {
+        name: 'Mission Beta',
+        details: 'New challenges await! Complete the reactor tasks and identify the impostor before time runs out.',
+        attachments: []
+      },
+      preGameCountdown: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        isActive: false,
+        isPaused: false
+      },
+      gameStatus: 'waiting',
+      countdownFinished: false,
+      currentRoundStarted: false
+    };
+
+    // Load game settings from database
+    async function loadGameSettings() {
+      try {
+        const response = await fetch('/api/game-state');
+        if (response.ok) {
+          const serverState = await response.json();
+          gameState = { ...gameState, ...serverState };
+          updateDisplay();
+          updatePreGameTimerDisplay();
+          updateNextRoundAttachments();
+          updateGameStatusDisplay();
+          updateUIState();
+        }
+      } catch (error) {
+        console.error('Error loading game settings:', error);
+      }
+    }
+
+    // Update UI state based on game status
+    function updateUIState() {
+      const currentRoundCard = document.getElementById('currentRoundCard');
+      const roundTimerCard = document.getElementById('roundTimerCard');
+      const nextRoundCard = document.getElementById('nextRoundCard');
+      
+      console.log('Updating UI state:', {
+        gameStatus: gameState.gameStatus,
+        countdownFinished: gameState.countdownFinished,
+        currentRoundStarted: gameState.currentRoundStarted,
+        countdownActive: gameState.preGameCountdown?.isActive
+      });
+      
+      // Show current round settings if countdown finished but round not started
+      if (gameState.gameStatus === 'countdown_finished' || (gameState.countdownFinished && !gameState.currentRoundStarted)) {
+        currentRoundCard.style.display = 'block';
+        roundTimerCard.style.display = 'none';
+        nextRoundCard.style.display = 'none';
+        console.log('Showing current round card - countdown finished');
+      }
+      // Show round timer controls if current round is active
+      else if (gameState.currentRoundStarted && gameState.gameStatus === 'active') {
+        currentRoundCard.style.display = 'none';
+        roundTimerCard.style.display = 'block';
+        nextRoundCard.style.display = 'block';
+        console.log('Showing round timer and next round cards - round active');
+      }
+      // Show next round settings if current round is running
+      else if (gameState.gameStatus === 'active') {
+        currentRoundCard.style.display = 'none';
+        roundTimerCard.style.display = 'block';
+        nextRoundCard.style.display = 'block';
+        console.log('Showing round timer and next round cards (active)');
+      }
+      // Default state - only countdown visible
+      else {
+        currentRoundCard.style.display = 'none';
+        roundTimerCard.style.display = 'none';
+        nextRoundCard.style.display = 'none';
+        console.log('Hiding all round cards - waiting state');
+      }
+    }
+
+    // Save game settings to database
+    async function saveGameSettings() {
+      try {
+        const response = await fetch('/api/game-settings', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(gameState)
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          showNotification('Settings saved successfully!');
+        } else {
+          showNotification('Error saving settings!');
+        }
+      } catch (error) {
+        console.error('Error saving game settings:', error);
+        showNotification('Error saving settings!');
+      }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      loadGameSettings();
+      startLiveUpdates();
+    });
+
+    // Pre-game countdown functions
+    async function setPreGameTimer(days, hours, minutes, seconds) {
+      try {
+        const response = await fetch('/api/countdown', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            days: days,
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds,
+            isActive: false,
+            isPaused: false
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updatePreGameTimerDisplay();
+          showNotification('Countdown timer set!');
+        } else {
+          showNotification('Error setting countdown timer!');
+        }
+      } catch (error) {
+        console.error('Error setting countdown timer:', error);
+        showNotification('Error setting countdown timer!');
+      }
+    }
+
+    function setCustomPreGameTimer() {
+      const days = parseInt(document.getElementById('customDays').value) || 0;
+      const hours = parseInt(document.getElementById('customHours').value) || 0;
+      const minutes = parseInt(document.getElementById('customMinutes').value) || 0;
+      const seconds = parseInt(document.getElementById('customSeconds').value) || 0;
+      setPreGameTimer(days, hours, minutes, seconds);
+    }
+
+    async function startPreGameCountdown() {
+      try {
+        console.log('Starting pre-game countdown with:', gameState.preGameCountdown);
+        const response = await fetch('/api/countdown', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            days: gameState.preGameCountdown.days,
+            hours: gameState.preGameCountdown.hours,
+            minutes: gameState.preGameCountdown.minutes,
+            seconds: gameState.preGameCountdown.seconds,
+            isActive: true,
+            isPaused: false
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateUIState();
+          showNotification('Pre-game countdown started!');
+        } else {
+          showNotification('Error starting countdown!');
+        }
+      } catch (error) {
+        console.error('Error starting countdown:', error);
+        showNotification('Error starting countdown!');
+      }
+    }
+
+    async function pausePreGameCountdown() {
+      gameState.preGameCountdown.isPaused = !gameState.preGameCountdown.isPaused;
+      await saveGameSettings();
+      showNotification(gameState.preGameCountdown.isPaused ? 'Countdown paused!' : 'Countdown resumed!');
+    }
+
+    async function resetPreGameCountdown() {
+      gameState.preGameCountdown.days = 0;
+      gameState.preGameCountdown.hours = 0;
+      gameState.preGameCountdown.minutes = 0;
+      gameState.preGameCountdown.seconds = 0;
+      gameState.preGameCountdown.isActive = false;
+      gameState.preGameCountdown.isPaused = false;
+      updatePreGameTimerDisplay();
+      await saveGameSettings();
+      showNotification('Pre-game countdown reset!');
+    }
+
+    function updatePreGameTimerDisplay() {
+      // Use countdown status from server if available
+      if (gameState.countdownStatus) {
+        const timer = gameState.countdownStatus;
+        const display = `${timer.days.toString().padStart(2, '0')}:${timer.hours.toString().padStart(2, '0')}:${timer.minutes.toString().padStart(2, '0')}:${timer.seconds.toString().padStart(2, '0')}`;
+        document.getElementById('preGameTimer').textContent = display;
+      } else {
+        // Fallback to local state
+        const timer = gameState.preGameCountdown;
+        const display = `${timer.days.toString().padStart(2, '0')}:${timer.hours.toString().padStart(2, '0')}:${timer.minutes.toString().padStart(2, '0')}:${timer.seconds.toString().padStart(2, '0')}`;
+        document.getElementById('preGameTimer').textContent = display;
+      }
+    }
+
+
+    // Update game status display
+    function updateGameStatusDisplay() {
+      const statusIndicator = document.getElementById('gameStatusIndicator');
+      const statusText = document.getElementById('gameStatusText');
+      const currentRoundDisplay = document.getElementById('currentRoundDisplay');
+      const liveRoundTimer = document.getElementById('liveRoundTimer');
+      
+      if (statusIndicator && statusText) {
+        if (gameState.gameStatus === 'active') {
+          statusIndicator.className = 'status-indicator status-live';
+          statusText.textContent = 'Game Active';
+          statusText.style.color = '#68D391';
+        } else if (gameState.gameStatus === 'countdown') {
+          statusIndicator.className = 'status-indicator status-live';
+          statusText.textContent = 'Countdown Active';
+          statusText.style.color = '#FFD700';
+        } else {
+          statusIndicator.className = 'status-indicator status-offline';
+          statusText.textContent = 'Game Waiting';
+          statusText.style.color = '#FF6B6B';
+        }
+      }
+      
+      if (currentRoundDisplay) {
+        currentRoundDisplay.textContent = gameState.roundName || 'Mission Alpha';
+      }
+      
+      if (liveRoundTimer) {
+        const minutes = Math.floor(gameState.currentTimer / 60);
+        const seconds = gameState.currentTimer % 60;
+        liveRoundTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }
+
+    // Update timer display
+    function updateTimerDisplay() {
+      const currentMinutes = Math.floor(gameState.currentTimer / 60);
+      const currentSeconds = gameState.currentTimer % 60;
+      const nextMinutes = Math.floor(gameState.nextTimer / 60);
+      const nextSeconds = gameState.nextTimer % 60;
+
+      const currentTimerElement = document.getElementById('currentTimerDisplay');
+      const nextTimerElement = document.getElementById('nextTimerDisplay');
+      
+      if (currentTimerElement) {
+        currentTimerElement.textContent = 
+          `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
+      }
+      
+      if (nextTimerElement) {
+        nextTimerElement.textContent = 
+          `${nextMinutes.toString().padStart(2, '0')}:${nextSeconds.toString().padStart(2, '0')}`;
+      }
+    }
+
+    // Set current timer
+    async function setCurrentTimer(minutes) {
+      try {
+        const response = await fetch('/api/timers', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            currentTimer: minutes * 60,
+            nextTimer: gameState.nextTimer
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateTimerDisplay();
+          showNotification(`Current round timer set to ${minutes} minutes`);
+        } else {
+          showNotification('Error setting current timer!');
+        }
+      } catch (error) {
+        console.error('Error setting current timer:', error);
+        showNotification('Error setting current timer!');
+      }
+    }
+
+    // Set next timer
+    async function setNextTimer(minutes) {
+      try {
+        const response = await fetch('/api/timers', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            currentTimer: gameState.currentTimer,
+            nextTimer: minutes * 60
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateTimerDisplay();
+          showNotification(`Next round timer set to ${minutes} minutes`);
+        } else {
+          showNotification('Error setting next timer!');
+        }
+      } catch (error) {
+        console.error('Error setting next timer:', error);
+        showNotification('Error setting next timer!');
+      }
+    }
+
+    // Set custom current timer
+    async function setCustomCurrentTimer() {
+      const minutes = parseInt(document.getElementById('customCurrentTimer').value) || 5;
+      await setCurrentTimer(minutes);
+    }
+
+    // Set custom next timer
+    async function setCustomNextTimer() {
+      const minutes = parseInt(document.getElementById('customNextTimer').value) || 3;
+      await setNextTimer(minutes);
+    }
+
+    // Update round information
+    async function updateRound() {
+      gameState.roundName = document.getElementById('roundName').value;
+      gameState.roundDetails = document.getElementById('roundDetails').value;
+      await saveGameSettings();
+      showNotification('Round updated successfully!');
+    }
+
+    // Start current round
+    async function startCurrentRound() {
+      const roundName = document.getElementById('roundName').value;
+      const roundDetails = document.getElementById('roundDetails').value;
+      const roundDuration = parseInt(document.getElementById('roundDuration').value) || 5;
+      
+      if (!roundName || !roundDetails) {
+        showNotification('Please fill in round name and details!');
+        return;
+      }
+      
+      try {
+        // Update round settings
+        gameState.roundName = roundName;
+        gameState.roundDetails = roundDetails;
+        gameState.currentTimer = roundDuration * 60; // Convert to seconds
+        gameState.currentRoundStarted = true;
+        gameState.gameStatus = 'active';
+        gameState.isActive = true;
+        gameState.roundStartTime = new Date();
+        
+        await saveGameSettings();
+        updateUIState();
+        showNotification('Current round started!');
+      } catch (error) {
+        console.error('Error starting current round:', error);
+        showNotification('Error starting current round!');
+      }
+    }
+
+    // Clear round
+    async function clearRound() {
+      document.getElementById('roundName').value = '';
+      document.getElementById('roundDetails').value = '';
+      gameState.roundName = '';
+      gameState.roundDetails = '';
+      await saveGameSettings();
+      showNotification('Round cleared!');
+    }
+
+    // File upload handling
+    document.getElementById('fileInput').addEventListener('change', async function(e) {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        gameState.attachments.push({
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          url: URL.createObjectURL(file),
+          isLink: false
+        });
+      });
+      updateAttachments();
+      await saveGameSettings();
+    });
+
+    // Next round file upload handling
+    document.getElementById('nextFileInput').addEventListener('change', async function(e) {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        gameState.nextRound.attachments.push({
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          url: URL.createObjectURL(file),
+          isLink: false
+        });
+      });
+      updateNextRoundAttachments();
+      await saveGameSettings();
+    });
+
+    // Add link function
+    async function addLink() {
+      const url = document.getElementById('linkUrl').value;
+      const name = document.getElementById('linkName').value;
+      
+      if (url && name) {
+        // Validate URL
+        try {
+          new URL(url);
+        } catch (e) {
+          showNotification('Please enter a valid URL!');
+          return;
+        }
+        
+        gameState.attachments.push({
+          name: name,
+          url: url,
+          isLink: true
+        });
+        updateAttachments();
+        await saveGameSettings();
+        
+        // Clear inputs
+        document.getElementById('linkUrl').value = '';
+        document.getElementById('linkName').value = '';
+        showNotification('Link added successfully!');
+      } else {
+        showNotification('Please enter both URL and name!');
+      }
+    }
+
+    // Add next round link function
+    async function addNextRoundLink() {
+      const url = document.getElementById('nextLinkUrl').value;
+      const name = document.getElementById('nextLinkName').value;
+      
+      if (url && name) {
+        // Validate URL
+        try {
+          new URL(url);
+        } catch (e) {
+          showNotification('Please enter a valid URL!');
+          return;
+        }
+        
+        gameState.nextRound.attachments.push({
+          name: name,
+          url: url,
+          isLink: true
+        });
+        updateNextRoundAttachments();
+        await saveGameSettings();
+        
+        // Clear inputs
+        document.getElementById('nextLinkUrl').value = '';
+        document.getElementById('nextLinkName').value = '';
+        showNotification('Next round link added successfully!');
+      } else {
+        showNotification('Please enter both URL and name!');
+      }
+    }
+
+    // Update next round
+    async function updateNextRound() {
+      gameState.nextRound.name = document.getElementById('nextRoundName').value;
+      gameState.nextRound.details = document.getElementById('nextRoundDetails').value;
+      await saveGameSettings();
+      showNotification('Next round updated successfully!');
+    }
+
+    // Update current round
+    async function updateCurrentRound() {
+      const roundName = document.getElementById('updateRoundName').value;
+      const roundDetails = document.getElementById('updateRoundDetails').value;
+      const roundDuration = parseInt(document.getElementById('updateRoundDuration').value);
+      
+      if (!roundName || !roundDetails) {
+        showNotification('Please fill in round name and details!');
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/update-current-round', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            roundName: roundName,
+            roundDetails: roundDetails,
+            currentTimer: roundDuration ? roundDuration * 60 : undefined,
+            attachments: gameState.attachments
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateDisplay();
+          updateUIState();
+          showNotification('Current round updated successfully!');
+          
+          // Clear form
+          document.getElementById('updateRoundName').value = '';
+          document.getElementById('updateRoundDetails').value = '';
+          document.getElementById('updateRoundDuration').value = '';
+        } else {
+          showNotification('Error updating current round!');
+        }
+      } catch (error) {
+        console.error('Error updating current round:', error);
+        showNotification('Error updating current round!');
+      }
+    }
+
+    // Start next round early
+    async function startNextRoundEarly() {
+      try {
+        const response = await fetch('/api/start-next-round-early', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateDisplay();
+          updateNextRoundAttachments();
+          updateUIState();
+          showNotification('Next round started early!');
+        } else {
+          showNotification('Error starting next round early!');
+        }
+      } catch (error) {
+        console.error('Error starting next round early:', error);
+        showNotification('Error starting next round early!');
+      }
+    }
+
+    // Start next round
+    async function startNextRound() {
+      const nextRoundName = document.getElementById('nextRoundName').value;
+      const nextRoundDetails = document.getElementById('nextRoundDetails').value;
+      const nextRoundDuration = parseInt(document.getElementById('nextRoundDuration').value) || 3;
+      
+      if (!nextRoundName || !nextRoundDetails) {
+        showNotification('Please fill in next round name and details!');
+        return;
+      }
+      
+      try {
+        // Move next round to current round
+        gameState.roundName = nextRoundName;
+        gameState.roundDetails = nextRoundDetails;
+        gameState.currentTimer = nextRoundDuration * 60; // Convert to seconds
+        gameState.roundStartTime = new Date();
+        gameState.currentRound += 1;
+        
+        // Reset next round
+        gameState.nextRound.name = 'Mission Beta';
+        gameState.nextRound.details = 'New challenges await! Complete the reactor tasks and identify the impostor before time runs out.';
+        gameState.nextRound.attachments = [];
+        
+        await saveGameSettings();
+        updateDisplay();
+        updateNextRoundAttachments();
+        updateUIState();
+        showNotification('Next round started!');
+      } catch (error) {
+        console.error('Error starting next round:', error);
+        showNotification('Error starting next round!');
+      }
+    }
+
+    // Update attachments display
+    function updateAttachments() {
+      const attachmentList = document.getElementById('attachmentList');
+      attachmentList.innerHTML = '';
+      
+      gameState.attachments.forEach((attachment, index) => {
+        const item = document.createElement('div');
+        item.className = 'attachment-item';
+        const linkIcon = attachment.isLink ? '🔗' : '📎';
+        item.innerHTML = `
+          <span class="attachment-name">${linkIcon} ${attachment.name}</span>
+          <button class="attachment-remove" onclick="removeAttachment(${index})">Remove</button>
+        `;
+        attachmentList.appendChild(item);
+      });
+    }
+
+    // Update next round attachments display
+    function updateNextRoundAttachments() {
+      const attachmentList = document.getElementById('nextRoundAttachmentList');
+      attachmentList.innerHTML = '';
+      
+      gameState.nextRound.attachments.forEach((attachment, index) => {
+        const item = document.createElement('div');
+        item.className = 'attachment-item';
+        const linkIcon = attachment.isLink ? '🔗' : '📎';
+        item.innerHTML = `
+          <span class="attachment-name">${linkIcon} ${attachment.name}</span>
+          <button class="attachment-remove" onclick="removeNextRoundAttachment(${index})">Remove</button>
+        `;
+        attachmentList.appendChild(item);
+      });
+    }
+
+    // Remove attachment
+    async function removeAttachment(index) {
+      gameState.attachments.splice(index, 1);
+      updateAttachments();
+      await saveGameSettings();
+    }
+
+    // Remove next round attachment
+    async function removeNextRoundAttachment(index) {
+      gameState.nextRound.attachments.splice(index, 1);
+      updateNextRoundAttachments();
+      await saveGameSettings();
+    }
+
+    // Game control functions
+    async function startGame() {
+      try {
+        const response = await fetch('/api/game-action', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'start_game',
+            details: 'Game started by admin'
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          showNotification('Game started!');
+        } else {
+          showNotification('Error starting game!');
+        }
+      } catch (error) {
+        console.error('Error starting game:', error);
+        showNotification('Error starting game!');
+      }
+    }
+
+    async function pauseGame() {
+      try {
+        const response = await fetch('/api/game-action', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'pause_game',
+            details: 'Game paused by admin'
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          showNotification('Game paused!');
+        } else {
+          showNotification('Error pausing game!');
+        }
+      } catch (error) {
+        console.error('Error pausing game:', error);
+        showNotification('Error pausing game!');
+      }
+    }
+
+    async function resetGame() {
+      try {
+        const response = await fetch('/api/game-action', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'reset_game',
+            details: 'Game reset by admin'
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateDisplay();
+          showNotification('Game reset!');
+        } else {
+          showNotification('Error resetting game!');
+        }
+      } catch (error) {
+        console.error('Error resetting game:', error);
+        showNotification('Error resetting game!');
+      }
+    }
+
+    function viewGame() {
+      window.open('/lets-begin', '_blank');
+    }
+
+    function emergencyMeeting() {
+      showNotification('Emergency meeting called!');
+    }
+
+    function triggerSabotage() {
+      showNotification('Sabotage triggered!');
+    }
+
+    function eliminatePlayer() {
+      showNotification('Player eliminated!');
+    }
+
+    function revealImpostor() {
+      showNotification('Impostor revealed!');
+    }
+
+    async function endGame() {
+      try {
+        const response = await fetch('/api/game-action', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'end_game',
+            details: 'Game ended by admin'
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateUIState();
+          showNotification('Game ended! All settings reset.');
+        } else {
+          showNotification('Error ending game!');
+        }
+      } catch (error) {
+        console.error('Error ending game:', error);
+        showNotification('Error ending game!');
+      }
+    }
+
+    // Cooldown functions
+    async function setCooldown() {
+      const minutes = parseInt(document.getElementById('cooldownMinutes').value) || 5;
+      const cooldownEndTime = new Date(Date.now() + (minutes * 60 * 1000));
+      
+      try {
+        const response = await fetch('/api/game-settings', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cooldownEndTime: cooldownEndTime
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateCooldownStatus();
+          showNotification(`Cooldown set for ${minutes} minutes!`);
+        } else {
+          showNotification('Error setting cooldown!');
+        }
+      } catch (error) {
+        console.error('Error setting cooldown:', error);
+        showNotification('Error setting cooldown!');
+      }
+    }
+
+    async function clearCooldown() {
+      try {
+        const response = await fetch('/api/game-settings', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cooldownEndTime: null
+          })
+        });
+        
+        if (response.ok) {
+          const updatedSettings = await response.json();
+          gameState = updatedSettings;
+          updateCooldownStatus();
+          showNotification('Cooldown cleared!');
+        } else {
+          showNotification('Error clearing cooldown!');
+        }
+      } catch (error) {
+        console.error('Error clearing cooldown:', error);
+        showNotification('Error clearing cooldown!');
+      }
+    }
+
+    function updateCooldownStatus() {
+      const statusElement = document.getElementById('cooldownStatus');
+      if (!statusElement) return;
+      
+      if (gameState.cooldownEndTime) {
+        const now = new Date();
+        const cooldownEnd = new Date(gameState.cooldownEndTime);
+        
+        if (now < cooldownEnd) {
+          const remaining = Math.floor((cooldownEnd - now) / 1000);
+          const minutes = Math.floor(remaining / 60);
+          const seconds = remaining % 60;
+          statusElement.textContent = `Cooldown active: ${minutes}:${seconds.toString().padStart(2, '0')} remaining`;
+          statusElement.style.color = '#FF6B6B';
+        } else {
+          statusElement.textContent = 'No active cooldown';
+          statusElement.style.color = '#68D391';
+        }
+      } else {
+        statusElement.textContent = 'No active cooldown';
+        statusElement.style.color = '#68D391';
+      }
+    }
+
+    // Show notification
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(45deg, #FF6B6B, #FF0000);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideDown 0.3s ease-out;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+    function startLiveUpdates() {
+      setInterval(async () => {
+        // Fetch comprehensive game state from server
+        try {
+          const response = await fetch('/api/game-state');
+          if (response.ok) {
+            const serverState = await response.json();
+            
+            // Update local state
+            gameState = { ...gameState, ...serverState };
+            
+            // Update UI components
+            updatePreGameTimerDisplay();
+            updateGameStatusDisplay();
+            updateCooldownStatus();
+            updateUIState();
+            
+            // Update round timer display
+            const liveRoundTimer = document.getElementById('liveRoundTimer');
+            if (liveRoundTimer && serverState.roundTimer) {
+              liveRoundTimer.textContent = serverState.roundTimer.display;
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching game state:', error);
+        }
+      }, 1000);
+    }
+
+    // Show notification
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(45deg, #FF6B6B, #FF0000);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideDown 0.3s ease-out;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Add CSS for notification animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideDown {
+        0% { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+        100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

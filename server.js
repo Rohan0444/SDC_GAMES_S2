@@ -2,8 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-import connectDB from "./config/db.js";
+import connectDB from "./config/database.js";
 import indexRoutes from "./routes/index.js";
+import apiRoutes from "./routes/api.js";
 
 dotenv.config();
 connectDB();
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/", indexRoutes);
+app.use("/api", apiRoutes);
 
 // Handle 404
 app.use((req, res) => {

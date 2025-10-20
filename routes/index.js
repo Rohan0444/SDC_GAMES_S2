@@ -21,4 +21,9 @@ router.get("/game-hosts", (req, res) => {
   res.render("pages/game-hosts", { title: "SDC Games | Game Hosts" });
 });
 
+// Admin route
+router.get("/admin", (req, res) => {
+  res.render("pages/admin", { title: "SDC Games | Admin Panel" });
+});
+
 export default router;
