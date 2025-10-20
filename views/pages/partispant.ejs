@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Participant Profile</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="participant-profile among">
+    <header class="profile-header">
+      <a href="/partispants" class="btn btn-outline">←</a>
+      <h1 class="profile-title">Participant Profile</h1>
+    </header>
+
+    <section id="profile-card" class="profile-card">
+      <div class="profile-avatar-wrap">
+        <img id="p-avatar" class="profile-avatar" alt="avatar" />
+        <div id="p-status" class="profile-status">ALIVE</div>
+      </div>
+      <div class="profile-meta">
+        <h2 id="p-name" class="profile-name">...</h2>
+        <div id="p-roll" class="profile-roll">Roll: <%= rollNumber %></div>
+        <div class="profile-tags">
+          <span id="p-college" class="tag"></span>
+          <span id="p-branch" class="tag"></span>
+          <span id="p-year" class="tag"></span>
+          <span id="p-degree" class="tag"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="profile-admin among">
+      <div class="admin-gate">
+        <input id="admin-pass" type="password" class="search-input" placeholder="Admin password" />
+        <button id="admin-unlock" class="btn btn-primary">Unlock Admin</button>
+      </div>
+      <form id="admin-form" class="admin-form hidden">
+        <div class="form-row">
+          <input id="f-name" type="text" placeholder="Name" />
+          <input id="f-roll" type="text" placeholder="Roll Number" />
+        </div>
+        <div class="form-row">
+          <input id="f-college" type="text" placeholder="College" />
+          <input id="f-branch" type="text" placeholder="Branch" />
+        </div>
+        <div class="form-row">
+          <input id="f-year" type="text" placeholder="Year" />
+          <input id="f-degree" type="text" placeholder="Degree" />
+        </div>
+        <div class="form-row">
+          <label>Status
+            <select id="f-status">
+              <option value="Alive">Alive</option>
+              <option value="Eliminated">Eliminated</option>
+            </select>
+          </label>
+          <label>Avatar
+            <select id="f-avatar">
+              <option value="blue.png">Blue</option>
+              <option value="green.png">Green</option>
+              <option value="red.png">Red</option>
+              <option value="yellow.png">Yellow</option>
+              <option value="purple.png">Purple</option>
+              <option value="cyan.png">Cyan</option>
+              <option value="white.png">White</option>
+              <option value="black.png">Black</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button id="save-btn" class="btn btn-primary" type="button">Save</button>
+          <button id="delete-btn" class="btn btn-danger" type="button">Delete</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    window.ROLL_NUMBER = '<%= rollNumber %>';
+  </script>
+  <script type="module" src="/js/participant_detail.js"></script>
+</body>
+</html>
