@@ -3,133 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participants 〇 △ □</title>
-    <link rel="stylesheet" href="/css/hosts.css">
-    <style>
-        /* Page-scoped Squid Game themed styles */
-        .participants-page {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 24px;
-        }
-        .participants-header {
-            text-align: center;
-            margin-bottom: 1rem;
-            animation: fadeInDown 0.6s ease-out;
-        }
-        .participants-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #00ffd1; /* cyan */
-            text-shadow: 0 0 12px rgba(0, 255, 209, 0.35);
-        }
-        .participants-subtitle {
-            color: #c0c3cf;
-            margin-top: 0.25rem;
-        }
-        .participants-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 28px; /* more spacing for diamond corners */
-            margin-top: 24px;
-            animation: fadeInUp 0.8s ease-out;
-            justify-items: center;
-        }
-        /* Diamond card: rotate the card 45deg, counter-rotate its contents */
-        .participant-card {
-            width: 100%;
-            aspect-ratio: 1/1;
-            transform: rotate(45deg);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            position: relative;
-            overflow: hidden;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #141427, #1c1c33);
-            border: 3px solid #ff0a7a; /* pink diamond border */
-            box-shadow: 0 10px 30px rgba(255, 10, 122, 0.10);
-        }
-        .participant-card:hover {
-            transform: rotate(45deg) translateY(-4px);
-            box-shadow: 0 20px 45px rgba(255, 10, 122, 0.18);
-        }
-        .card-rotator {
-            position: absolute;
-            inset: 0;
-            transform: rotate(-45deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-        }
-        .participant-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #0f0f17, #1a1a2f);
-        }
-        .participant-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .participant-overlay-number {
-            position: absolute;
-            bottom: 8px;
-            right: 10px;
-            font-weight: 900;
-            font-size: 1.6rem;
-            color: #00ffd1;
-            opacity: 0.9;
-            text-shadow: 0 0 10px rgba(0, 255, 209, 0.35);
-            user-select: none;
-        }
-        .participant-number-fallback {
-            font-weight: 900;
-            font-size: 2.2rem;
-            color: #00ffd1;
-            opacity: 0.85;
-            text-shadow: 0 0 10px rgba(0, 255, 209, 0.35);
-        }
-        .participant-card.eliminated {
-            filter: grayscale(1);
-            opacity: 0.65;
-            border-color: #555a6a;
-        }
-        .legend {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-top: 10px;
-            color: #bdc3c7;
-            font-size: 0.9rem;
-        }
-        .legend .alive-dot,
-        .legend .dead-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 6px;
-        }
-        .legend .alive-dot { background: #00ffd1; box-shadow: 0 0 6px rgba(0,255,209,0.5); }
-        .legend .dead-dot { background: #7b7f8f; }
-    </style>
+    <title>Participants</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="participants-page">
-        <header class="participants-header">
-            <h1 class="participants-title">Participants 〇 △ □</h1>
-            <p class="participants-subtitle">Live status from the Frontman: alive vs eliminated</p>
-            <div class="legend">
+        <header class="participants-header among">
+            <h1 class="participants-title">Participants</h1>
+            <div class="participants-toolbar">
+                <input id="participant-search" class="search-input" type="search" placeholder="Search name or roll no..." />
+            </div>
+            <div class="legend among">
                 <span><span class="alive-dot"></span>Alive</span>
                 <span><span class="dead-dot"></span>Eliminated</span>
             </div>
         </header>
-        <section>
-            <div id="participants-grid" class="participants-grid"></div>
+        <section class="participants-content among">
+            <div id="participants-grid" class="participants-grid among"></div>
         </section>
+        <button id="fab-add" class="fab-add" title="Add participant">+</button>
+        <div id="add-modal" class="modal hidden">
+          <div class="modal-backdrop"></div>
+          <div class="modal-dialog">
+            <h3>Add Participant</h3>
+            <div class="form-row"><input type="password" id="add-pass" class="search-input" placeholder="Admin password" /></div>
+            <form id="add-form">
+              <div class="form-row">
+                <input type="text" id="a-name" placeholder="Name" required />
+                <input type="text" id="a-roll" placeholder="Roll Number" required />
+              </div>
+              <div class="form-row">
+                <input type="text" id="a-college" placeholder="College" />
+                <input type="text" id="a-branch" placeholder="Branch" />
+              </div>
+              <div class="form-row">
+                <input type="text" id="a-year" placeholder="Year" />
+                <input type="text" id="a-degree" placeholder="Degree" />
+              </div>
+              <div class="form-row">
+                <label>Status
+                  <select id="a-status">
+                    <option value="Alive">Alive</option>
+                    <option value="Eliminated">Eliminated</option>
+                  </select>
+                </label>
+                <label>Avatar
+                  <select id="a-avatar">
+                    <option value="blue.png">Blue</option>
+                    <option value="green.png">Green</option>
+                    <option value="red.png">Red</option>
+                    <option value="yellow.png">Yellow</option>
+                    <option value="purple.png">Purple</option>
+                    <option value="cyan.png">Cyan</option>
+                    <option value="white.png">White</option>
+                    <option value="black.png">Black</option>
+                  </select>
+                </label>
+              </div>
+              <div class="form-actions">
+                <button id="a-cancel" class="btn btn-outline" type="button">Cancel</button>
+                <button id="a-save" class="btn btn-primary" type="submit">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
     </div>
     <script type="module" src="/js/participants.js"></script>
 </body>

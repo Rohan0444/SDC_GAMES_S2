@@ -1,20 +1,43 @@
-[
-  {
-    "name": "Alice Smith",
-    "position": "Event Coordinator",
-    "quote": "Making events unforgettable!",
-    "photo": "host1.jpg"
+{
+  "gameMaster": {
+    "name": "Alex Johnson",
+    "role": "Game Master",
+    "photo": "/images/hosts/alex.jpg",
+    "description": "Alex leads our events with unmatched energy and creativity, ensuring every participant has a thrilling experience.",
+    "tagline": "Bringing the fun together!",
+    "socialLinks": {
+      "linkedin": "https://linkedin.com/",
+      "twitter": "https://twitter.com/"
+    }
   },
-  {
-    "name": "Bob Lee",
-    "position": "Tech Lead",
-    "quote": "Tech is life!",
-    "photo": "host2.jpg"
-  },
-  {
-    "name": "Charlie Tan",
-    "position": "Design Head",
-    "quote": "Design is everything.",
-    "photo": "host3.jpg"
-  }
-]
+  "hosts": [
+    {
+      "name": "Sarah Lee",
+      "role": "Event Coordinator",
+      "photo": "/images/hosts/sarah.jpg",
+      "description": "Keeps everything running smoothly and ensures participants are always in the loop.",
+      "quote": "Organization is the key to a great event."
+    },
+    {
+      "name": "Michael Chen",
+      "role": "Tech Lead",
+      "photo": "/images/hosts/michael.jpg",
+      "description": "Handles all the technical setups and ensures the event runs without glitches.",
+      "quote": "Tech is the backbone of seamless experiences."
+    },
+    {
+      "name": "Priya Kumar",
+      "role": "Design Head",
+      "photo": "/images/hosts/priya.jpg",
+      "description": "Designs the visuals and layouts that make the event engaging and visually appealing.",
+      "quote": "Creativity makes everything memorable."
+    },
+    {
+      "name": "David Smith",
+      "role": "Logistics Head",
+      "photo": "/images/hosts/david.jpg",
+      "description": "Manages all the on-ground logistics to keep things running perfectly.",
+      "quote": "A well-planned event is a successful event."
+    }
+  ]
+}

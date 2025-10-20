@@ -28,13 +28,29 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/", indexRoutes);
-app.get('/hosts', (req, res) => {
-  res.render('game-hosts', { hosts });
+app.get('/', (req, res) => {
+    try {
+        // Read hosts data from JSON file
+        const hostsData = fs.readFileSync(path.join(__dirname, 'data', 'hosts.json'), 'utf8');
+        const data = JSON.parse(hostsData);
+        
+        // Render the index template with data
+        res.render('game-hosts', { data });
+    } catch (error) {
+        console.error('Error reading hosts data:', error);
+        res.status(500).send('Error loading page data');
+    }
 });
-// Squid Game participants page
+// Participants list page (Among Us themed)
 app.get('/partispants', (req, res) => {
     // Render the participants grid; data is fetched client-side from Firestore
     res.render('partispants');
+});
+
+// Participant detail page by roll number (Among Us profile)
+app.get('/participants/:rollNumber', (req, res) => {
+    const rollNumber = req.params.rollNumber;
+    res.render('partispant', { rollNumber });
 });
 
 // Handle 404

@@ -1,11 +1,10 @@
-// Squid Game Participants Grid – Firestore live updates
-// This script renders participant cards and greys out eliminated players.
+// Among Us Participants Page – Firestore live updates + Admin CRUD
 
 // Firebase Web v10 ESM imports via CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-//web app's Firebase configuration (rishik)
+// Firebase config (provided)
 const firebaseConfig = {
   apiKey: "AIzaSyAyn0iUIkspW0QZnz9ZkguCVwLAnqq5kZ4",
   authDomain: "sdc-games-18b12.firebaseapp.com",
@@ -19,12 +18,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// DOM helpers
+// DOM refs
 const grid = document.getElementById('participants-grid');
+const searchInput = document.getElementById('participant-search');
 
-function pad3(n) {
-  try { return String(n).padStart(3, '0'); } catch { return String(n); }
-}
+// FAB + modal elements
+const fabAdd = document.getElementById('fab-add');
+const addModal = document.getElementById('add-modal');
+const addPass = document.getElementById('add-pass');
+const addForm = document.getElementById('add-form');
+const aName = document.getElementById('a-name');
+const aRoll = document.getElementById('a-roll');
+const aCollege = document.getElementById('a-college');
+const aBranch = document.getElementById('a-branch');
+const aYear = document.getElementById('a-year');
+const aDegree = document.getElementById('a-degree');
+const aStatus = document.getElementById('a-status');
+const aAvatar = document.getElementById('a-avatar');
+const aCancel = document.getElementById('a-cancel');
+
+let state = {
+  all: [],
+  filtered: [],
+};
+
+const AVATAR_BASE = '/images/';
+const ADMIN_PASSWORD = 'sdcadmin';
 
 function showEmptyState() {
   grid.innerHTML = '';
@@ -33,81 +52,128 @@ function showEmptyState() {
   empty.style.color = '#bdc3c7';
   empty.style.width = '100%';
   empty.style.gridColumn = '1 / -1';
-  empty.textContent = 'No participants found in Firestore. Add some to see the grid.';
+  empty.textContent = 'No participants found. Use Admin to add some.';
   grid.appendChild(empty);
+}
+
+function normalize(p) {
+  return {
+    id: p.id,
+    name: p.name?.trim() || 'Unknown',
+    rollNumber: p.rollNumber?.toString().trim() || '',
+    status: (p.status || 'Alive'),
+    avatar: p.avatar || 'blue.png',
+    college: p.college || '',
+    branch: p.branch || '',
+    year: p.year || '',
+    degree: p.degree || '',
+  };
 }
 
 function createCard(p) {
   const card = document.createElement('div');
-  card.className = 'participant-card';
+  card.className = 'participant-card ' + ((p.status || '').toLowerCase() === 'eliminated' ? 'eliminated' : 'alive');
 
-  const status = (p.status || '').toLowerCase();
-  if (status === 'eliminated') {
-    card.classList.add('eliminated');
-  }
+  const img = document.createElement('img');
+  img.className = 'avatar';
+  img.alt = p.name;
+  img.src = AVATAR_BASE + (p.avatar || 'blue.png');
+  img.loading = 'lazy';
 
-  const rot = document.createElement('div');
-  rot.className = 'card-rotator';
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const name = document.createElement('div');
+  name.className = 'name';
+  name.textContent = p.name;
+  const roll = document.createElement('div');
+  roll.className = 'roll';
+  roll.textContent = `Roll: ${p.rollNumber}`;
+  const status = document.createElement('div');
+  status.className = 'status';
+  status.textContent = p.status === 'Eliminated' ? 'ELIMINATED' : 'ALIVE';
 
-  const inner = document.createElement('div');
-  inner.className = 'participant-inner';
+  meta.appendChild(name);
+  meta.appendChild(roll);
+  meta.appendChild(status);
 
-  const hasImage = typeof p.imageUrl === 'string' && p.imageUrl.trim().length > 0;
-  if (hasImage) {
-    const img = document.createElement('img');
-    img.alt = p.name || pad3(p.number || '');
-    img.src = p.imageUrl;
-    img.onerror = () => {
-      img.remove();
-      appendNumberFallback(inner, p);
-      appendOverlayNumber(inner, p);
-    };
-    inner.appendChild(img);
-  } else {
-    appendNumberFallback(inner, p);
-  }
+  card.appendChild(img);
+  card.appendChild(meta);
 
-  // Always show an overlay number like the panel
-  appendOverlayNumber(inner, p);
+  card.addEventListener('click', () => {
+    const rn = encodeURIComponent(p.rollNumber);
+    window.location.href = `/participants/${rn}`;
+  });
 
-  rot.appendChild(inner);
-  card.appendChild(rot);
   return card;
-}
-
-function appendNumberFallback(container, p) {
-  const box = document.createElement('div');
-  box.className = 'participant-number-fallback';
-  box.textContent = pad3(p.number ?? '');
-  container.appendChild(box);
-}
-
-function appendOverlayNumber(container, p) {
-  const num = document.createElement('div');
-  num.className = 'participant-overlay-number';
-  num.textContent = pad3(p.number ?? '');
-  container.appendChild(num);
 }
 
 function render(items) {
   grid.innerHTML = '';
-  items.forEach((p) => {
-    grid.appendChild(createCard(p));
-  });
+  if (!items.length) { showEmptyState(); return; }
+  items.forEach((p) => grid.appendChild(createCard(p)));
 }
 
-// Subscribe to Firestore 'participants' collection ordered by number
+// Live subscription with new schema (ordered by rollNumber)
 const participantsCol = collection(db, 'participants');
-const q = query(participantsCol, orderBy('number'));
+const q = query(participantsCol, orderBy('rollNumber'));
 
 onSnapshot(q, (snapshot) => {
-  const participants = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-  if (!participants.length) {
-    showEmptyState();
-  } else {
-    render(participants);
-  }
+  state.all = snapshot.docs.map((d) => normalize({ id: d.id, ...d.data() }));
+  applyFilter();
 }, (err) => {
   console.error('Failed to fetch participants:', err);
   showEmptyState();
+});
+
+// Search
+function applyFilter() {
+  const q = (searchInput?.value || '').toLowerCase().trim();
+  if (!q) {
+    state.filtered = state.all.slice();
+  } else {
+    state.filtered = state.all.filter(p =>
+      p.name.toLowerCase().includes(q) || p.rollNumber.toLowerCase().includes(q)
+    );
+  }
+  render(state.filtered);
+}
+searchInput?.addEventListener('input', applyFilter);
+
+// FAB: open add modal with password
+fabAdd?.addEventListener('click', () => {
+  addPass.value = '';
+  addModal.classList.remove('hidden');
+});
+
+function hideAddModal() {
+  addModal.classList.add('hidden');
+  addForm.reset();
+}
+
+aCancel?.addEventListener('click', hideAddModal);
+
+addForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (addPass.value !== ADMIN_PASSWORD) {
+    alert('Wrong password');
+    return;
+  }
+  const data = {
+    name: aName.value.trim(),
+    rollNumber: aRoll.value.trim(),
+    college: aCollege.value.trim(),
+    branch: aBranch.value.trim(),
+    year: aYear.value.trim(),
+    degree: aDegree.value.trim(),
+    status: aStatus.value,
+    avatar: aAvatar.value,
+  };
+  if (!data.name || !data.rollNumber) return alert('Name and Roll Number are required.');
+  try {
+    await addDoc(participantsCol, data);
+    hideAddModal();
+  } catch (e) {
+    console.error('Add failed', e);
+    alert('Failed to add participant');
+  }
 });
