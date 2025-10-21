@@ -1,73 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participants</title>
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participants</title>
+  <link rel="stylesheet" href="/css/participants.css">
 </head>
+
 <body>
-    <div class="participants-page">
-        <header class="participants-header among">
-            <h1 class="participants-title">Participants</h1>
-            <div class="participants-toolbar">
-                <input id="participant-search" class="search-input" type="search" placeholder="Search name or roll no..." />
-            </div>
-            <div class="legend among">
-                <span><span class="alive-dot"></span>Alive</span>
-                <span><span class="dead-dot"></span>Eliminated</span>
-            </div>
-        </header>
-        <section class="participants-content among">
-            <div id="participants-grid" class="participants-grid among"></div>
-        </section>
-        <button id="fab-add" class="fab-add" title="Add participant">+</button>
-        <div id="add-modal" class="modal hidden">
-          <div class="modal-backdrop"></div>
-          <div class="modal-dialog">
-            <h3>Add Participant</h3>
-            <div class="form-row"><input type="password" id="add-pass" class="search-input" placeholder="Admin password" /></div>
-            <form id="add-form">
-              <div class="form-row">
-                <input type="text" id="a-name" placeholder="Name" required />
-                <input type="text" id="a-roll" placeholder="Roll Number" required />
-              </div>
-              <div class="form-row">
-                <input type="text" id="a-college" placeholder="College" />
-                <input type="text" id="a-branch" placeholder="Branch" />
-              </div>
-              <div class="form-row">
-                <input type="text" id="a-year" placeholder="Year" />
-                <input type="text" id="a-degree" placeholder="Degree" />
-              </div>
-              <div class="form-row">
-                <label>Status
-                  <select id="a-status">
-                    <option value="Alive">Alive</option>
-                    <option value="Eliminated">Eliminated</option>
-                  </select>
-                </label>
-                <label>Avatar
-                  <select id="a-avatar">
-                    <option value="blue.png">Blue</option>
-                    <option value="green.png">Green</option>
-                    <option value="red.png">Red</option>
-                    <option value="yellow.png">Yellow</option>
-                    <option value="purple.png">Purple</option>
-                    <option value="cyan.png">Cyan</option>
-                    <option value="white.png">White</option>
-                    <option value="black.png">Black</option>
-                  </select>
-                </label>
-              </div>
-              <div class="form-actions">
-                <button id="a-cancel" class="btn btn-outline" type="button">Cancel</button>
-                <button id="a-save" class="btn btn-primary" type="submit">Add</button>
-              </div>
-            </form>
-          </div>
+  <div class="participants-page">
+    <!-- navbar -->
+    <nav class="nav">
+      <a href="/" class="logo">SDC GAMES</a>
+      <ul class="nav-menu">
+        <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
+        <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
+        <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
+      </ul>
+    </nav>
+    <header class="participants-header among">
+      <h1 class="participants-title">Participants</h1>
+      <div class="participants-toolbar">
+        <input id="participant-search" class="search-input" type="search" placeholder="Search name or roll no..." />
+      </div>
+      <div class="legend among">
+        <span><span class="alive-dot"></span>Alive</span>
+        <span><span class="dead-dot"></span>Eliminated</span>
+      </div>
+    </header>
+    <section class="participants-content among">
+      <div id="participants-grid" class="participants-grid among"></div>
+    </section>
+    <button id="fab-add" class="fab-add" title="Add participant">+</button>
+    <div id="add-modal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-dialog">
+        <h3>Add Participant</h3>
+        <div class="form-row"><input type="password" id="add-pass" class="search-input" placeholder="Admin password" />
         </div>
+        <form id="add-form">
+          <div class="form-row">
+            <input type="text" id="a-name" placeholder="Name" required />
+            <input type="text" id="a-roll" placeholder="Roll Number" required />
+          </div>
+          <div class="form-row">
+            <input type="text" id="a-college" placeholder="College" />
+            <input type="text" id="a-branch" placeholder="Branch" />
+          </div>
+          <div class="form-row">
+            <input type="text" id="a-year" placeholder="Year" />
+            <input type="text" id="a-degree" placeholder="Degree" />
+          </div>
+          <div class="form-row">
+            <label>Status
+              <select id="a-status">
+                <option value="Alive">Alive</option>
+                <option value="Eliminated">Eliminated</option>
+              </select>
+            </label>
+            <label>Avatar
+              <select id="a-avatar">
+                <option value="blue.png">Blue</option>
+                <option value="green.png">Green</option>
+                <option value="red.png">Red</option>
+                <option value="yellow.png">Yellow</option>
+                <option value="purple.png">Purple</option>
+                <option value="cyan.png">Cyan</option>
+                <option value="white.png">White</option>
+                <option value="black.png">Black</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button id="a-cancel" class="btn btn-outline" type="button">Cancel</button>
+            <button id="a-save" class="btn btn-primary" type="submit">Add</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <script type="module" src="/js/participants.js"></script>
+  </div>
+  <script type="module" src="/js/participants.js"></script>
 </body>
+
 </html>

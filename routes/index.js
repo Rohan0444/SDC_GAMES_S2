@@ -16,10 +16,7 @@ router.get("/participants", (req, res) => {
   res.render("pages/participants", { title: "SDC Games | Participants" });
 });
 
-// Game Hosts route
-router.get("/game-hosts", (req, res) => {
-  res.render("pages/game-hosts", { title: "SDC Games | Game Hosts" });
-});
+// Game Hosts route is handled in server.js with hosts data
 
 // Admin route
 router.get("/admin", (req, res) => {

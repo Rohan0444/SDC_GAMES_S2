@@ -5,7 +5,7 @@ dotenv.config();
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sdc_games';
+    const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:53841/sdc_games';
     
     const conn = await mongoose.connect(mongoURI);
     
@@ -16,7 +16,12 @@ const connectDB = async () => {
     
   } catch (error) {
     console.error('Error connecting to MongoDB:', error.message);
-    process.exit(1);
+    console.log('⚠️  Server will continue running without database connection');
+    console.log('📝 To fix this:');
+    console.log('   1. Install MongoDB: https://www.mongodb.com/try/download/community');
+    console.log('   2. Or use MongoDB Atlas (cloud): https://cloud.mongodb.com/');
+    console.log('   3. Or set MONGODB_URI environment variable');
+    // Don't exit the process, let the server run without database
   }
 };
 
