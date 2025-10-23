@@ -24,6 +24,7 @@
       background-attachment: fixed;
       min-height: 100vh;
       position: relative;
+      overflow-y: auto;
     }
 
     /* Full-screen immersive background */
@@ -159,19 +160,15 @@
 
     /* Main Content Section - Full Screen Immersive */
     .main-section {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
+      min-height: 100vh;
       background: linear-gradient(45deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0;
-      overflow: hidden;
-      z-index: 1;
+      padding: 120px 40px 40px;
+      position: relative;
+      z-index: 5;
     }
 
     .main-section::before {
@@ -293,7 +290,7 @@
 
     .content-wrapper {
       position: relative;
-      z-index: 3;
+      z-index: 10;
       text-align: center;
       animation: contentFadeIn 1s ease-out;
       max-width: 900px;
@@ -397,7 +394,7 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      transform: perspective(1000px) rotateX(5deg);
+      transform: none;
       box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -434,7 +431,7 @@
       box-shadow: 
         0 30px 60px rgba(255, 107, 107, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      transform: perspective(1000px) rotateX(0deg) scale(1.02);
+      transform: scale(1.02);
     }
 
     .round-title {
@@ -471,6 +468,7 @@
       border-radius: 8px;
       padding: 15px;
       margin-bottom: 20px;
+      text-align: left;
     }
 
     .rules-title {
@@ -480,6 +478,7 @@
       margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 1px;
+      text-align: left;
     }
 
     .rules-content {
@@ -487,18 +486,20 @@
       line-height: 1.5;
       color: #CBD5E0;
       margin: 0;
+      text-align: left;
     }
 
     .round-participation {
-      text-align: center;
-      margin-bottom: 20px;
+      text-align: left;
+      margin-bottom: 40px;
+      margin-top: 30px;
     }
 
     .participation-format {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      justify-content: flex-start;
+      gap: 15px;
       flex-wrap: wrap;
     }
 
@@ -615,41 +616,42 @@
     }
 
     .round-links {
-      margin-bottom: 20px;
+      margin-bottom: 40px;
+      margin-top: 30px;
     }
 
     .links-title {
       font-size: 1rem;
       font-weight: 600;
       color: #FF6B6B;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      text-align: center;
+      text-align: left;
     }
 
     .links-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      align-items: center;
+      gap: 15px;
+      align-items: flex-start;
     }
 
     .link-item {
       background: rgba(26, 26, 46, 0.8);
       border: 2px solid rgba(255, 107, 107, 0.5);
-      border-radius: 8px;
-      padding: 12px 20px;
+      border-radius: 12px;
+      padding: 20px 30px;
       color: #E2E8F0;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 600;
       transition: all 0.3s ease;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 200px;
-      justify-content: center;
+      gap: 15px;
+      min-width: 300px;
+      justify-content: flex-start;
     }
 
     .link-item:hover {
@@ -826,7 +828,7 @@
       }
 
       .main-section {
-        padding: 100px 20px 40px;
+        padding: 120px 20px 40px;
       }
 
       .round-name {
@@ -850,12 +852,13 @@
       }
 
       .links-list {
-        align-items: center;
+        align-items: flex-start;
       }
 
       .link-item {
-        min-width: 150px;
-        padding: 10px 15px;
+        min-width: 250px;
+        padding: 15px 25px;
+        font-size: 16px;
       }
     }
 
@@ -1072,13 +1075,13 @@
       
       document.getElementById('roundTitle').textContent = `Round ${roundData.roundNumber}`;
       document.getElementById('roundName').textContent = roundData.roundName;
-      document.getElementById('roundDescription').textContent = roundData.roundDetails;
+      document.getElementById('roundDescription').innerHTML = roundData.roundDetails.replace(/\n/g, '<br>');
       
       // Update rules
       const rulesContainer = document.getElementById('roundRulesContainer');
       const rulesContent = document.getElementById('roundRules');
       if (roundData.roundRules && roundData.roundRules.trim() !== '') {
-        rulesContent.textContent = roundData.roundRules;
+        rulesContent.innerHTML = roundData.roundRules.replace(/\n/g, '<br>');
         rulesContainer.style.display = 'block';
         console.log('Rules set:', roundData.roundRules);
       } else {
