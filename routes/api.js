@@ -540,6 +540,7 @@ router.get('/current-round', async (req, res) => {
         roundDetails: settings.roundDetails,
         roundRules: settings.roundRules,
         roundUrl: settings.roundUrl,
+        roundLinks: settings.roundLinks || [],
         participationType: settings.participationType,
         attachments: settings.attachments,
         duration: settings.roundDuration,
@@ -762,10 +763,10 @@ router.post('/test-round', async (req, res) => {
 // Start a new round
 router.post('/start-round', async (req, res) => {
   try {
-    const { roundNumber, roundName, roundDetails, roundRules, roundUrl, participationType, roundDuration, attachments, duration } = req.body;
+    const { roundNumber, roundName, roundDetails, roundRules, roundUrl, roundLinks, participationType, roundDuration, attachments, duration } = req.body;
     
     console.log('Starting round with data:', {
-      roundNumber, roundName, roundDetails, roundRules, roundUrl, participationType, roundDuration, attachments, duration
+      roundNumber, roundName, roundDetails, roundRules, roundUrl, roundLinks, participationType, roundDuration, attachments, duration
     });
     
     if (!roundName || !roundDetails) {
@@ -783,6 +784,7 @@ router.post('/start-round', async (req, res) => {
         roundDetails: roundDetails,
         roundRules: roundRules || 'Follow all instructions carefully. No cheating allowed. Work as a team.',
         roundUrl: roundUrl || '',
+        roundLinks: roundLinks || [],
         participationType: participationType || 'individual',
         roundDuration: roundDuration || 5,
         currentTimer: duration || (roundDuration * 60),
@@ -817,6 +819,7 @@ router.post('/start-round', async (req, res) => {
     settings.roundDetails = roundDetails;
     settings.roundRules = roundRules || 'Follow all instructions carefully. No cheating allowed. Work as a team.';
     settings.roundUrl = roundUrl || '';
+    settings.roundLinks = roundLinks || [];
     settings.participationType = participationType || 'individual';
     settings.roundDuration = roundDuration || 5;
     settings.currentTimer = duration || (roundDuration * 60);
@@ -966,6 +969,51 @@ router.post('/eliminate-participants', async (req, res) => {
   }
 });
 
+// Eliminate participants by team name
+router.post('/eliminate-by-team', async (req, res) => {
+  try {
+    const { teamName } = req.body;
+    
+    if (!teamName || teamName.trim() === '') {
+      return res.status(400).json({ error: 'Team name is required' });
+    }
+
+    console.log('Eliminating participants from team:', teamName);
+    
+    // Find and update all participants in the team
+    const result = await Participant.updateMany(
+      { 
+        team: teamName.trim(),
+        status: 'Alive' // Only eliminate alive participants
+      },
+      { 
+        status: 'Eliminated',
+        eliminatedAt: new Date(),
+        lastUpdated: new Date()
+      }
+    );
+
+    console.log(`Eliminated ${result.modifiedCount} participants from team "${teamName}"`);
+
+    // Log admin action
+    await AdminAction.create({
+      action: 'eliminate_by_team',
+      details: `Eliminated ${result.modifiedCount} participants from team: ${teamName}`,
+      gameState: { teamName, eliminatedCount: result.modifiedCount }
+    });
+
+    res.json({
+      success: true,
+      eliminatedCount: result.modifiedCount,
+      teamName: teamName,
+      message: `Successfully eliminated ${result.modifiedCount} participants from team "${teamName}"`
+    });
+  } catch (error) {
+    console.error('Error eliminating participants by team:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Get participants status
 router.get('/participants-status', async (req, res) => {
   try {
@@ -1018,7 +1066,7 @@ router.post('/add-participant', async (req, res) => {
     const participantData = req.body;
     
     // Validate required fields
-    const requiredFields = ['name', 'rollNumber', 'email', 'college', 'branch', 'year', 'degree'];
+    const requiredFields = ['name', 'rollNumber', 'email'];
     for (const field of requiredFields) {
       if (!participantData[field]) {
         return res.status(400).json({ error: `${field} is required` });

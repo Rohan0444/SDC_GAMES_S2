@@ -10,6 +10,8 @@ const els = {
   status: document.getElementById('p-status'),
   name: document.getElementById('p-name'),
   roll: document.getElementById('p-roll'),
+  team: document.getElementById('p-team'),
+  teamName: document.getElementById('p-team-name'),
   college: document.getElementById('p-college'),
   branch: document.getElementById('p-branch'),
   year: document.getElementById('p-year'),
@@ -33,6 +35,15 @@ function render(p) {
   setStatusBadge(p.status);
   els.name.textContent = p.name || '';
   els.roll.textContent = `Roll: ${p.rollNumber || rn}`;
+  
+  // Handle team display
+  if (p.team && p.team.trim() !== '') {
+    els.teamName.textContent = p.team;
+    els.team.style.display = 'flex';
+  } else {
+    els.team.style.display = 'none';
+  }
+  
   els.college.textContent = p.college || '';
   els.branch.textContent = p.branch || '';
   els.year.textContent = p.year || '';

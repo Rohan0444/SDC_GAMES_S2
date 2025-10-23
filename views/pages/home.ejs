@@ -85,6 +85,34 @@
       gap: 40px;
     }
 
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
     .nav-menu a {
       color: #fff;
       text-decoration: none;
@@ -569,7 +597,40 @@
       }
 
       .nav-menu {
-        display: none;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-menu.active {
+        left: 0;
+      }
+
+      .nav-menu a {
+        font-size: 24px;
+        margin: 20px 0;
+        padding: 15px 30px;
+        border-radius: 10px;
+        background: rgba(229, 9, 20, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+        background: rgba(229, 9, 20, 0.3);
+        transform: scale(1.05);
+      }
+
+      .hamburger {
+        display: flex;
+        z-index: 1001;
       }
 
       .nav-buttons {
@@ -1179,7 +1240,12 @@
     <div class="header-card-effect"></div>
     <nav class="nav">
       <a href="/" class="logo">SDC GAMES</a>
-      <ul class="nav-menu">
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu" id="navMenu">
         <li><a href="/lets-begin"><span class="nav-icon icon-hearts"></span>Let's Begin</a></li>
         <li><a href="/participants"><span class="nav-icon icon-players"></span>Participants</a></li>
         <li><a href="/game-hosts"><span class="nav-icon icon-host"></span>Game Hosts</a></li>
@@ -1249,6 +1315,27 @@
   <button class="emergency-button" onclick="triggerEmergency()">🚨</button>
 
   <script>
+     // Hamburger menu toggle
+     function toggleMenu() {
+       const navMenu = document.getElementById('navMenu');
+       const hamburger = document.querySelector('.hamburger');
+       navMenu.classList.toggle('active');
+       hamburger.classList.toggle('active');
+     }
+
+     // Close menu when clicking on a link
+     document.addEventListener('DOMContentLoaded', function() {
+       const navLinks = document.querySelectorAll('.nav-menu a');
+       navLinks.forEach(link => {
+         link.addEventListener('click', () => {
+           const navMenu = document.getElementById('navMenu');
+           const hamburger = document.querySelector('.hamburger');
+           navMenu.classList.remove('active');
+           hamburger.classList.remove('active');
+         });
+       });
+     });
+
      // Mouse flare effects
      let mouseFlare = null;
      let mouseStillTimeout;

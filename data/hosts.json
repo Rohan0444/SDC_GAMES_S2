@@ -1,43 +1,186 @@
 {
   "gameMaster": {
-    "name": "Alex Johnson",
+    "name": "Krrish Chanchal",
     "role": "Game Master",
     "photo": "/images/hosts/alex.jpg",
-    "description": "Alex leads our events with unmatched energy and creativity, ensuring every participant has a thrilling experience.",
-    "tagline": "Bringing the fun together!",
-    "socialLinks": {
-      "linkedin": "https://linkedin.com/",
-      "twitter": "https://twitter.com/"
-    }
+    "description": "Krrish leads our events with unmatched energy and creativity, ensuring every participant has a thrilling experience.",
+    "tagline": "Bringing the fun together!"
   },
   "hosts": [
-    {
-      "name": "Sarah Lee",
-      "role": "Event Coordinator",
-      "photo": "/images/hosts/sarah.jpg",
-      "description": "Keeps everything running smoothly and ensures participants are always in the loop.",
-      "quote": "Organization is the key to a great event."
-    },
-    {
-      "name": "Michael Chen",
-      "role": "Tech Lead",
-      "photo": "/images/hosts/michael.jpg",
-      "description": "Handles all the technical setups and ensures the event runs without glitches.",
-      "quote": "Tech is the backbone of seamless experiences."
-    },
-    {
-      "name": "Priya Kumar",
-      "role": "Design Head",
-      "photo": "/images/hosts/priya.jpg",
-      "description": "Designs the visuals and layouts that make the event engaging and visually appealing.",
-      "quote": "Creativity makes everything memorable."
-    },
-    {
-      "name": "David Smith",
-      "role": "Logistics Head",
-      "photo": "/images/hosts/david.jpg",
-      "description": "Manages all the on-ground logistics to keep things running perfectly.",
-      "quote": "A well-planned event is a successful event."
-    }
-  ]
+  {
+    "name": "Prakhar Gupta",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/sarah.jpg",
+    "description": "Keeps everything running smoothly and ensures participants are always in the loop.",
+    "quote": "Organization is the key to a great event."
+  },
+  {
+    "name": "Rohan Rawat",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/rohan.jpg",
+    "description": "Brings creative energy and ensures every round runs with perfect timing.",
+    "quote": "In the game of strategy, timing is everything."
+  },
+  {
+    "name": "Rohith",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/rohith.jpg",
+    "description": "Coordinates tasks and keeps the momentum alive throughout the event.",
+    "quote": "Stay sharp, stay synced, and stay ahead."
+  },
+  {
+    "name": "Nishanth Segu",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/nishanth.jpg",
+    "description": "Makes sure every participant feels the thrill of the challenge.",
+    "quote": "The fun begins when the pressure’s on."
+  },
+  {
+    "name": "Vikalp",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/vikalp.jpg",
+    "description": "Ensures flawless coordination and a fair play experience for everyone.",
+    "quote": "Every great event is built on great teamwork."
+  },
+  {
+    "name": "Mohammed Mohtasim",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/mohtasim.jpg",
+    "description": "Handles the chaos like a pro and keeps the event running seamlessly.",
+    "quote": "Precision and passion create perfection."
+  },
+  {
+    "name": "Akhil",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/akhil.jpg",
+    "description": "Manages on-ground activities and keeps the excitement at its peak.",
+    "quote": "The game never stops when you’re having fun."
+  },
+  {
+    "name": "Movaliya Yug",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/yug.jpg",
+    "description": "Brings creative ideas to life and ensures an unforgettable experience.",
+    "quote": "Innovation is the spark behind every great challenge."
+  },
+  {
+    "name": "Harshit Yadav",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/harshit.jpg",
+    "description": "Ensures every detail fits perfectly into the bigger picture.",
+    "quote": "Details make the difference between good and great."
+  },
+  {
+    "name": "Uddhav Nagar",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/uddhav.jpg",
+    "description": "Balances planning and improvisation to keep things exciting.",
+    "quote": "Adapt, improvise, and keep the game alive."
+  },
+  {
+    "name": "Swajal Gupta",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/swajal.jpg",
+    "description": "Drives the enthusiasm and ensures every participant stays engaged.",
+    "quote": "Energy and teamwork make everything possible."
+  },
+  {
+    "name": "Arsh",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/arsh.jpg",
+    "description": "Makes sure every round is executed with precision and flair.",
+    "quote": "A well-played game is a well-planned one."
+  },
+  {
+    "name": "Aman James",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/aman.jpg",
+    "description": "Brings passion and coordination to every part of the event.",
+    "quote": "Play hard, plan harder."
+  },
+  {
+    "name": "Vedansh",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/vedansh.jpg",
+    "description": "Maintains perfect coordination among hosts and ensures smooth transitions.",
+    "quote": "The smoothest plans create the most thrilling games."
+  },
+  {
+    "name": "Abhiraj",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/abhiraj.jpg",
+    "description": "Ensures every challenge feels like a real mission.",
+    "quote": "Victory favors the bold and the prepared."
+  },
+  {
+    "name": "Manideep Anasuri",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/manideep.jpg",
+    "description": "Blends creativity with coordination to keep the thrill alive.",
+    "quote": "Strategy is the ultimate superpower."
+  },
+  {
+    "name": "Shashank Dixit",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/shashank.jpg",
+    "description": "Turns every task into a well-executed mission.",
+    "quote": "Perfection is not a goal — it’s a habit."
+  },
+  {
+    "name": "Shwet",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/shwet.jpg",
+    "description": "Brings calm and clarity to even the most intense moments.",
+    "quote": "Focus and patience win every round."
+  },
+  {
+    "name": "Vagdevi Gattu",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/vagdevi.jpg",
+    "description": "Keeps communication smooth and the vibes high.",
+    "quote": "A good plan is only great when shared with the team."
+  },
+  {
+    "name": "Amit Baigra",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/amit.jpg",
+    "description": "Ensures every event phase is executed with precision.",
+    "quote": "Every move counts — make it strategic."
+  },
+  {
+    "name": "Devansh Goyal",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/devansh.jpg",
+    "description": "Balances fun and focus to keep the game exciting.",
+    "quote": "Great coordination turns chaos into rhythm."
+  },
+  {
+    "name": "Anushka",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/anushka.jpg",
+    "description": "Adds creativity and energy to every round.",
+    "quote": "The best games are those that surprise you."
+  },
+  {
+    "name": "Mahir",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/mahir.jpg",
+    "description": "Keeps the event balanced between fun and competition.",
+    "quote": "Stay smart, stay unpredictable."
+  },
+  {
+    "name": "Bharat Jain",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/bharat.jpg",
+    "description": "Ensures seamless coordination and fair play throughout the event.",
+    "quote": "True players respect both the game and the challenge."
+  },
+  {
+    "name": "Sowjanya Kanukolla",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/sowjanya.jpg",
+    "description": "Brings positivity and precision to the team’s efforts.",
+    "quote": "Every round is an opportunity to level up."
+  }
+]
 }

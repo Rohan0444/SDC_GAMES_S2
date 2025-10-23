@@ -23,6 +23,28 @@
       background-size: cover;
       background-attachment: fixed;
       min-height: 100vh;
+      position: relative;
+    }
+
+    /* Full-screen immersive background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(104, 211, 145, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(58, 191, 248, 0.05) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes backgroundPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
     }
 
     /* Header */
@@ -66,6 +88,34 @@
       gap: 40px;
     }
 
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
     .nav-menu a {
       color: #fff;
       text-decoration: none;
@@ -107,17 +157,21 @@
       transition: color 0.3s ease;
     }
 
-    /* Main Content Section */
+    /* Main Content Section - Full Screen Immersive */
     .main-section {
-      position: relative;
-      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
       background: linear-gradient(45deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 120px 60px 60px;
+      padding: 0;
       overflow: hidden;
+      z-index: 1;
     }
 
     .main-section::before {
@@ -130,6 +184,100 @@
       background: url('/images/among_us_background.svg') center/cover;
       opacity: 0.2;
       z-index: 1;
+    }
+
+    /* Among Us themed floating crewmates */
+    .floating-crewmates {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    /* Additional floating elements for immersion */
+    .floating-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: particleFloat 15s linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    .crewmate {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: url('/images/among_us_crewmate_blue.svg') center/contain no-repeat;
+      animation: float 20s linear infinite;
+      opacity: 0.3;
+    }
+
+    .crewmate:nth-child(2) {
+      background: url('/images/among_us_crewmate_red.svg') center/contain no-repeat;
+      animation-delay: -5s;
+      animation-duration: 25s;
+    }
+
+    .crewmate:nth-child(3) {
+      background: url('/images/among_us_crewmate_green.svg') center/contain no-repeat;
+      animation-delay: -10s;
+      animation-duration: 30s;
+    }
+
+    .crewmate:nth-child(4) {
+      background: url('/images/among_us_impostor.svg') center/contain no-repeat;
+      animation-delay: -15s;
+      animation-duration: 35s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateX(-50px) translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateX(calc(100vw + 50px)) translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
     }
 
     .main-section::after {
@@ -148,8 +296,13 @@
       z-index: 3;
       text-align: center;
       animation: contentFadeIn 1s ease-out;
-      max-width: 1000px;
-      width: 100%;
+      max-width: 900px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
     }
 
     @keyframes contentFadeIn {
@@ -165,16 +318,17 @@
 
     .page-title {
       font-family: 'Orbitron', monospace;
-      font-size: 48px;
+      font-size: 64px;
       font-weight: 900;
-      margin-bottom: 20px;
-      background: linear-gradient(45deg, #FF6B6B, #FF0000);
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, #FF6B6B, #FF0000, #68D391);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 4px;
       animation: titleGlow 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
     }
 
     @keyframes titleGlow {
@@ -235,17 +389,52 @@
     }
 
     .round-info-card {
-      background: rgba(15, 15, 35, 0.9);
-      border: 2px solid rgba(255, 107, 107, 0.3);
-      border-radius: 20px;
-      padding: 40px;
-      backdrop-filter: blur(15px);
+      background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(25, 25, 55, 0.95) 100%);
+      border: 2px solid rgba(255, 107, 107, 0.4);
+      border-radius: 25px;
+      padding: 50px;
+      backdrop-filter: blur(20px);
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transform: perspective(1000px) rotateX(5deg);
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .round-info-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .round-info-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+      }
     }
 
     .round-info-card:hover {
       border-color: #FF6B6B;
-      box-shadow: 0 15px 40px rgba(255, 107, 107, 0.3);
+      box-shadow: 
+        0 30px 60px rgba(255, 107, 107, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transform: perspective(1000px) rotateX(0deg) scale(1.02);
     }
 
     .round-title {
@@ -303,6 +492,22 @@
     .round-participation {
       text-align: center;
       margin-bottom: 20px;
+    }
+
+    .participation-format {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .participation-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #E2E8F0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .participation-badge {
@@ -366,6 +571,28 @@
       padding: 20px;
       text-align: center;
       margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .round-timer-display::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(104, 211, 145, 0.2), transparent);
+      animation: timerGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes timerGlow {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
     }
 
     .round-timer-display .timer-label {
@@ -385,6 +612,65 @@
       font-weight: 900;
       color: #68D391;
       text-shadow: 0 0 20px rgba(104, 211, 145, 0.6);
+    }
+
+    .round-links {
+      margin-bottom: 20px;
+    }
+
+    .links-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FF6B6B;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .link-item {
+      background: rgba(26, 26, 46, 0.8);
+      border: 2px solid rgba(255, 107, 107, 0.5);
+      border-radius: 8px;
+      padding: 12px 20px;
+      color: #E2E8F0;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 200px;
+      justify-content: center;
+    }
+
+    .link-item:hover {
+      border-color: #FF6B6B;
+      background: rgba(255, 107, 107, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .link-item a {
+      color: #FF6B6B;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .link-item a:hover {
+      text-decoration: underline;
+      color: #FF0000;
     }
 
     .round-attachments {
@@ -494,7 +780,40 @@
       }
 
       .nav-menu {
-        display: none;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-menu.active {
+        left: 0;
+      }
+
+      .nav-menu a {
+        font-size: 24px;
+        margin: 20px 0;
+        padding: 15px 30px;
+        border-radius: 10px;
+        background: rgba(255, 107, 107, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+        background: rgba(255, 107, 107, 0.3);
+        transform: scale(1.05);
+      }
+
+      .hamburger {
+        display: flex;
+        z-index: 1001;
       }
 
       .page-title {
@@ -516,6 +835,27 @@
 
       .round-timer-display .timer-value {
         font-size: 36px;
+      }
+
+      .profile-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .profile-avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+      }
+
+      .links-list {
+        align-items: center;
+      }
+
+      .link-item {
+        min-width: 150px;
+        padding: 10px 15px;
       }
     }
 
@@ -539,7 +879,12 @@
   <header class="header">
     <nav class="nav">
       <a href="/" class="logo">SDC GAMES</a>
-      <ul class="nav-menu">
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu" id="navMenu">
         <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
         <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
         <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
@@ -549,6 +894,17 @@
 
   <!-- Main Content Section -->
   <section class="main-section">
+    <!-- Floating Among Us crewmates -->
+    <div class="floating-crewmates">
+      <div class="crewmate"></div>
+      <div class="crewmate"></div>
+      <div class="crewmate"></div>
+      <div class="crewmate"></div>
+    </div>
+    
+    <!-- Floating particles for immersion -->
+    <div class="floating-particles" id="floatingParticles"></div>
+    
     <div class="content-wrapper">
       <h1 class="page-title">AMONG US</h1>
       <p class="page-subtitle" id="pageSubtitle">Round is starting soon</p>
@@ -574,13 +930,19 @@
                 
                 <!-- Participation type -->
                 <div class="round-participation" id="roundParticipationContainer" style="display: none;">
-                  <span class="participation-badge" id="roundParticipation">Individual</span>
-    </div>
+                  <div class="participation-format">
+                    <span class="participation-label">Participation Format:</span>
+                    <span class="participation-badge" id="roundParticipation">Individual</span>
+                  </div>
+                </div>
 
-                <!-- URL link -->
-                <div class="round-url" id="roundUrlContainer" style="display: none;">
-                  <a href="#" target="_blank" class="url-link" id="roundUrlLink">🔗 Additional Resources</a>
-    </div>
+                <!-- Round Links -->
+                <div class="round-links" id="roundLinksContainer" style="display: none;">
+                  <h4 class="links-title">🔗 Proceed to Round:</h4>
+                  <div class="links-list" id="roundLinksList">
+                    <!-- Links will be populated by JavaScript -->
+                  </div>
+                </div>
 
                 <!-- Round timer -->
                 <div class="round-timer-display">
@@ -595,6 +957,27 @@
   </section>
 
   <script>
+    // Hamburger menu toggle
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      const hamburger = document.querySelector('.hamburger');
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    // Close menu when clicking on a link
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.nav-menu a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const navMenu = document.getElementById('navMenu');
+          const hamburger = document.querySelector('.hamburger');
+          navMenu.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+    });
+
     // Current round state
     let currentRoundData = null;
     let isRoundActive = false;
@@ -607,7 +990,25 @@
       
       // Start real-time updates every second
       setInterval(updateRoundState, 1000);
+      
+      // Create floating particles for immersion
+      createFloatingParticles();
     });
+
+    // Create floating particles for immersion
+    function createFloatingParticles() {
+      const particlesContainer = document.getElementById('floatingParticles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
 
     // Update round state from server
     async function updateRoundState() {
@@ -698,19 +1099,27 @@
         console.log('No participation type provided');
       }
 
-      // Update URL link
-      const urlContainer = document.getElementById('roundUrlContainer');
-      const urlLink = document.getElementById('roundUrlLink');
-      if (roundData.roundUrl && roundData.roundUrl.trim() !== '') {
-        urlLink.href = roundData.roundUrl;
-        // Extract domain name for display
-        const domain = roundData.roundUrl.replace(/^https?:\/\//, '').replace(/^www\./, '');
-        urlLink.textContent = `🔗 Visit ${domain}`;
-        urlContainer.style.display = 'block';
-        console.log('URL set:', roundData.roundUrl);
+      // Update round links
+      const linksContainer = document.getElementById('roundLinksContainer');
+      const linksList = document.getElementById('roundLinksList');
+      if (roundData.roundLinks && roundData.roundLinks.length > 0) {
+        linksList.innerHTML = '';
+        roundData.roundLinks.forEach(link => {
+          const linkItem = document.createElement('div');
+          linkItem.className = 'link-item';
+          linkItem.innerHTML = `
+            <a href="${link.url}" target="_blank">
+              <span>${link.name}:</span>
+              <span>${link.url}</span>
+            </a>
+          `;
+          linksList.appendChild(linkItem);
+        });
+        linksContainer.style.display = 'block';
+        console.log('Round links set:', roundData.roundLinks);
       } else {
-        urlContainer.style.display = 'none';
-        console.log('No URL provided');
+        linksContainer.style.display = 'none';
+        console.log('No round links provided');
       }
     }
 

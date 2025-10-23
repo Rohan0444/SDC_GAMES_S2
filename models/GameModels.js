@@ -21,6 +21,16 @@ const gameSettingsSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  roundLinks: [{
+    name: {
+      type: String,
+      required: true
+    },
+    url: {
+      type: String,
+      required: true
+    }
+  }],
   roundRules: {
     type: String,
     default: 'Follow all instructions carefully. No cheating allowed. Work as a team.'

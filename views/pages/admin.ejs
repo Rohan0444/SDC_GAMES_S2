@@ -355,6 +355,58 @@
       font-size: 12px;
     }
 
+    .links-list {
+      margin-top: 15px;
+    }
+
+    .link-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(26, 26, 46, 0.6);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    .link-name {
+      color: #E2E8F0;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+
+    .link-url {
+      color: #A0AEC0;
+      font-size: 12px;
+      flex: 1;
+      margin-right: 10px;
+      word-break: break-all;
+    }
+
+    .link-remove {
+      background: #FF6B6B;
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .link-input-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .link-input-group .form-input {
+      flex: 1;
+      min-width: 200px;
+    }
+
     @media (max-width: 768px) {
       .admin-grid {
         grid-template-columns: 1fr;
@@ -366,6 +418,31 @@
       
       .admin-container {
         padding: 10px;
+      }
+
+      .link-input-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .link-input-group .form-input {
+        min-width: auto;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .admin-card {
+        padding: 20px;
+      }
+
+      .admin-title {
+        font-size: 36px;
       }
     }
   </style>
@@ -413,8 +490,15 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">URL</label>
-          <input type="text" id="roundUrl" class="form-input" placeholder="Enter URL (e.g., leetcode.com, github.com, etc.)">
+          <label class="form-label">Round Links</label>
+          <div id="roundLinksContainer">
+            <div class="link-input-group">
+              <input type="text" class="form-input link-name-input" placeholder="Link name (e.g., x1, x2, x3)" style="margin-bottom: 10px;">
+              <input type="text" class="form-input link-url-input" placeholder="Enter URL (e.g., leetcode.com, github.com, etc.)" style="margin-bottom: 10px;">
+              <button type="button" class="btn btn-secondary" onclick="addRoundLink()" style="margin-bottom: 10px;">Add Link</button>
+            </div>
+            <div id="roundLinksList" class="links-list"></div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -445,8 +529,14 @@
           <input type="text" id="eliminateRollNumbers" class="form-input" placeholder="Enter roll numbers separated by commas (e.g., 123, 456, 789)">
         </div>
 
+        <div class="form-group">
+          <label class="form-label">Enter Team Name to Eliminate</label>
+          <input type="text" id="eliminateTeamName" class="form-input" placeholder="Enter team name to eliminate all members...">
+        </div>
+
         <div class="btn-group">
-          <button class="btn" onclick="eliminateParticipants()">Eliminate Players</button>
+          <button class="btn" onclick="eliminateParticipants()">Eliminate by Roll Numbers</button>
+          <button class="btn btn-secondary" onclick="eliminateByTeam()">Eliminate by Team</button>
         </div>
 
         <div class="form-group" style="margin-top: 20px;">
@@ -463,43 +553,48 @@
         <p style="color: #A0AEC0; margin-bottom: 20px;">Add and manage participants</p>
         
         <div class="form-group">
-          <label class="form-label">Name</label>
+          <label class="form-label">Name *</label>
           <input type="text" id="participant-name" class="form-input" placeholder="Enter participant name..." required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Roll Number</label>
+          <label class="form-label">Roll Number *</label>
           <input type="text" id="participant-roll" class="form-input" placeholder="Enter roll number..." required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">Email *</label>
           <input type="email" id="participant-email" class="form-input" placeholder="Enter email..." required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Phone (Optional)</label>
+          <label class="form-label">Phone</label>
           <input type="tel" id="participant-phone" class="form-input" placeholder="Enter phone number...">
         </div>
 
         <div class="form-group">
+          <label class="form-label">Team</label>
+          <input type="text" id="participant-team" class="form-input" placeholder="Enter team name (optional)...">
+        </div>
+
+        <div class="form-group">
           <label class="form-label">College</label>
-          <input type="text" id="participant-college" class="form-input" placeholder="Enter college..." required>
+          <input type="text" id="participant-college" class="form-input" placeholder="Enter college..." value="NITW">
         </div>
 
         <div class="form-group">
           <label class="form-label">Branch</label>
-          <input type="text" id="participant-branch" class="form-input" placeholder="Enter branch..." required>
+          <input type="text" id="participant-branch" class="form-input" placeholder="Enter branch..." value="NULL">
         </div>
 
         <div class="form-group">
           <label class="form-label">Year</label>
-          <input type="text" id="participant-year" class="form-input" placeholder="Enter year..." required>
+          <input type="text" id="participant-year" class="form-input" placeholder="Enter year..." value="0">
         </div>
 
         <div class="form-group">
           <label class="form-label">Degree</label>
-          <input type="text" id="participant-degree" class="form-input" placeholder="Enter degree..." required>
+          <input type="text" id="participant-degree" class="form-input" placeholder="Enter degree..." value="B.Tech">
         </div>
 
         <div class="form-group">
@@ -544,6 +639,7 @@
       isActive: false,
       attachments: [],
       links: [],
+      roundLinks: [],
       preGameCountdown: {
         days: 0,
         hours: 0,
@@ -593,6 +689,9 @@
       
       // Update attachments display
       updateAttachments();
+      
+      // Update round links display
+      updateRoundLinksDisplay();
     }
 
     // Save game settings to database
@@ -862,13 +961,78 @@
       showNotification('Round updated successfully!');
     }
 
+    // Round links management
+    function addRoundLink() {
+      const nameInput = document.querySelector('.link-name-input');
+      const urlInput = document.querySelector('.link-url-input');
+      const name = nameInput.value.trim();
+      const url = urlInput.value.trim();
+      
+      if (!name || !url) {
+        showNotification('Please enter both link name and URL!');
+        return;
+      }
+      
+      // Validate URL
+      try {
+        const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+        new URL(fullUrl);
+      } catch (e) {
+        showNotification('Please enter a valid URL!');
+        return;
+      }
+      
+      // Add to gameState
+      if (!gameState.roundLinks) {
+        gameState.roundLinks = [];
+      }
+      
+      gameState.roundLinks.push({
+        name: name,
+        url: url.startsWith('http') ? url : `https://${url}`
+      });
+      
+      // Clear inputs
+      nameInput.value = '';
+      urlInput.value = '';
+      
+      // Update display
+      updateRoundLinksDisplay();
+      showNotification('Link added successfully!');
+    }
+    
+    function removeRoundLink(index) {
+      gameState.roundLinks.splice(index, 1);
+      updateRoundLinksDisplay();
+    }
+    
+    function updateRoundLinksDisplay() {
+      const linksList = document.getElementById('roundLinksList');
+      linksList.innerHTML = '';
+      
+      if (!gameState.roundLinks || gameState.roundLinks.length === 0) {
+        linksList.innerHTML = '<div style="color: #A0AEC0; font-size: 14px; text-align: center; padding: 20px;">No links added yet</div>';
+        return;
+      }
+      
+      gameState.roundLinks.forEach((link, index) => {
+        const linkItem = document.createElement('div');
+        linkItem.className = 'link-item';
+        linkItem.innerHTML = `
+          <span class="link-name">${link.name}</span>
+          <span class="link-url">${link.url}</span>
+          <button class="link-remove" onclick="removeRoundLink(${index})">Remove</button>
+        `;
+        linksList.appendChild(linkItem);
+      });
+    }
+
     // Start round with round details
     async function startRound() {
       const roundNumber = parseInt(document.getElementById('roundNumber').value) || 1;
       const roundName = document.getElementById('roundName').value;
       const roundDetails = document.getElementById('roundDetails').value;
       const roundRules = document.getElementById('roundRules').value;
-      const roundUrl = document.getElementById('roundUrl').value;
       const participationType = document.getElementById('participationType').value;
       const roundDuration = parseInt(document.getElementById('roundDuration').value) || 5;
       
@@ -884,7 +1048,8 @@
           roundName: roundName,
           roundDetails: roundDetails,
           roundRules: roundRules,
-          roundUrl: roundUrl ? (roundUrl.startsWith('http') ? roundUrl : `https://${roundUrl}`) : '',
+          roundUrl: '', // Keep for backward compatibility
+          roundLinks: gameState.roundLinks || [],
           participationType: participationType,
           roundDuration: roundDuration,
           attachments: [], // No more attachments
@@ -1363,6 +1528,7 @@
         rollNumber: document.getElementById('participant-roll').value.trim(),
         email: document.getElementById('participant-email').value.trim(),
         phone: document.getElementById('participant-phone').value.trim(),
+        team: document.getElementById('participant-team').value.trim(),
         college: document.getElementById('participant-college').value.trim(),
         branch: document.getElementById('participant-branch').value.trim(),
         year: document.getElementById('participant-year').value.trim(),
@@ -1372,7 +1538,7 @@
       };
 
       // Validate required fields
-      const requiredFields = ['name', 'rollNumber', 'email', 'college', 'branch', 'year', 'degree'];
+      const requiredFields = ['name', 'rollNumber', 'email'];
       for (const field of requiredFields) {
         if (!participantData[field]) {
           showNotification(`Please fill in ${field}!`);
@@ -1404,15 +1570,49 @@
       }
     }
 
+    // Eliminate participants by team name
+    async function eliminateByTeam() {
+      const teamName = document.getElementById('eliminateTeamName').value.trim();
+      
+      if (!teamName) {
+        showNotification('Please enter team name to eliminate!');
+        return;
+      }
+      
+      try {
+        // Call API to eliminate participants by team
+        const response = await fetch('/api/eliminate-by-team', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ teamName })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          showNotification(`Successfully eliminated ${result.eliminatedCount} participants from team "${teamName}"!`);
+          document.getElementById('eliminateTeamName').value = '';
+          loadParticipantsStatus();
+        } else {
+          showNotification('Error eliminating participants by team!');
+        }
+      } catch (error) {
+        console.error('Error eliminating participants by team:', error);
+        showNotification('Error eliminating participants by team!');
+      }
+    }
+
     function clearParticipantForm() {
       document.getElementById('participant-name').value = '';
       document.getElementById('participant-roll').value = '';
       document.getElementById('participant-email').value = '';
       document.getElementById('participant-phone').value = '';
-      document.getElementById('participant-college').value = '';
-      document.getElementById('participant-branch').value = '';
-      document.getElementById('participant-year').value = '';
-      document.getElementById('participant-degree').value = '';
+      document.getElementById('participant-team').value = '';
+      document.getElementById('participant-college').value = 'NITW';
+      document.getElementById('participant-branch').value = 'CSE';
+      document.getElementById('participant-year').value = '3rd';
+      document.getElementById('participant-degree').value = 'B.Tech';
       document.getElementById('participant-avatar').value = 'blue.png';
       document.getElementById('participant-status').value = 'Alive';
     }

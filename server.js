@@ -47,15 +47,15 @@ app.get('/game-hosts', (req, res) => {
 });
 
 // Participants list page (Among Us themed)
-app.get('/partispants', (req, res) => {
-    // Render the participants grid; data is fetched client-side from Firestore
+app.get('/participants', (req, res) => {
+    // Render the participants grid; data is fetched client-side from MongoDB
     res.render('pages/participants', { title: "SDC Games | Participants" });
 });
 
 // Participant detail page by roll number (Among Us profile)
 app.get('/participants/:rollNumber', (req, res) => {
     const rollNumber = req.params.rollNumber;
-    res.render('pages/partispant', { rollNumber, title: `SDC Games | Participant ${rollNumber}` });
+    res.render('pages/participant', { rollNumber, title: `SDC Games | Participant ${rollNumber}` });
 });
 
 // Handle 404

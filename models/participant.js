@@ -24,25 +24,35 @@ const participantSchema = new mongoose.Schema({
     required: false,
     trim: true
   },
+  team: {
+    type: String,
+    required: false,
+    trim: true,
+    default: ''
+  },
   college: {
     type: String,
-    required: true,
-    trim: true
+    required: false,
+    trim: true,
+    default: 'NITW'
   },
   branch: {
     type: String,
-    required: true,
-    trim: true
+    required: false,
+    trim: true,
+    default: 'CSE'
   },
   year: {
     type: String,
-    required: true,
-    trim: true
+    required: false,
+    trim: true,
+    default: '3rd'
   },
   degree: {
     type: String,
-    required: true,
-    trim: true
+    required: false,
+    trim: true,
+    default: 'B.Tech'
   },
   avatar: {
     type: String,

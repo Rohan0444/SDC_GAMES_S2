@@ -13,7 +13,12 @@
     <!-- navbar -->
     <nav class="nav">
       <a href="/" class="logo">SDC GAMES</a>
-      <ul class="nav-menu">
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu" id="navMenu">
         <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
         <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
         <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
@@ -33,6 +38,28 @@
       <div id="participants-grid" class="participants-grid among"></div>
     </section>
   </div>
+  <script>
+    // Hamburger menu toggle
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      const hamburger = document.querySelector('.hamburger');
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    // Close menu when clicking on a link
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.nav-menu a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const navMenu = document.getElementById('navMenu');
+          const hamburger = document.querySelector('.hamburger');
+          navMenu.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+    });
+  </script>
   <script type="module" src="/js/participants.js"></script>
 </body>
 
