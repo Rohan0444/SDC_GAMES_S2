@@ -1,41 +1,8 @@
-// Among Us Participants Page – Firestore live updates + Admin CRUD
-
-// Firebase Web v10 ESM imports via CDN
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-
-// Firebase config (provided)
-const firebaseConfig = {
-  apiKey: "AIzaSyAyn0iUIkspW0QZnz9ZkguCVwLAnqq5kZ4",
-  authDomain: "sdc-games-18b12.firebaseapp.com",
-  projectId: "sdc-games-18b12",
-  storageBucket: "sdc-games-18b12.firebasestorage.app",
-  messagingSenderId: "404189247609",
-  appId: "1:404189247609:web:e362aaed065067e73cfca8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Among Us Participants Page – MongoDB API integration (View Only)
 
 // DOM refs
 const grid = document.getElementById('participants-grid');
 const searchInput = document.getElementById('participant-search');
-
-// FAB + modal elements
-const fabAdd = document.getElementById('fab-add');
-const addModal = document.getElementById('add-modal');
-const addPass = document.getElementById('add-pass');
-const addForm = document.getElementById('add-form');
-const aName = document.getElementById('a-name');
-const aRoll = document.getElementById('a-roll');
-const aCollege = document.getElementById('a-college');
-const aBranch = document.getElementById('a-branch');
-const aYear = document.getElementById('a-year');
-const aDegree = document.getElementById('a-degree');
-const aStatus = document.getElementById('a-status');
-const aAvatar = document.getElementById('a-avatar');
-const aCancel = document.getElementById('a-cancel');
 
 let state = {
   all: [],
@@ -43,8 +10,9 @@ let state = {
 };
 
 const AVATAR_BASE = '/images/';
-const ADMIN_PASSWORD = 'sdcadmin';
+const API_BASE = '/api';
 
+// Utility functions
 function showEmptyState() {
   grid.innerHTML = '';
   const empty = document.createElement('div');
@@ -52,13 +20,13 @@ function showEmptyState() {
   empty.style.color = '#bdc3c7';
   empty.style.width = '100%';
   empty.style.gridColumn = '1 / -1';
-  empty.textContent = 'No participants found. Use Admin to add some.';
+  empty.textContent = 'No participants found.';
   grid.appendChild(empty);
 }
 
 function normalize(p) {
   return {
-    id: p.id,
+    _id: p._id,
     name: p.name?.trim() || 'Unknown',
     rollNumber: p.rollNumber?.toString().trim() || '',
     status: (p.status || 'Alive'),
@@ -67,6 +35,10 @@ function normalize(p) {
     branch: p.branch || '',
     year: p.year || '',
     degree: p.degree || '',
+    email: p.email || '',
+    phone: p.phone || '',
+    eliminatedAt: p.eliminatedAt || null,
+    registeredAt: p.registeredAt || null
   };
 }
 
@@ -99,6 +71,13 @@ function createCard(p) {
   card.appendChild(img);
   card.appendChild(meta);
 
+  // Add elimination animation if participant is eliminated
+  if (p.status === 'Eliminated') {
+    card.style.animation = 'eliminationPulse 2s ease-in-out infinite';
+    card.style.filter = 'grayscale(100%)';
+    card.style.opacity = '0.7';
+  }
+
   card.addEventListener('click', () => {
     const rn = encodeURIComponent(p.rollNumber);
     window.location.href = `/participants/${rn}`;
@@ -113,67 +92,58 @@ function render(items) {
   items.forEach((p) => grid.appendChild(createCard(p)));
 }
 
-// Live subscription with new schema (ordered by rollNumber)
-const participantsCol = collection(db, 'participants');
-const q = query(participantsCol, orderBy('rollNumber'));
+// API Functions
+async function fetchParticipants() {
+  try {
+    const response = await fetch(`${API_BASE}/participants-status`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const participants = await response.json();
+    return participants.map(normalize);
+  } catch (error) {
+    console.error('Failed to fetch participants:', error);
+    showEmptyState();
+    return [];
+  }
+}
 
-onSnapshot(q, (snapshot) => {
-  state.all = snapshot.docs.map((d) => normalize({ id: d.id, ...d.data() }));
+// Initialize and load participants
+async function initializeParticipants() {
+  console.log('Loading participants from MongoDB...');
+  state.all = await fetchParticipants();
   applyFilter();
-}, (err) => {
-  console.error('Failed to fetch participants:', err);
-  showEmptyState();
-});
+  
+  // Set up polling for real-time updates (every 5 seconds)
+  setInterval(async () => {
+    const updatedParticipants = await fetchParticipants();
+    if (JSON.stringify(updatedParticipants) !== JSON.stringify(state.all)) {
+      state.all = updatedParticipants;
+      applyFilter();
+    }
+  }, 5000);
+}
 
-// Search
+// Search functionality
 function applyFilter() {
   const q = (searchInput?.value || '').toLowerCase().trim();
   if (!q) {
     state.filtered = state.all.slice();
   } else {
     state.filtered = state.all.filter(p =>
-      p.name.toLowerCase().includes(q) || p.rollNumber.toLowerCase().includes(q)
+      p.name.toLowerCase().includes(q) || 
+      p.rollNumber.toLowerCase().includes(q) ||
+      p.college.toLowerCase().includes(q) ||
+      p.branch.toLowerCase().includes(q)
     );
   }
   render(state.filtered);
 }
+
+// Event listeners
 searchInput?.addEventListener('input', applyFilter);
 
-// FAB: open add modal with password
-fabAdd?.addEventListener('click', () => {
-  addPass.value = '';
-  addModal.classList.remove('hidden');
-});
-
-function hideAddModal() {
-  addModal.classList.add('hidden');
-  addForm.reset();
-}
-
-aCancel?.addEventListener('click', hideAddModal);
-
-addForm?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (addPass.value !== ADMIN_PASSWORD) {
-    alert('Wrong password');
-    return;
-  }
-  const data = {
-    name: aName.value.trim(),
-    rollNumber: aRoll.value.trim(),
-    college: aCollege.value.trim(),
-    branch: aBranch.value.trim(),
-    year: aYear.value.trim(),
-    degree: aDegree.value.trim(),
-    status: aStatus.value,
-    avatar: aAvatar.value,
-  };
-  if (!data.name || !data.rollNumber) return alert('Name and Roll Number are required.');
-  try {
-    await addDoc(participantsCol, data);
-    hideAddModal();
-  } catch (e) {
-    console.error('Add failed', e);
-    alert('Failed to add participant');
-  }
+// Initialize the page
+document.addEventListener('DOMContentLoaded', () => {
+  initializeParticipants();
 });

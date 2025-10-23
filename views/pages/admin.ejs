@@ -387,10 +387,10 @@
     </div>
 
     <div class="admin-grid">
-      <!-- Current Round Management -->
-      <div class="admin-card" id="currentRoundCard" style="display: none;">
-        <h2 class="card-title">Current Round Settings</h2>
-        <p style="color: #A0AEC0; margin-bottom: 20px;">Set up the current round after countdown finishes</p>
+      <!-- Round Control Section -->
+      <div class="admin-card">
+        <h2 class="card-title">🔹 Round Control Section</h2>
+        <p style="color: #A0AEC0; margin-bottom: 20px;">Controls the Let's Begin Page</p>
         
         <div class="form-group">
           <label class="form-label">Round Name</label>
@@ -398,220 +398,135 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Round Details</label>
-          <textarea id="roundDetails" class="form-textarea" placeholder="Enter round details...">Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!</textarea>
+          <label class="form-label">Round Number</label>
+          <input type="number" id="roundNumber" class="form-input" placeholder="Enter round number..." min="1" value="1">
         </div>
 
         <div class="form-group">
-          <label class="form-label">Round Duration (Minutes)</label>
-          <input type="number" id="roundDuration" class="form-input" placeholder="Enter duration in minutes..." min="1" max="60" value="5">
+          <label class="form-label">Description</label>
+          <textarea id="roundDetails" class="form-textarea" placeholder="Enter round description...">Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!</textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Attachments & Links</label>
-          <div class="file-upload" onclick="document.getElementById('fileInput').click()">
-            <input type="file" id="fileInput" multiple accept="image/*,.pdf,.doc,.docx">
-            <div class="upload-text">Click to upload files or drag & drop</div>
-          </div>
-          
-          <div style="margin-top: 15px;">
-            <label class="form-label">Add Link</label>
-            <div style="display: flex; gap: 10px;">
-              <input type="text" id="linkUrl" class="form-input" placeholder="Enter URL..." style="flex: 1;">
-              <input type="text" id="linkName" class="form-input" placeholder="Link name..." style="flex: 1;">
-              <button class="btn" onclick="addLink()">Add Link</button>
-            </div>
-          </div>
-          
-          <div class="attachment-list" id="attachmentList"></div>
+          <label class="form-label">Rules</label>
+          <textarea id="roundRules" class="form-textarea" placeholder="Enter round rules...">Follow all instructions carefully. No cheating allowed. Work as a team.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">URL</label>
+          <input type="text" id="roundUrl" class="form-input" placeholder="Enter URL (e.g., leetcode.com, github.com, etc.)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Participation Type</label>
+          <select id="participationType" class="form-input">
+            <option value="individual">Individual</option>
+            <option value="team">Team</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Duration (in minutes)</label>
+          <input type="number" id="roundDuration" class="form-input" placeholder="Enter round duration in minutes..." min="1" max="120" value="5">
         </div>
 
         <div class="btn-group">
-          <button class="btn" onclick="startCurrentRound()">Start Current Round</button>
-          <button class="btn btn-secondary" onclick="updateRound()">Update Settings</button>
+          <button class="btn" onclick="startRound()">Start Round</button>
         </div>
       </div>
 
-      <!-- Pre-Game Countdown Controls -->
+      <!-- Eliminate Participants Section -->
       <div class="admin-card">
-        <h2 class="card-title">Pre-Game Countdown</h2>
+        <h2 class="card-title">🔹 Eliminate Participants Section</h2>
+        <p style="color: #A0AEC0; margin-bottom: 20px;">Controls the Participant Page</p>
         
         <div class="form-group">
-          <label class="form-label">Game Start Countdown</label>
-          <div class="timer-display" style="margin-bottom: 20px;">
-            <div class="timer-value" id="preGameTimer">00:00:00:00</div>
-            <div class="timer-label">Days : Hours : Minutes : Seconds</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Quick Set Countdown</label>
-          <div class="btn-group" style="margin-bottom: 20px;">
-            <button class="btn" onclick="setPreGameTimer(0, 0, 1, 0)">1 Min</button>
-            <button class="btn" onclick="setPreGameTimer(0, 0, 5, 0)">5 Min</button>
-            <button class="btn" onclick="setPreGameTimer(0, 0, 10, 0)">10 Min</button>
-            <button class="btn" onclick="setPreGameTimer(0, 1, 0, 0)">1 Hour</button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Custom Countdown</label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-            <input type="number" id="customDays" placeholder="Days" min="0" max="30" class="form-input" style="text-align: center;">
-            <input type="number" id="customHours" placeholder="Hours" min="0" max="23" class="form-input" style="text-align: center;">
-            <input type="number" id="customMinutes" placeholder="Minutes" min="0" max="59" class="form-input" style="text-align: center;">
-            <input type="number" id="customSeconds" placeholder="Seconds" min="0" max="59" class="form-input" style="text-align: center;">
-          </div>
-          <button class="btn" onclick="setCustomPreGameTimer()">Set Custom Timer</button>
+          <label class="form-label">Enter Roll Numbers to Eliminate</label>
+          <input type="text" id="eliminateRollNumbers" class="form-input" placeholder="Enter roll numbers separated by commas (e.g., 123, 456, 789)">
         </div>
 
         <div class="btn-group">
-          <button class="btn" onclick="startPreGameCountdown()">Start Countdown</button>
-          <button class="btn btn-secondary" onclick="pausePreGameCountdown()">Pause</button>
-          <button class="btn btn-secondary" onclick="resetPreGameCountdown()">Reset</button>
+          <button class="btn" onclick="eliminateParticipants()">Eliminate Players</button>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label class="form-label">Current Participants Status</label>
+          <div id="participantsStatus" style="background: rgba(26, 26, 46, 0.6); border: 1px solid rgba(255, 107, 107, 0.3); border-radius: 8px; padding: 15px; max-height: 200px; overflow-y: auto;">
+            <div style="color: #A0AEC0; font-size: 14px;">Loading participants...</div>
+          </div>
         </div>
       </div>
 
-      <!-- Round Timer Controls -->
-      <div class="admin-card" id="roundTimerCard" style="display: none;">
-        <h2 class="card-title">Round Timer Controls</h2>
-        
-        <!-- Current Round Update -->
-        <div class="timer-section">
-          <h3 class="timer-title">Update Current Round</h3>
-          <div class="form-group">
-            <label class="form-label">Round Name</label>
-            <input type="text" id="updateRoundName" class="form-input" placeholder="Enter round name...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Round Details</label>
-            <textarea id="updateRoundDetails" class="form-textarea" placeholder="Enter round details..."></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Round Duration (Minutes)</label>
-            <input type="number" id="updateRoundDuration" class="form-input" placeholder="Enter duration..." min="1" max="60">
-          </div>
-          <div class="btn-group">
-            <button class="btn" onclick="updateCurrentRound()">Update Current Round</button>
-          </div>
-        </div>
-
-        <!-- Current Round Timer -->
-        <div class="timer-section">
-          <h3 class="timer-title">Current Round Timer</h3>
-          <div class="timer-display" id="currentTimerDisplay">05:00</div>
-          <div class="timer-controls">
-            <button class="btn" onclick="setCurrentTimer(1)">1 Min</button>
-            <button class="btn" onclick="setCurrentTimer(3)">3 Min</button>
-            <button class="btn" onclick="setCurrentTimer(5)">5 Min</button>
-            <button class="btn" onclick="setCurrentTimer(10)">10 Min</button>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Custom Timer (Minutes)</label>
-            <input type="number" id="customCurrentTimer" class="form-input" placeholder="Enter minutes..." min="1" max="60" value="5">
-            <button class="btn" onclick="setCustomCurrentTimer()">Set Custom</button>
-          </div>
-        </div>
-
-        <div class="btn-group" style="margin-top: 20px;">
-          <button class="btn" onclick="startNextRoundEarly()">Start Next Round Early</button>
-          <button class="btn btn-secondary" onclick="pauseGame()">Pause Game</button>
-          <button class="btn btn-secondary" onclick="resetGame()">Reset Game</button>
-        </div>
-      </div>
-
-      <!-- Next Round Selection -->
-      <div class="admin-card" id="nextRoundCard" style="display: none;">
-        <h2 class="card-title">Next Round Settings</h2>
-        <p style="color: #A0AEC0; margin-bottom: 20px;">Set up the next round while current round is running</p>
-        
-        <div class="form-group">
-          <label class="form-label">Next Round Name</label>
-          <input type="text" id="nextRoundName" class="form-input" placeholder="Enter next round name..." value="Mission Beta">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Next Round Details</label>
-          <textarea id="nextRoundDetails" class="form-textarea" placeholder="Enter next round details...">New challenges await! Complete the reactor tasks and identify the impostor before time runs out.</textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Next Round Duration (Minutes)</label>
-          <input type="number" id="nextRoundDuration" class="form-input" placeholder="Enter duration in minutes..." min="1" max="60" value="3">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Next Round Attachments & Links</label>
-          <div class="file-upload" onclick="document.getElementById('nextFileInput').click()">
-            <input type="file" id="nextFileInput" multiple accept="image/*,.pdf,.doc,.docx">
-            <div class="upload-text">Click to upload files for next round</div>
-          </div>
-          
-          <div style="margin-top: 15px;">
-            <label class="form-label">Add Link for Next Round</label>
-            <div style="display: flex; gap: 10px;">
-              <input type="text" id="nextLinkUrl" class="form-input" placeholder="Enter URL..." style="flex: 1;">
-              <input type="text" id="nextLinkName" class="form-input" placeholder="Link name..." style="flex: 1;">
-              <button class="btn" onclick="addNextRoundLink()">Add Link</button>
-            </div>
-          </div>
-          
-          <div class="attachment-list" id="nextRoundAttachmentList"></div>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn" onclick="updateNextRound()">Update Next Round</button>
-          <button class="btn btn-secondary" onclick="startNextRound()">Start Next Round</button>
-        </div>
-      </div>
-
-      <!-- Game Status -->
+      <!-- Participant Management Section -->
       <div class="admin-card">
-        <h2 class="card-title">Game Status</h2>
+        <h2 class="card-title">🔹 Participant Management</h2>
+        <p style="color: #A0AEC0; margin-bottom: 20px;">Add and manage participants</p>
         
         <div class="form-group">
-          <label class="form-label">Current Status</label>
-          <div style="display: flex; align-items: center; margin-bottom: 15px;">
-            <span class="status-indicator" id="gameStatusIndicator"></span>
-            <span id="gameStatusText" style="font-weight: 600;">Game Waiting</span>
-          </div>
+          <label class="form-label">Name</label>
+          <input type="text" id="participant-name" class="form-input" placeholder="Enter participant name..." required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Current Round</label>
-          <div style="font-size: 18px; color: #E2E8F0;" id="currentRoundDisplay">Mission Alpha</div>
+          <label class="form-label">Roll Number</label>
+          <input type="text" id="participant-roll" class="form-input" placeholder="Enter roll number..." required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Round Timer</label>
-          <div style="font-size: 24px; font-weight: 700; color: #FF6B6B;" id="liveRoundTimer">05:00</div>
+          <label class="form-label">Email</label>
+          <input type="email" id="participant-email" class="form-input" placeholder="Enter email..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone (Optional)</label>
+          <input type="tel" id="participant-phone" class="form-input" placeholder="Enter phone number...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">College</label>
+          <input type="text" id="participant-college" class="form-input" placeholder="Enter college..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Branch</label>
+          <input type="text" id="participant-branch" class="form-input" placeholder="Enter branch..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Year</label>
+          <input type="text" id="participant-year" class="form-input" placeholder="Enter year..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Degree</label>
+          <input type="text" id="participant-degree" class="form-input" placeholder="Enter degree..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Avatar</label>
+          <select id="participant-avatar" class="form-input">
+            <option value="blue.png">Blue</option>
+            <option value="green.png">Green</option>
+            <option value="red.png">Red</option>
+            <option value="yellow.png">Yellow</option>
+            <option value="purple.png">Purple</option>
+            <option value="cyan.png">Cyan</option>
+            <option value="white.png">White</option>
+            <option value="black.png">Black</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="participant-status" class="form-input">
+            <option value="Alive">Alive</option>
+            <option value="Eliminated">Eliminated</option>
+          </select>
         </div>
 
         <div class="btn-group">
-          <button class="btn" onclick="viewGame()">View Game</button>
-          <button class="btn btn-secondary" onclick="emergencyMeeting()">Emergency Meeting</button>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="admin-card">
-        <h2 class="card-title">Quick Actions</h2>
-        
-        <div class="form-group">
-          <label class="form-label">Cooldown Settings</label>
-          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <input type="number" id="cooldownMinutes" class="form-input" placeholder="Minutes" min="0" max="60" value="5" style="flex: 1;">
-            <button class="btn" onclick="setCooldown()">Set Cooldown</button>
-            <button class="btn btn-secondary" onclick="clearCooldown()">Clear Cooldown</button>
-          </div>
-          <div id="cooldownStatus" style="color: #A0AEC0; font-size: 14px;"></div>
-        </div>
-        
-        <div class="btn-group" style="flex-direction: column; gap: 10px;">
-          <button class="btn" onclick="triggerSabotage()">Trigger Sabotage</button>
-          <button class="btn btn-secondary" onclick="eliminatePlayer()">Eliminate Player</button>
-          <button class="btn btn-secondary" onclick="revealImpostor()">Reveal Impostor</button>
-          <button class="btn" onclick="endGame()">End Game</button>
+          <button class="btn" onclick="addParticipant()">Add Participant</button>
+          <button class="btn btn-secondary" onclick="clearParticipantForm()">Clear Form</button>
         </div>
       </div>
     </div>
@@ -620,17 +535,15 @@
   <script>
     // Game state - will be loaded from database
     let gameState = {
+      roundNumber: 1,
       roundName: 'Mission Alpha',
       roundDetails: 'Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!',
+      preRoundMinutes: 5,
+      roundDuration: 5,
       currentTimer: 300, // 5 minutes in seconds
-      nextTimer: 180, // 3 minutes in seconds
       isActive: false,
       attachments: [],
-      nextRound: {
-        name: 'Mission Beta',
-        details: 'New challenges await! Complete the reactor tasks and identify the impostor before time runs out.',
-        attachments: []
-      },
+      links: [],
       preGameCountdown: {
         days: 0,
         hours: 0,
@@ -664,10 +577,6 @@
 
     // Update UI state based on game status
     function updateUIState() {
-      const currentRoundCard = document.getElementById('currentRoundCard');
-      const roundTimerCard = document.getElementById('roundTimerCard');
-      const nextRoundCard = document.getElementById('nextRoundCard');
-      
       console.log('Updating UI state:', {
         gameStatus: gameState.gameStatus,
         countdownFinished: gameState.countdownFinished,
@@ -675,34 +584,15 @@
         countdownActive: gameState.preGameCountdown?.isActive
       });
       
-      // Show current round settings if countdown finished but round not started
-      if (gameState.gameStatus === 'countdown_finished' || (gameState.countdownFinished && !gameState.currentRoundStarted)) {
-        currentRoundCard.style.display = 'block';
-        roundTimerCard.style.display = 'none';
-        nextRoundCard.style.display = 'none';
-        console.log('Showing current round card - countdown finished');
-      }
-      // Show round timer controls if current round is active
-      else if (gameState.currentRoundStarted && gameState.gameStatus === 'active') {
-        currentRoundCard.style.display = 'none';
-        roundTimerCard.style.display = 'block';
-        nextRoundCard.style.display = 'block';
-        console.log('Showing round timer and next round cards - round active');
-      }
-      // Show next round settings if current round is running
-      else if (gameState.gameStatus === 'active') {
-        currentRoundCard.style.display = 'none';
-        roundTimerCard.style.display = 'block';
-        nextRoundCard.style.display = 'block';
-        console.log('Showing round timer and next round cards (active)');
-      }
-      // Default state - only countdown visible
-      else {
-        currentRoundCard.style.display = 'none';
-        roundTimerCard.style.display = 'none';
-        nextRoundCard.style.display = 'none';
-        console.log('Hiding all round cards - waiting state');
-      }
+      // Update form fields with current state
+      document.getElementById('roundNumber').value = gameState.roundNumber || 1;
+      document.getElementById('roundName').value = gameState.roundName || 'Mission Alpha';
+      document.getElementById('roundDetails').value = gameState.roundDetails || '';
+      document.getElementById('preRoundMinutes').value = gameState.preRoundMinutes || 5;
+      document.getElementById('roundDuration').value = gameState.roundDuration || 5;
+      
+      // Update attachments display
+      updateAttachments();
     }
 
     // Save game settings to database
@@ -732,6 +622,7 @@
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
       loadGameSettings();
+      loadParticipantsStatus();
       startLiveUpdates();
     });
 
@@ -971,33 +862,63 @@
       showNotification('Round updated successfully!');
     }
 
-    // Start current round
-    async function startCurrentRound() {
+    // Start round with round details
+    async function startRound() {
+      const roundNumber = parseInt(document.getElementById('roundNumber').value) || 1;
       const roundName = document.getElementById('roundName').value;
       const roundDetails = document.getElementById('roundDetails').value;
+      const roundRules = document.getElementById('roundRules').value;
+      const roundUrl = document.getElementById('roundUrl').value;
+      const participationType = document.getElementById('participationType').value;
       const roundDuration = parseInt(document.getElementById('roundDuration').value) || 5;
       
       if (!roundName || !roundDetails) {
-        showNotification('Please fill in round name and details!');
+        showNotification('Please fill in round name and description!');
         return;
       }
       
       try {
-        // Update round settings
-        gameState.roundName = roundName;
-        gameState.roundDetails = roundDetails;
-        gameState.currentTimer = roundDuration * 60; // Convert to seconds
-        gameState.currentRoundStarted = true;
-        gameState.gameStatus = 'active';
-        gameState.isActive = true;
-        gameState.roundStartTime = new Date();
+        // Prepare round data
+        const roundData = {
+          roundNumber: roundNumber,
+          roundName: roundName,
+          roundDetails: roundDetails,
+          roundRules: roundRules,
+          roundUrl: roundUrl ? (roundUrl.startsWith('http') ? roundUrl : `https://${roundUrl}`) : '',
+          participationType: participationType,
+          roundDuration: roundDuration,
+          attachments: [], // No more attachments
+          duration: roundDuration * 60 // Convert to seconds
+        };
         
-        await saveGameSettings();
-        updateUIState();
-        showNotification('Current round started!');
+        // Call API to start round
+        const response = await fetch('/api/start-round', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(roundData)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          gameState = { ...gameState, ...result };
+          updateUIState();
+          showNotification(`Round ${roundNumber} started! Duration: ${roundDuration} minutes.`);
+          
+                  // Clear form after successful start
+                  document.getElementById('roundName').value = '';
+                  document.getElementById('roundDetails').value = '';
+                  document.getElementById('roundRules').value = '';
+                  document.getElementById('roundUrl').value = '';
+                  document.getElementById('participationType').value = 'individual';
+                  document.getElementById('roundNumber').value = parseInt(document.getElementById('roundNumber').value) + 1;
+        } else {
+          showNotification('Error starting round!');
+        }
       } catch (error) {
-        console.error('Error starting current round:', error);
-        showNotification('Error starting current round!');
+        console.error('Error starting round:', error);
+        showNotification('Error starting round!');
       }
     }
 
@@ -1024,7 +945,6 @@
         });
       });
       updateAttachments();
-      await saveGameSettings();
     });
 
     // Next round file upload handling
@@ -1347,8 +1267,162 @@
       }
     }
 
+    // Eliminate participants by roll numbers
+    async function eliminateParticipants() {
+      const rollNumbersInput = document.getElementById('eliminateRollNumbers').value.trim();
+      
+      if (!rollNumbersInput) {
+        showNotification('Please enter roll numbers to eliminate!');
+        return;
+      }
+      
+      try {
+        // Parse roll numbers (comma-separated)
+        const rollNumbers = rollNumbersInput.split(',').map(roll => roll.trim()).filter(roll => roll);
+        
+        if (rollNumbers.length === 0) {
+          showNotification('Please enter valid roll numbers!');
+          return;
+        }
+        
+        // Call API to eliminate participants
+        const response = await fetch('/api/eliminate-participants', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ rollNumbers })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          showNotification(`Successfully eliminated ${result.eliminatedCount} participants!`);
+          document.getElementById('eliminateRollNumbers').value = '';
+          loadParticipantsStatus();
+        } else {
+          showNotification('Error eliminating participants!');
+        }
+      } catch (error) {
+        console.error('Error eliminating participants:', error);
+        showNotification('Error eliminating participants!');
+      }
+    }
+
+    // Load participants status
+    async function loadParticipantsStatus() {
+      try {
+        const response = await fetch('/api/participants-status');
+        if (response.ok) {
+          const participants = await response.json();
+          updateParticipantsStatus(participants);
+        }
+      } catch (error) {
+        console.error('Error loading participants status:', error);
+      }
+    }
+
+    // Update participants status display
+    function updateParticipantsStatus(participants) {
+      const statusContainer = document.getElementById('participantsStatus');
+      statusContainer.innerHTML = '';
+      
+      if (participants.length === 0) {
+        statusContainer.innerHTML = '<div style="color: #A0AEC0; font-size: 14px;">No participants found</div>';
+        return;
+      }
+      
+      participants.forEach(participant => {
+        const participantDiv = document.createElement('div');
+        participantDiv.style.cssText = `
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 12px;
+          margin: 4px 0;
+          background: ${participant.status === 'Eliminated' ? 'rgba(255, 107, 107, 0.1)' : 'rgba(104, 211, 145, 0.1)'};
+          border: 1px solid ${participant.status === 'Eliminated' ? 'rgba(255, 107, 107, 0.3)' : 'rgba(104, 211, 145, 0.3)'};
+          border-radius: 6px;
+          font-size: 14px;
+        `;
+        
+        participantDiv.innerHTML = `
+          <span style="color: #E2E8F0;">${participant.name} (${participant.rollNumber})</span>
+          <span style="color: ${participant.status === 'Eliminated' ? '#FF6B6B' : '#68D391'}; font-weight: 600;">
+            ${participant.status}
+          </span>
+        `;
+        
+        statusContainer.appendChild(participantDiv);
+      });
+    }
+
+    // Participant Management Functions
+    async function addParticipant() {
+      const participantData = {
+        name: document.getElementById('participant-name').value.trim(),
+        rollNumber: document.getElementById('participant-roll').value.trim(),
+        email: document.getElementById('participant-email').value.trim(),
+        phone: document.getElementById('participant-phone').value.trim(),
+        college: document.getElementById('participant-college').value.trim(),
+        branch: document.getElementById('participant-branch').value.trim(),
+        year: document.getElementById('participant-year').value.trim(),
+        degree: document.getElementById('participant-degree').value.trim(),
+        avatar: document.getElementById('participant-avatar').value,
+        status: document.getElementById('participant-status').value
+      };
+
+      // Validate required fields
+      const requiredFields = ['name', 'rollNumber', 'email', 'college', 'branch', 'year', 'degree'];
+      for (const field of requiredFields) {
+        if (!participantData[field]) {
+          showNotification(`Please fill in ${field}!`);
+          return;
+        }
+      }
+
+      try {
+        const response = await fetch('/api/add-participant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(participantData)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          showNotification(`Participant ${participantData.name} added successfully!`);
+          clearParticipantForm();
+          loadParticipantsStatus(); // Refresh participants list
+        } else {
+          const errorData = await response.json();
+          showNotification(`Error: ${errorData.error}`);
+        }
+      } catch (error) {
+        console.error('Error adding participant:', error);
+        showNotification('Error adding participant!');
+      }
+    }
+
+    function clearParticipantForm() {
+      document.getElementById('participant-name').value = '';
+      document.getElementById('participant-roll').value = '';
+      document.getElementById('participant-email').value = '';
+      document.getElementById('participant-phone').value = '';
+      document.getElementById('participant-college').value = '';
+      document.getElementById('participant-branch').value = '';
+      document.getElementById('participant-year').value = '';
+      document.getElementById('participant-degree').value = '';
+      document.getElementById('participant-avatar').value = 'blue.png';
+      document.getElementById('participant-status').value = 'Alive';
+    }
+
     function viewGame() {
       window.open('/lets-begin', '_blank');
+    }
+
+    function viewParticipants() {
+      window.open('/participants', '_blank');
     }
 
     function emergencyMeeting() {
@@ -1524,6 +1598,9 @@
           console.error('Error fetching game state:', error);
         }
       }, 1000);
+      
+      // Update participants status every 5 seconds
+      setInterval(loadParticipantsStatus, 5000);
     }
 
     // Show notification

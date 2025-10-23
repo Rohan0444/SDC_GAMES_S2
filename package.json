@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed-participants": "node scripts/seedParticipants.js",
+    "test-participants": "node scripts/testParticipantSystem.js",
+    "test-mongodb": "node scripts/testCompleteMongoDBIntegration.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +26,6 @@
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "firebase": "^12.4.0",
     "mongoose": "^8.19.1"
   }
 }

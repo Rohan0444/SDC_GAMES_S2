@@ -1,5 +1,6 @@
 import express from 'express';
 import { GameSettings, RoundHistory, AdminAction } from '../models/GameModels.js';
+import Participant from '../models/participant.js';
 
 const router = express.Router();
 
@@ -12,12 +13,16 @@ router.get('/game-settings', async (req, res) => {
       console.log('No game settings found, creating default...');
       // Create default settings if none exist
       const defaultSettings = new GameSettings({
+        roundNumber: 1,
         roundName: 'Mission Alpha',
         roundDetails: 'Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!',
+        preRoundMinutes: 5,
+        roundDuration: 5,
         currentTimer: 300,
         nextTimer: 180,
         isActive: false,
         attachments: [],
+        links: [],
         preGameCountdown: {
           days: 0,
           hours: 0,
@@ -473,6 +478,84 @@ router.get('/timer-status', async (req, res) => {
   }
 });
 
+// Get current round data
+router.get('/current-round', async (req, res) => {
+  try {
+    const settings = await GameSettings.findOne().sort({ createdAt: -1 });
+    
+    if (!settings) {
+      return res.status(404).json({ error: 'No game settings found' });
+    }
+
+    console.log('Current settings:', {
+      gameStatus: settings.gameStatus,
+      roundStartTime: settings.roundStartTime,
+      attachments: settings.attachments,
+      roundUrl: settings.roundUrl
+    });
+
+    // Calculate remaining time
+    let remainingTime = 0;
+    let isActive = false;
+    
+    if (settings.gameStatus === 'active' && settings.roundStartTime) {
+      const now = new Date();
+      const startTime = new Date(settings.roundStartTime);
+      const elapsed = Math.floor((now - startTime) / 1000);
+      remainingTime = Math.max(0, settings.currentTimer - elapsed);
+      isActive = remainingTime > 0;
+      
+      console.log('Timer calculation:', {
+        now: now.toISOString(),
+        startTime: startTime.toISOString(),
+        elapsed,
+        remainingTime,
+        isActive
+      });
+      
+      // If timer reached 0, reset to default state
+      if (remainingTime === 0 && settings.currentTimer > 0) {
+        settings.gameStatus = 'waiting';
+        settings.isActive = false;
+        settings.roundStartTime = null;
+        await settings.save();
+        
+        return res.json({
+          isActive: false,
+          message: "Round is starting soon",
+          roundData: null
+        });
+      }
+    }
+
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+
+    const responseData = {
+      isActive: isActive,
+      message: isActive ? "Round Active" : "Round is starting soon",
+      roundData: isActive ? {
+        roundNumber: settings.roundNumber,
+        roundName: settings.roundName,
+        roundDetails: settings.roundDetails,
+        roundRules: settings.roundRules,
+        roundUrl: settings.roundUrl,
+        participationType: settings.participationType,
+        attachments: settings.attachments,
+        duration: settings.roundDuration,
+        remainingTime: remainingTime,
+        timerDisplay: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      } : null
+    };
+
+    console.log('Sending response:', responseData);
+    res.json(responseData);
+  } catch (error) {
+    console.error('Error getting current round:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Get comprehensive real-time game state
 router.get('/game-state', async (req, res) => {
   try {
@@ -505,10 +588,12 @@ router.get('/game-state', async (req, res) => {
       countdownStatus.finished = remaining === 0;
       
       // Auto-transition when countdown finishes
-      if (remaining === 0 && settings.gameStatus !== 'countdown_finished') {
-        settings.gameStatus = 'countdown_finished';
+      if (remaining === 0 && settings.gameStatus === 'countdown') {
+        settings.gameStatus = 'active';
         settings.countdownFinished = true;
+        settings.currentRoundStarted = true;
         settings.preGameCountdown.isActive = false;
+        settings.roundStartTime = new Date();
         await settings.save();
       }
     }
@@ -534,29 +619,33 @@ router.get('/game-state', async (req, res) => {
       roundTimer.display = `${Math.floor(remaining / 60).toString().padStart(2, '0')}:${(remaining % 60).toString().padStart(2, '0')}`;
       roundTimer.isActive = true;
       
-      // Auto-advance to next round if timer reaches 0
+      // Auto-finish round if timer reaches 0
       if (remaining === 0 && settings.currentTimer > 0) {
-        settings.currentTimer = settings.nextTimer;
-        settings.roundStartTime = new Date();
-        settings.currentRound += 1;
+        settings.gameStatus = 'round_finished';
+        settings.isActive = false;
         await settings.save();
         
-        // Return updated timer
-        roundTimer.remainingTime = settings.nextTimer;
-        roundTimer.minutes = Math.floor(settings.nextTimer / 60);
-        roundTimer.seconds = settings.nextTimer % 60;
-        roundTimer.display = `${Math.floor(settings.nextTimer / 60).toString().padStart(2, '0')}:${(settings.nextTimer % 60).toString().padStart(2, '0')}`;
+        // Return finished state
+        roundTimer.remainingTime = 0;
+        roundTimer.minutes = 0;
+        roundTimer.seconds = 0;
+        roundTimer.display = '00:00';
+        roundTimer.isActive = false;
       }
     }
 
     res.json({
       // Game settings
+      roundNumber: settings.roundNumber,
       roundName: settings.roundName,
       roundDetails: settings.roundDetails,
+      preRoundMinutes: settings.preRoundMinutes,
+      roundDuration: settings.roundDuration,
       currentTimer: settings.currentTimer,
       nextTimer: settings.nextTimer,
       isActive: settings.isActive,
       attachments: settings.attachments,
+      links: settings.links,
       currentRound: settings.currentRound,
       totalRounds: settings.totalRounds,
       gameStatus: settings.gameStatus,
@@ -621,6 +710,146 @@ router.put('/update-current-round', async (req, res) => {
   }
 });
 
+// Test endpoint to manually set round data for debugging
+router.post('/test-round', async (req, res) => {
+  try {
+    const settings = await GameSettings.findOne().sort({ createdAt: -1 });
+    
+    if (!settings) {
+      return res.status(404).json({ error: 'No game settings found' });
+    }
+
+    // Set test data
+    settings.roundNumber = 1;
+    settings.roundName = 'Test Round';
+    settings.roundDetails = 'This is a test round to verify attachments and links are working properly.';
+    settings.roundUrl = 'https://example.com';
+    settings.roundDuration = 5;
+    settings.currentTimer = 300; // 5 minutes
+    settings.attachments = [
+      {
+        name: 'Test PDF Document',
+        type: 'application/pdf',
+        size: 1024,
+        url: 'https://example.com/test.pdf',
+        isLink: true
+      },
+      {
+        name: 'Instructions.docx',
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        size: 2048,
+        url: 'https://example.com/instructions.docx',
+        isLink: true
+      }
+    ];
+    settings.gameStatus = 'active';
+    settings.isActive = true;
+    settings.roundStartTime = new Date();
+    settings.lastUpdated = new Date();
+    
+    await settings.save();
+    
+    res.json({
+      message: 'Test round created successfully',
+      settings: settings
+    });
+  } catch (error) {
+    console.error('Error creating test round:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Start a new round
+router.post('/start-round', async (req, res) => {
+  try {
+    const { roundNumber, roundName, roundDetails, roundRules, roundUrl, participationType, roundDuration, attachments, duration } = req.body;
+    
+    console.log('Starting round with data:', {
+      roundNumber, roundName, roundDetails, roundRules, roundUrl, participationType, roundDuration, attachments, duration
+    });
+    
+    if (!roundName || !roundDetails) {
+      return res.status(400).json({ error: 'Round name and description are required' });
+    }
+
+    console.log('Looking for GameSettings...');
+    const settings = await GameSettings.findOne().sort({ createdAt: -1 });
+    
+    if (!settings) {
+      console.log('No GameSettings found, creating new one...');
+      const newSettings = new GameSettings({
+        roundNumber: roundNumber || 1,
+        roundName: roundName,
+        roundDetails: roundDetails,
+        roundRules: roundRules || 'Follow all instructions carefully. No cheating allowed. Work as a team.',
+        roundUrl: roundUrl || '',
+        participationType: participationType || 'individual',
+        roundDuration: roundDuration || 5,
+        currentTimer: duration || (roundDuration * 60),
+        attachments: attachments || [],
+        gameStatus: 'active',
+        isActive: true,
+        roundStartTime: new Date(),
+        lastUpdated: new Date()
+      });
+      
+      await newSettings.save();
+      console.log('New GameSettings created successfully');
+      
+      return res.json({
+        roundNumber: newSettings.roundNumber,
+        roundName: newSettings.roundName,
+        roundDetails: newSettings.roundDetails,
+        roundRules: newSettings.roundRules,
+        roundUrl: newSettings.roundUrl,
+        participationType: newSettings.participationType,
+        roundDuration: newSettings.roundDuration,
+        currentTimer: newSettings.currentTimer,
+        gameStatus: newSettings.gameStatus,
+        isActive: newSettings.isActive
+      });
+    }
+
+    console.log('Found existing GameSettings, updating...');
+    // Update settings with new round data
+    settings.roundNumber = roundNumber || settings.roundNumber + 1;
+    settings.roundName = roundName;
+    settings.roundDetails = roundDetails;
+    settings.roundRules = roundRules || 'Follow all instructions carefully. No cheating allowed. Work as a team.';
+    settings.roundUrl = roundUrl || '';
+    settings.participationType = participationType || 'individual';
+    settings.roundDuration = roundDuration || 5;
+    settings.currentTimer = duration || (roundDuration * 60);
+    settings.attachments = attachments || [];
+    settings.gameStatus = 'active';
+    settings.isActive = true;
+    settings.roundStartTime = new Date();
+    settings.lastUpdated = new Date();
+    
+    console.log('Updated settings:', {
+      roundNumber: settings.roundNumber,
+      roundName: settings.roundName,
+      roundUrl: settings.roundUrl,
+      attachments: settings.attachments,
+      currentTimer: settings.currentTimer
+    });
+    
+    await settings.save();
+    
+    // Log admin action
+    await AdminAction.create({
+      action: 'start_round',
+      details: `Started round ${settings.roundNumber}: ${roundName}`,
+      gameState: settings.toObject()
+    });
+    
+    res.json(settings);
+  } catch (error) {
+    console.error('Error starting round:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Start next round early
 router.post('/start-next-round-early', async (req, res) => {
   try {
@@ -668,6 +897,244 @@ router.post('/start-next-round-early', async (req, res) => {
     
     res.json(settings);
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Eliminate participants by roll numbers
+router.post('/eliminate-participants', async (req, res) => {
+  try {
+    const { rollNumbers } = req.body;
+    
+    if (!rollNumbers || !Array.isArray(rollNumbers) || rollNumbers.length === 0) {
+      return res.status(400).json({ error: 'Roll numbers are required' });
+    }
+
+    console.log('Eliminating participants with roll numbers:', rollNumbers);
+    
+    let eliminatedCount = 0;
+    const results = [];
+
+    // Update each participant
+    for (const rollNumber of rollNumbers) {
+      try {
+        // Find and update participant by roll number
+        const participant = await Participant.findOneAndUpdate(
+          { rollNumber: rollNumber.trim() },
+          { 
+            status: 'Eliminated',
+            eliminatedAt: new Date(),
+            lastUpdated: new Date()
+          },
+          { new: true }
+        );
+        
+        if (participant) {
+          eliminatedCount++;
+          results.push({ 
+            rollNumber, 
+            status: 'eliminated',
+            participantName: participant.name 
+          });
+          console.log(`Eliminated participant: ${participant.name} (${rollNumber})`);
+        } else {
+          results.push({ rollNumber, status: 'not_found' });
+          console.log(`Participant not found: ${rollNumber}`);
+        }
+      } catch (error) {
+        console.error(`Error eliminating participant ${rollNumber}:`, error);
+        results.push({ rollNumber, status: 'error', error: error.message });
+      }
+    }
+
+    // Log admin action
+    await AdminAction.create({
+      action: 'eliminate_participants',
+      details: `Eliminated ${eliminatedCount} participants: ${rollNumbers.join(', ')}`,
+      gameState: { eliminatedRollNumbers: rollNumbers, eliminatedCount }
+    });
+
+    res.json({
+      success: true,
+      eliminatedCount,
+      results,
+      message: `Successfully eliminated ${eliminatedCount} out of ${rollNumbers.length} participants`
+    });
+  } catch (error) {
+    console.error('Error eliminating participants:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get participants status
+router.get('/participants-status', async (req, res) => {
+  try {
+    console.log('Fetching participants status...');
+    
+    const participants = await Participant.find()
+      .sort({ rollNumber: 1 })
+      .select('name rollNumber status college branch year degree avatar eliminatedAt registeredAt');
+    
+    console.log(`Found ${participants.length} participants`);
+    
+    res.json(participants);
+  } catch (error) {
+    console.error('Error getting participants status:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get participant statistics
+router.get('/participants-statistics', async (req, res) => {
+  try {
+    const stats = await Participant.getStatistics();
+    res.json(stats);
+  } catch (error) {
+    console.error('Error getting participant statistics:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get participants by status
+router.get('/participants-by-status/:status', async (req, res) => {
+  try {
+    const { status } = req.params;
+    
+    if (!['Alive', 'Eliminated'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status. Must be "Alive" or "Eliminated"' });
+    }
+    
+    const participants = await Participant.getByStatus(status);
+    res.json(participants);
+  } catch (error) {
+    console.error('Error getting participants by status:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Add new participant
+router.post('/add-participant', async (req, res) => {
+  try {
+    const participantData = req.body;
+    
+    // Validate required fields
+    const requiredFields = ['name', 'rollNumber', 'email', 'college', 'branch', 'year', 'degree'];
+    for (const field of requiredFields) {
+      if (!participantData[field]) {
+        return res.status(400).json({ error: `${field} is required` });
+      }
+    }
+    
+    // Check if participant already exists
+    const existingParticipant = await Participant.findOne({
+      $or: [
+        { rollNumber: participantData.rollNumber },
+        { email: participantData.email }
+      ]
+    });
+    
+    if (existingParticipant) {
+      return res.status(400).json({ 
+        error: 'Participant already exists with this roll number or email' 
+      });
+    }
+    
+    const participant = new Participant(participantData);
+    await participant.save();
+    
+    console.log(`Added new participant: ${participant.name} (${participant.rollNumber})`);
+    
+    res.json({
+      success: true,
+      participant,
+      message: 'Participant added successfully'
+    });
+  } catch (error) {
+    console.error('Error adding participant:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update participant
+router.put('/update-participant/:rollNumber', async (req, res) => {
+  try {
+    const { rollNumber } = req.params;
+    const updateData = req.body;
+    
+    const participant = await Participant.findOneAndUpdate(
+      { rollNumber },
+      { ...updateData, lastUpdated: new Date() },
+      { new: true, runValidators: true }
+    );
+    
+    if (!participant) {
+      return res.status(404).json({ error: 'Participant not found' });
+    }
+    
+    console.log(`Updated participant: ${participant.name} (${rollNumber})`);
+    
+    res.json({
+      success: true,
+      participant,
+      message: 'Participant updated successfully'
+    });
+  } catch (error) {
+    console.error('Error updating participant:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete participant
+router.delete('/delete-participant/:rollNumber', async (req, res) => {
+  try {
+    const { rollNumber } = req.params;
+    
+    const participant = await Participant.findOneAndDelete({ rollNumber });
+    
+    if (!participant) {
+      return res.status(404).json({ error: 'Participant not found' });
+    }
+    
+    console.log(`Deleted participant: ${participant.name} (${rollNumber})`);
+    
+    res.json({
+      success: true,
+      message: 'Participant deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting participant:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Reset all participants status to Alive
+router.post('/reset-participants', async (req, res) => {
+  try {
+    const result = await Participant.updateMany(
+      { status: 'Eliminated' },
+      { 
+        status: 'Alive',
+        eliminatedAt: null,
+        lastUpdated: new Date()
+      }
+    );
+    
+    console.log(`Reset ${result.modifiedCount} participants to Alive status`);
+    
+    // Log admin action
+    await AdminAction.create({
+      action: 'reset_participants',
+      details: `Reset ${result.modifiedCount} participants to Alive status`,
+      gameState: { resetCount: result.modifiedCount }
+    });
+    
+    res.json({
+      success: true,
+      resetCount: result.modifiedCount,
+      message: `Reset ${result.modifiedCount} participants to Alive status`
+    });
+  } catch (error) {
+    console.error('Error resetting participants:', error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 // Game Settings Schema
 const gameSettingsSchema = new mongoose.Schema({
+  roundNumber: {
+    type: Number,
+    default: 1,
+    required: true
+  },
   roundName: {
     type: String,
     default: 'Mission Alpha',
@@ -10,6 +15,29 @@ const gameSettingsSchema = new mongoose.Schema({
   roundDetails: {
     type: String,
     default: 'Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!',
+    required: true
+  },
+  roundUrl: {
+    type: String,
+    default: ''
+  },
+  roundRules: {
+    type: String,
+    default: 'Follow all instructions carefully. No cheating allowed. Work as a team.'
+  },
+  participationType: {
+    type: String,
+    enum: ['individual', 'team'],
+    default: 'individual'
+  },
+  preRoundMinutes: {
+    type: Number,
+    default: 5,
+    required: true
+  },
+  roundDuration: {
+    type: Number,
+    default: 5,
     required: true
   },
   currentTimer: {
@@ -35,6 +63,10 @@ const gameSettingsSchema = new mongoose.Schema({
       type: Boolean,
       default: false
     }
+  }],
+  links: [{
+    name: String,
+    url: String
   }],
   preGameCountdown: {
     days: {
@@ -176,7 +208,7 @@ const adminActionSchema = new mongoose.Schema({
   action: {
     type: String,
     required: true,
-    enum: ['start_countdown', 'pause_countdown', 'reset_countdown', 'start_game', 'pause_game', 'reset_game', 'start_next_round', 'emergency_meeting', 'sabotage', 'eliminate_player', 'reveal_impostor', 'end_game', 'set_timers', 'set_countdown', 'update_settings', 'update_round_info', 'update_next_round']
+    enum: ['start_countdown', 'pause_countdown', 'reset_countdown', 'start_game', 'pause_game', 'reset_game', 'start_next_round', 'emergency_meeting', 'sabotage', 'eliminate_player', 'eliminate_participants', 'reveal_impostor', 'end_game', 'set_timers', 'set_countdown', 'update_settings', 'update_round_info', 'update_next_round']
   },
   details: {
     type: String

@@ -22,6 +22,7 @@
       background-image: url('/images/among_us_background.svg');
       background-size: cover;
       background-attachment: fixed;
+      min-height: 100vh;
     }
 
     /* Header */
@@ -106,19 +107,20 @@
       transition: color 0.3s ease;
     }
 
-    /* Full Screen Timer Section */
-    .timer-section {
+    /* Main Content Section */
+    .main-section {
       position: relative;
-      height: 100vh;
+      min-height: 100vh;
       background: linear-gradient(45deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 120px 60px 60px;
       overflow: hidden;
     }
 
-    .timer-section::before {
+    .main-section::before {
       content: '';
       position: absolute;
       top: 0;
@@ -130,7 +132,7 @@
       z-index: 1;
     }
 
-    .timer-section::after {
+    .main-section::after {
       content: '';
       position: absolute;
       top: 0;
@@ -141,16 +143,18 @@
       z-index: 2;
     }
 
-    .timer-content {
+    .content-wrapper {
       position: relative;
       z-index: 3;
       text-align: center;
-      animation: contentFadeIn 2s ease-out;
+      animation: contentFadeIn 1s ease-out;
+      max-width: 1000px;
+      width: 100%;
     }
 
     @keyframes contentFadeIn {
       0% {
-        transform: translateY(50px);
+        transform: translateY(30px);
         opacity: 0;
       }
       100% {
@@ -159,7 +163,7 @@
       }
     }
 
-    .event-title {
+    .page-title {
       font-family: 'Orbitron', monospace;
       font-size: 48px;
       font-weight: 900;
@@ -182,7 +186,7 @@
       }
     }
 
-    .timer-subtitle {
+    .page-subtitle {
       font-size: 24px;
       font-weight: 600;
       margin-bottom: 40px;
@@ -192,75 +196,36 @@
       letter-spacing: 2px;
     }
 
-    .countdown-timer {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .timer-unit {
+    /* Waiting Message */
+    .waiting-message {
       text-align: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(229, 9, 20, 0.3);
-      border-radius: 15px;
-      padding: 30px 20px;
-      min-width: 120px;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
+      margin: 40px 0;
+      animation: pulse 2s ease-in-out infinite;
     }
 
-    .timer-unit:hover {
-      border-color: #e50914;
-      box-shadow: 0 0 30px rgba(229, 9, 20, 0.4);
-      transform: translateY(-5px);
+    .waiting-icon {
+      font-size: 72px;
+      margin-bottom: 20px;
     }
 
-    .timer-number {
-      font-family: 'Orbitron', monospace;
-      font-size: 48px;
-      font-weight: 900;
-      color: #FF6B6B;
-      display: block;
-      margin-bottom: 10px;
-      text-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
-    }
-
-    .timer-label {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      color: #ccc;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .event-status {
-      font-size: 18px;
-      font-weight: 600;
-      color: #68D391;
+    .waiting-text {
+      font-size: 28px;
+      color: #A0AEC0;
       font-family: 'Rajdhani', sans-serif;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      font-weight: 600;
     }
 
-    /* Rounds Section */
-    .rounds-section {
-      padding: 80px 60px;
-      background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-      min-height: 100vh;
-      display: none;
+    /* Round Details Section */
+    .round-details-section {
+      margin: 40px 0;
+      animation: slideInUp 0.8s ease-out;
     }
 
-    .rounds-section.active {
-      display: block;
-      animation: sectionSlideIn 1s ease-out;
-    }
-
-    @keyframes sectionSlideIn {
+    @keyframes slideInUp {
       0% {
-        transform: translateY(100px);
+        transform: translateY(50px);
         opacity: 0;
       }
       100% {
@@ -269,187 +234,257 @@
       }
     }
 
-    .round-header {
-      text-align: center;
-      margin-bottom: 60px;
+    .round-info-card {
+      background: rgba(15, 15, 35, 0.9);
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+    }
+
+    .round-info-card:hover {
+      border-color: #FF6B6B;
+      box-shadow: 0 15px 40px rgba(255, 107, 107, 0.3);
     }
 
     .round-title {
       font-family: 'Orbitron', monospace;
-      font-size: 64px;
-      font-weight: 900;
-      margin-bottom: 20px;
-      background: linear-gradient(45deg, #e50914, #ff6b6b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-    }
-
-    .round-subtitle {
       font-size: 24px;
-      font-weight: 600;
-      color: #ccc;
-      font-family: 'Rajdhani', sans-serif;
+      font-weight: 900;
+      color: #FF6B6B;
+      margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
 
-    .round-timer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 40px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(0, 255, 136, 0.3);
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
+    .round-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #E2E8F0;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .round-timer-label {
+    .round-description {
+      font-size: 18px;
+      color: #A0AEC0;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .round-rules {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .rules-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FF6B6B;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .rules-content {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #CBD5E0;
+      margin: 0;
+    }
+
+    .round-participation {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .participation-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .participation-badge::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .participation-badge:hover::before {
+      left: 100%;
+    }
+
+    .participation-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+    }
+
+    .participation-badge.team {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+    }
+
+    .participation-badge.team:hover {
+      box-shadow: 0 12px 35px rgba(245, 87, 108, 0.6);
+    }
+
+    .participation-badge.individual {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+
+    .participation-badge.individual:hover {
+      box-shadow: 0 12px 35px rgba(79, 172, 254, 0.6);
+    }
+
+    .round-timer-display {
+      background: rgba(26, 26, 46, 0.8);
+      border: 2px solid #68D391;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .round-timer-display .timer-label {
       font-family: 'Rajdhani', sans-serif;
       font-size: 18px;
       font-weight: 600;
       color: #68D391;
       text-transform: uppercase;
       letter-spacing: 1px;
+      display: block;
+      margin-bottom: 10px;
     }
 
-    .round-countdown {
+    .round-timer-display .timer-value {
       font-family: 'Orbitron', monospace;
-      font-size: 32px;
+      font-size: 48px;
       font-weight: 900;
       color: #68D391;
-      text-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
-    }
-
-    /* Floating Stickers */
-    .floating-stickers {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .floating-sticker {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      animation: floatSticker 8s ease-in-out infinite;
-      filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.4));
-      border: 3px solid rgba(255, 107, 107, 0.3);
-      pointer-events: auto;
-    }
-
-    .floating-sticker:hover {
-      transform: scale(1.2);
-      filter: drop-shadow(0 0 25px rgba(255, 107, 107, 0.8));
-      z-index: 10;
-    }
-
-    .floating-sticker img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    .floating-sticker.impostor {
-      border-color: #FF0000;
-      filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
-      animation: impostorFloat 6s ease-in-out infinite, impostorPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes floatSticker {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      25% { transform: translateY(-20px) rotate(5deg); }
-      50% { transform: translateY(-10px) rotate(-3deg); }
-      75% { transform: translateY(-25px) rotate(3deg); }
-    }
-
-    @keyframes impostorFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-      25% { transform: translateY(-30px) rotate(10deg) scale(1.1); }
-      50% { transform: translateY(-15px) rotate(-5deg) scale(0.9); }
-      75% { transform: translateY(-35px) rotate(8deg) scale(1.05); }
-    }
-
-    @keyframes impostorPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
-      50% { box-shadow: 0 0 40px rgba(255, 0, 0, 0.9); }
-    }
-
-    /* Round Details */
-    .round-details {
-      background: rgba(15, 15, 35, 0.8);
-      border: 2px solid rgba(255, 107, 107, 0.3);
-      border-radius: 15px;
-      padding: 30px;
-      margin: 40px 0;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-    }
-
-    .round-details:hover {
-      border-color: #FF6B6B;
-      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
-    }
-
-    .round-info-title {
-      font-family: 'Orbitron', monospace;
-      font-size: 32px;
-      font-weight: 900;
-      color: #FF6B6B;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .round-info-description {
-      font-size: 18px;
-      color: #E2E8F0;
-      line-height: 1.6;
-      margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(104, 211, 145, 0.6);
     }
 
     .round-attachments {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
+      margin-bottom: 20px;
+      justify-content: center;
+      min-height: 50px;
     }
 
     .attachment-item {
-      background: rgba(26, 26, 46, 0.6);
-      border: 1px solid rgba(255, 107, 107, 0.3);
+      background: rgba(26, 26, 46, 0.8);
+      border: 2px solid rgba(255, 107, 107, 0.5);
       border-radius: 8px;
-      padding: 10px 15px;
+      padding: 12px 16px;
       color: #E2E8F0;
       font-size: 14px;
+      font-weight: 600;
       transition: all 0.3s ease;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .attachment-item:hover {
       border-color: #FF6B6B;
-      background: rgba(255, 107, 107, 0.1);
+      background: rgba(255, 107, 107, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
     }
 
     .attachment-item a {
       color: #FF6B6B;
       text-decoration: none;
+      font-weight: 600;
     }
 
     .attachment-item a:hover {
       text-decoration: underline;
+      color: #FF0000;
+    }
+
+    .round-url {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .url-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .url-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .url-link:hover::before {
+      left: 100%;
+    }
+
+    .url-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .url-link:active {
+      transform: translateY(-1px);
+    }
+
+    .event-status {
+      font-size: 16px;
+      font-weight: 600;
+      color: #68D391;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 20px;
     }
 
     /* Responsive Design */
@@ -462,49 +497,25 @@
         display: none;
       }
 
-      .event-title {
+      .page-title {
         font-size: 32px;
         letter-spacing: 2px;
       }
 
-      .timer-subtitle {
+      .page-subtitle {
         font-size: 18px;
       }
 
-      .countdown-timer {
-        gap: 15px;
+      .main-section {
+        padding: 100px 20px 40px;
       }
 
-      .timer-unit {
-        padding: 20px 15px;
-        min-width: 80px;
+      .round-name {
+        font-size: 28px;
       }
 
-      .timer-number {
-        font-size: 32px;
-      }
-
-      .rounds-section {
-        padding: 40px 20px;
-      }
-
-      .round-title {
-        font-size: 40px;
-      }
-
-      .participant-card {
-        width: 80px;
-        height: 80px;
-      }
-
-      .participant-avatar {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-      }
-
-      .participant-name {
-        font-size: 10px;
+      .round-timer-display .timer-value {
+        font-size: 36px;
       }
     }
 
@@ -519,19 +530,6 @@
       }
       50% {
         transform: scale(1.05);
-      }
-    }
-
-    .glow {
-      animation: glow 3s ease-in-out infinite;
-    }
-
-    @keyframes glow {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
-      }
-      50% {
-        box-shadow: 0 0 40px rgba(229, 9, 20, 0.6);
       }
     }
   </style>
@@ -549,566 +547,192 @@
     </nav>
   </header>
 
-  <!-- Timer Section -->
-  <section class="timer-section" id="timerSection">
-    <div class="timer-content">
-      <h1 class="event-title">AMONG US</h1>
-      <p class="timer-subtitle">Game Starts In</p>
+  <!-- Main Content Section -->
+  <section class="main-section">
+    <div class="content-wrapper">
+      <h1 class="page-title">AMONG US</h1>
+      <p class="page-subtitle" id="pageSubtitle">Round is starting soon</p>
       
-      <div class="countdown-timer" id="countdownTimer">
-        <div class="timer-unit">
-          <span class="timer-number" id="days">00</span>
-          <span class="timer-label">Days</span>
-        </div>
-        <div class="timer-unit">
-          <span class="timer-number" id="hours">00</span>
-          <span class="timer-label">Hours</span>
-        </div>
-        <div class="timer-unit">
-          <span class="timer-number" id="minutes">00</span>
-          <span class="timer-label">Minutes</span>
-        </div>
-        <div class="timer-unit">
-          <span class="timer-number" id="seconds">00</span>
-          <span class="timer-label">Seconds</span>
-        </div>
+      <!-- Default waiting message -->
+      <div class="waiting-message" id="waitingMessage">
+        <div class="waiting-icon">⏳</div>
+        <p class="waiting-text">Round is starting soon</p>
       </div>
       
-      <p class="event-status" id="eventStatus">Preparing for Space Mission...</p>
+      <!-- Round details section (hidden by default) -->
+      <div class="round-details-section" id="roundDetailsSection" style="display: none;">
+              <div class="round-info-card">
+                <h2 class="round-title" id="roundTitle">Round 1</h2>
+                <h3 class="round-name" id="roundName">Mission Alpha</h3>
+                <p class="round-description" id="roundDescription">Complete all tasks to prepare the spaceship for departure.</p>
+                
+                <!-- Rules section -->
+                <div class="round-rules" id="roundRulesContainer" style="display: none;">
+                  <h4 class="rules-title">📋 Rules:</h4>
+                  <p class="rules-content" id="roundRules">Follow all instructions carefully.</p>
     </div>
-  </section>
-
-  <!-- Rounds Section -->
-  <section class="rounds-section" id="roundsSection">
-    <div class="round-header">
-      <h2 class="round-title" id="currentRoundTitle">ROUND 1</h2>
-      <p class="round-subtitle">Mission Begins</p>
+                
+                <!-- Participation type -->
+                <div class="round-participation" id="roundParticipationContainer" style="display: none;">
+                  <span class="participation-badge" id="roundParticipation">Individual</span>
     </div>
 
-    <div class="round-timer">
-      <span class="round-timer-label">Next Round Starts In:</span>
-      <span class="round-countdown" id="roundCountdown">05:00</span>
+                <!-- URL link -->
+                <div class="round-url" id="roundUrlContainer" style="display: none;">
+                  <a href="#" target="_blank" class="url-link" id="roundUrlLink">🔗 Additional Resources</a>
     </div>
 
-    <!-- Round Details Section -->
-    <div class="round-details" id="roundDetails">
-      <div class="round-info">
-        <h3 class="round-info-title" id="roundInfoTitle">Mission Alpha</h3>
-        <p class="round-info-description" id="roundInfoDescription">Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!</p>
-        <div class="round-attachments" id="roundAttachments"></div>
+                <!-- Round timer -->
+                <div class="round-timer-display">
+                  <span class="timer-label">Time Remaining:</span>
+                  <span class="timer-value" id="roundTimerValue">05:00</span>
+                </div>
       </div>
     </div>
 
-    <!-- Floating Stickers Container -->
-    <div class="floating-stickers" id="floatingStickers">
-      <!-- Stickers will be dynamically generated here -->
+      <p class="event-status" id="eventStatus">Waiting for round to start...</p>
     </div>
   </section>
 
   <script>
-    // Game state - will be loaded from database
-    let gameState = {
-      roundName: 'Mission Alpha',
-      roundDetails: 'Complete all tasks to prepare the spaceship for departure. Work together as a team, but beware of impostors among you!',
-      currentTimer: 300,
-      nextTimer: 180,
-      isActive: false,
-      attachments: [],
-      nextRound: {
-        name: 'Mission Beta',
-        details: 'New challenges await! Complete the reactor tasks and identify the impostor before time runs out.',
-        attachments: []
-      },
-      preGameCountdown: {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        isActive: false,
-        isPaused: false
-      },
-      currentRound: 1,
-      totalRounds: 4,
-      gameStatus: 'waiting',
-      roundStartTime: null,
-      cooldownEndTime: null,
-      countdownFinished: false,
-      currentRoundStarted: false
-    };
-
-    let isEventStarted = false;
-    let floatingStickers = [];
+    // Current round state
+    let currentRoundData = null;
+    let isRoundActive = false;
     let lastStateHash = '';
 
-    // Update countdown display from server state
-    function updateCountdownDisplay(countdownStatus) {
-      if (countdownStatus && countdownStatus.isActive) {
-        document.getElementById('days').textContent = countdownStatus.days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = countdownStatus.hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = countdownStatus.minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = countdownStatus.seconds.toString().padStart(2, '0');
-        
-        // Add pulse effect when less than 1 minute
-        if (countdownStatus.days === 0 && countdownStatus.hours === 0 && countdownStatus.minutes === 0) {
-          document.getElementById('countdownTimer').classList.add('pulse');
-        } else {
-          document.getElementById('countdownTimer').classList.remove('pulse');
-        }
-      }
-    }
-
-    function startEvent() {
-      isEventStarted = true;
-      gameState.gameStatus = 'active';
-      gameState.isActive = true;
-      gameState.roundStartTime = new Date();
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Load initial round state
+      await updateRoundState();
       
-      document.getElementById('timerSection').style.display = 'none';
-      document.getElementById('roundsSection').classList.add('active');
-      document.getElementById('eventStatus').textContent = 'Event Started!';
-      
-      // Show notification that game has started
-      showNotification('Game Started! Round details are now active.');
-      
-      // Update the game status in database
-      updateGameStatus('active');
-      
-      // Start the first round
-      startRound();
-    }
-
-    // Update game status in database
-    async function updateGameStatus(status) {
-      try {
-        const response = await fetch('/api/game-action', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: status === 'active' ? 'start_game' : 'pause_game',
-            details: `Game status changed to ${status}`
-          })
-        });
-        
-        if (response.ok) {
-          console.log(`Game status updated to: ${status}`);
-        }
-      } catch (error) {
-        console.error('Error updating game status:', error);
-      }
-    }
-
-    function startRound() {
-      currentRound = gameState.currentRound || 1;
-      document.getElementById('currentRoundTitle').textContent = `ROUND ${currentRound}`;
-      document.getElementById('roundSubtitle').textContent = `Survival Round ${currentRound}`;
-      
-      // Reset round timer from game state
-      roundTimer = gameState.currentTimer || 300; // Use current timer from state
-      
-      // Timer is now handled by server - no client-side timer updates
-    }
-
-    function eliminateParticipants() {
-      // Randomly eliminate some participants
-      const participants = document.querySelectorAll('.participant-card');
-      const eliminationCount = Math.floor(participants.length * 0.3); // Eliminate 30%
-      
-      for (let i = 0; i < eliminationCount; i++) {
-        const randomIndex = Math.floor(Math.random() * participants.length);
-        const participant = participants[randomIndex];
-        
-        if (!participant.querySelector('.participant-status').classList.contains('eliminated')) {
-          participant.querySelector('.participant-status').classList.add('eliminated');
-          participant.style.opacity = '0.5';
-          participant.style.transform = 'scale(0.8)';
-        }
-      }
-    }
-
-    // Add hover effects to participant cards
-    document.querySelectorAll('.participant-card').forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.05)';
-      });
-      
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-      });
+      // Start real-time updates every second
+      setInterval(updateRoundState, 1000);
     });
 
-    // Start round timer when event begins
-    setInterval(() => {
-      if (isEventStarted && currentRound <= totalRounds) {
-        // Timer handled by server
-      }
-    }, 1000);
-
-    // Initialize floating stickers
-    function initializeFloatingStickers() {
-      const stickerContainer = document.getElementById('floatingStickers');
-      const avatarImages = [
-        'IMG_8034.WEBP', 'IMG_8041.WEBP', 'IMG_8042.WEBP', 'IMG_8043.WEBP',
-        'IMG_8048.WEBP', 'IMG_8049.PNG', 'IMG_8050.PNG', 'IMG_8051.PNG',
-        'IMG_8052.PNG', 'IMG_8053.PNG', 'IMG_8054.PNG', 'IMG_8055.PNG',
-        'IMG_8056.PNG', 'IMG_8057.PNG', 'IMG_8058.PNG', 'IMG_8059.PNG'
-      ];
-
-      avatarImages.forEach((image, index) => {
-        const sticker = document.createElement('div');
-        sticker.className = 'floating-sticker';
-        if (index === 3) sticker.classList.add('impostor'); // Make one an impostor
-        
-        sticker.innerHTML = `<img src="/images/${image}" alt="Avatar ${index + 1}">`;
-        
-        // Random position
-        const x = Math.random() * (stickerContainer.offsetWidth - 80);
-        const y = Math.random() * (stickerContainer.offsetHeight - 80);
-        
-        sticker.style.left = x + 'px';
-        sticker.style.top = y + 'px';
-        sticker.style.animationDelay = Math.random() * 8 + 's';
-        
-        stickerContainer.appendChild(sticker);
-        floatingStickers.push(sticker);
-        
-        // Add click effect
-        sticker.addEventListener('click', () => {
-          sticker.style.transform = 'scale(1.5)';
-          setTimeout(() => {
-            sticker.style.transform = '';
-          }, 300);
-        });
-      });
-    }
-
-    // Update round information
-    function updateRoundInfo() {
-      document.getElementById('roundInfoTitle').textContent = gameState.roundName;
-      document.getElementById('roundInfoDescription').textContent = gameState.roundDetails;
-      
-      // Update attachments
-      const attachmentContainer = document.getElementById('roundAttachments');
-      attachmentContainer.innerHTML = '';
-      
-      gameState.attachments.forEach(attachment => {
-        const item = document.createElement('div');
-        item.className = 'attachment-item';
-        
-        if (attachment.isLink) {
-          const linkIcon = '🔗';
-          item.innerHTML = `<a href="${attachment.url}" target="_blank">${linkIcon} ${attachment.name}</a>`;
-        } else {
-          const fileIcon = '📎';
-          item.textContent = `${fileIcon} ${attachment.name}`;
-        }
-        
-        attachmentContainer.appendChild(item);
-      });
-    }
-
-
-    // Comprehensive real-time update system
-    async function updateFromServer() {
+    // Update round state from server
+    async function updateRoundState() {
       try {
-        const response = await fetch('/api/game-state');
+        const response = await fetch('/api/current-round');
         if (!response.ok) {
-          console.error('Failed to fetch game state');
+          console.error('Failed to fetch round state');
           return;
         }
         
-        const serverState = await response.json();
-        const currentHash = JSON.stringify(serverState);
+        const data = await response.json();
+        const currentHash = JSON.stringify(data);
         
         // Only update if state has changed
         if (currentHash !== lastStateHash) {
-          console.log('Game state updated from server:', serverState);
+          console.log('Round state updated:', data);
           
-          // Update local state
-          gameState = { ...gameState, ...serverState };
+          isRoundActive = data.isActive;
+          currentRoundData = data.roundData;
           lastStateHash = currentHash;
           
-          // Update UI based on server state
-          updateUIFromServerState(serverState);
+          // Update UI based on new state
+          updateUI(data);
         }
       } catch (error) {
-        console.error('Error updating from server:', error);
+        console.error('Error updating round state:', error);
       }
     }
-    
-    // Update UI based on server state
-    function updateUIFromServerState(serverState) {
-      // Update countdown display
-      updateCountdownDisplay(serverState.countdownStatus);
-      
-      // Update round timer display - always use server time
-      if (serverState.roundTimer) {
-        document.getElementById('roundCountdown').textContent = serverState.roundTimer.display;
-        
-        // Update round info if timer is active
-        if (serverState.roundTimer.isActive) {
-          updateRoundInfo();
-        }
-      }
+
+    // Update UI based on round state
+    function updateUI(data) {
+      const waitingMessage = document.getElementById('waitingMessage');
+      const roundDetailsSection = document.getElementById('roundDetailsSection');
+      const pageSubtitle = document.getElementById('pageSubtitle');
+      const eventStatus = document.getElementById('eventStatus');
+
+      if (data.isActive && data.roundData) {
+        // Show round details
+        waitingMessage.style.display = 'none';
+        roundDetailsSection.style.display = 'block';
+        pageSubtitle.textContent = 'Round Active';
+        eventStatus.textContent = 'Round in progress...';
       
       // Update round information
-      updateRoundInfo();
-      
-      // Handle game status changes
-      handleGameStatusChange(serverState);
-      
-      // Update cooldown display
-      updateCooldownDisplay();
-    }
-    
-    // Handle game status changes
-    function handleGameStatusChange(serverState) {
-      const statusElement = document.getElementById('eventStatus');
-      
-      switch (serverState.gameStatus) {
-        case 'waiting':
-          statusElement.textContent = 'Preparing for Space Mission...';
-          break;
-        case 'countdown':
-          statusElement.textContent = 'Countdown Active...';
-          break;
-        case 'countdown_finished':
-          statusElement.textContent = 'Countdown finished! Waiting for round setup...';
-          break;
-        case 'active':
-          if (!isEventStarted) {
-            startEvent();
-          }
-          statusElement.textContent = 'Event Started!';
-          break;
-        case 'paused':
-          statusElement.textContent = 'Game Paused';
-          break;
-        case 'ended':
-          endGame();
-          break;
-      }
-      
-      // Show/hide timer section based on countdown status
-      const timerSection = document.getElementById('timerSection');
-      const roundsSection = document.getElementById('roundsSection');
-      
-      if (serverState.countdownStatus && serverState.countdownStatus.isActive) {
-        // Show countdown timer
-        timerSection.style.display = 'flex';
-        roundsSection.classList.remove('active');
-        isEventStarted = false;
-      } else if (serverState.gameStatus === 'active' && isEventStarted) {
-        // Show rounds section
-        timerSection.style.display = 'none';
-        roundsSection.classList.add('active');
-      } else if (serverState.gameStatus === 'countdown_finished') {
-        // Show waiting message
-        timerSection.style.display = 'flex';
-        roundsSection.classList.remove('active');
-        isEventStarted = false;
-      }
-    }
-
-    // Emergency meeting
-    function triggerEmergencyMeeting() {
-      const alert = document.createElement('div');
-      alert.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 0, 0, 0.9);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 48px;
-        font-weight: 900;
-        color: white;
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-        animation: emergencyFlash 0.5s ease-out;
-      `;
-      alert.textContent = 'EMERGENCY MEETING!';
-      document.body.appendChild(alert);
-      
-      setTimeout(() => {
-        alert.remove();
-      }, 3000);
-    }
-
-    // Sabotage effect
-    function triggerSabotage() {
-      document.body.style.animation = 'screenShake 0.5s ease-out';
-      setTimeout(() => {
-        document.body.style.animation = '';
-      }, 500);
-    }
-
-    // Eliminate random sticker
-    function eliminateRandomSticker() {
-      if (floatingStickers.length > 0) {
-        const randomIndex = Math.floor(Math.random() * floatingStickers.length);
-        const sticker = floatingStickers[randomIndex];
-        sticker.style.opacity = '0.3';
-        sticker.style.filter = 'grayscale(100%)';
-        sticker.style.animation = 'none';
-      }
-    }
-
-    // Reveal impostor
-    function revealImpostor() {
-      const impostorStickers = document.querySelectorAll('.floating-sticker.impostor');
-      impostorStickers.forEach(sticker => {
-        sticker.style.border = '5px solid #FF0000';
-        sticker.style.boxShadow = '0 0 30px rgba(255, 0, 0, 1)';
-      });
-    }
-
-    // End game
-    function endGame() {
-      const endScreen = document.createElement('div');
-      endScreen.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 36px;
-        font-weight: 900;
-        color: white;
-        text-align: center;
-      `;
-      endScreen.innerHTML = 'GAME ENDED<br><small style="font-size: 18px;">Thank you for playing!</small>';
-      document.body.appendChild(endScreen);
-    }
-
-    // Show notification
-    function showNotification(message) {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(45deg, #FF6B6B, #FF0000);
-        color: white;
-        padding: 15px 30px;
-        border-radius: 8px;
-        font-weight: 600;
-        z-index: 10000;
-        animation: slideDown 0.3s ease-out;
-      `;
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
-    }
-
-
-    // Check if in cooldown period
-    function isInCooldown() {
-      if (!gameState.cooldownEndTime) return false;
-      const now = new Date();
-      const cooldownEnd = new Date(gameState.cooldownEndTime);
-      return now < cooldownEnd;
-    }
-
-    // Get remaining cooldown time
-    function getRemainingCooldown() {
-      if (!gameState.cooldownEndTime) return 0;
-      const now = new Date();
-      const cooldownEnd = new Date(gameState.cooldownEndTime);
-      return Math.max(0, Math.floor((cooldownEnd - now) / 1000));
-    }
-
-    // Update cooldown display
-    function updateCooldownDisplay() {
-      if (isInCooldown()) {
-        const remaining = getRemainingCooldown();
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
+        updateRoundInfo(data.roundData);
         
-        // Show cooldown message
-        const cooldownMsg = document.getElementById('cooldownMessage') || createCooldownMessage();
-        cooldownMsg.textContent = `Cooldown: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        cooldownMsg.style.display = 'block';
+        // Update timer
+        updateRoundTimer(data.roundData.timerDisplay);
       } else {
-        const cooldownMsg = document.getElementById('cooldownMessage');
-        if (cooldownMsg) {
-          cooldownMsg.style.display = 'none';
+        // Show waiting message
+        waitingMessage.style.display = 'block';
+        roundDetailsSection.style.display = 'none';
+        pageSubtitle.textContent = 'Round is starting soon';
+        eventStatus.textContent = 'Waiting for round to start...';
+      }
+    }
+
+    // Update round information display
+    function updateRoundInfo(roundData) {
+      console.log('Updating round info with data:', roundData);
+      
+      document.getElementById('roundTitle').textContent = `Round ${roundData.roundNumber}`;
+      document.getElementById('roundName').textContent = roundData.roundName;
+      document.getElementById('roundDescription').textContent = roundData.roundDetails;
+      
+      // Update rules
+      const rulesContainer = document.getElementById('roundRulesContainer');
+      const rulesContent = document.getElementById('roundRules');
+      if (roundData.roundRules && roundData.roundRules.trim() !== '') {
+        rulesContent.textContent = roundData.roundRules;
+        rulesContainer.style.display = 'block';
+        console.log('Rules set:', roundData.roundRules);
+      } else {
+        rulesContainer.style.display = 'none';
+        console.log('No rules provided');
+      }
+
+      // Update participation type
+      const participationContainer = document.getElementById('roundParticipationContainer');
+      const participationBadge = document.getElementById('roundParticipation');
+      if (roundData.participationType) {
+        participationBadge.textContent = roundData.participationType.charAt(0).toUpperCase() + roundData.participationType.slice(1);
+        participationBadge.className = `participation-badge ${roundData.participationType}`;
+        participationContainer.style.display = 'block';
+        console.log('Participation type set:', roundData.participationType);
+      } else {
+        participationContainer.style.display = 'none';
+        console.log('No participation type provided');
+      }
+
+      // Update URL link
+      const urlContainer = document.getElementById('roundUrlContainer');
+      const urlLink = document.getElementById('roundUrlLink');
+      if (roundData.roundUrl && roundData.roundUrl.trim() !== '') {
+        urlLink.href = roundData.roundUrl;
+        // Extract domain name for display
+        const domain = roundData.roundUrl.replace(/^https?:\/\//, '').replace(/^www\./, '');
+        urlLink.textContent = `🔗 Visit ${domain}`;
+        urlContainer.style.display = 'block';
+        console.log('URL set:', roundData.roundUrl);
+      } else {
+        urlContainer.style.display = 'none';
+        console.log('No URL provided');
+      }
+    }
+
+    // Update round timer display
+    function updateRoundTimer(timerDisplay) {
+      const timerElement = document.getElementById('roundTimerValue');
+      if (timerElement) {
+        timerElement.textContent = timerDisplay;
+        
+        // Add pulse effect when time is running out
+        const [minutes, seconds] = timerDisplay.split(':').map(Number);
+        if (minutes === 0 && seconds <= 30) {
+          timerElement.parentElement.style.borderColor = '#FF6B6B';
+          timerElement.style.color = '#FF6B6B';
+          timerElement.parentElement.classList.add('pulse');
+      } else {
+          timerElement.parentElement.style.borderColor = '#68D391';
+          timerElement.style.color = '#68D391';
+          timerElement.parentElement.classList.remove('pulse');
         }
       }
     }
-
-    // Create cooldown message element
-    function createCooldownMessage() {
-      const msg = document.createElement('div');
-      msg.id = 'cooldownMessage';
-      msg.style.cssText = `
-        position: fixed;
-        top: 100px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(45deg, #FF6B6B, #FF0000);
-        color: white;
-        padding: 15px 30px;
-        border-radius: 8px;
-        font-weight: 600;
-        z-index: 10000;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-      `;
-      document.body.appendChild(msg);
-      return msg;
-    }
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Load initial state from server
-      await updateFromServer();
-      
-      // Initialize floating stickers
-      initializeFloatingStickers();
-      
-      // Start real-time updates every 500ms
-      setInterval(updateFromServer, 500);
-      
-      // Update cooldown display every second
-      setInterval(updateCooldownDisplay, 1000);
-    });
-
-    // Add CSS for emergency flash
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes emergencyFlash {
-        0% { opacity: 0; transform: scale(0.5); }
-        50% { opacity: 1; transform: scale(1.1); }
-        100% { opacity: 1; transform: scale(1); }
-      }
-      @keyframes screenShake {
-        0%, 100% { transform: translateX(0); }
-        10% { transform: translateX(-5px); }
-        20% { transform: translateX(5px); }
-        30% { transform: translateX(-3px); }
-        40% { transform: translateX(3px); }
-        50% { transform: translateX(-2px); }
-        60% { transform: translateX(2px); }
-        70% { transform: translateX(-1px); }
-        80% { transform: translateX(1px); }
-        90% { transform: translateX(-1px); }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>

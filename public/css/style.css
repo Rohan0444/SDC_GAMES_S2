@@ -1256,19 +1256,21 @@ body::after {
 }
 
 /* Participant profile page */
-.participant-profile { max-width: 1000px; margin: 0 auto; padding: 24px; display: grid; gap: 18px; }
+.participant-profile { max-width: 1200px; margin: 0 auto; padding: 24px; display: grid; gap: 18px; }
 .profile-header { display: flex; align-items: center; gap: 12px; justify-content: space-between; }
 .profile-title { color: #e11d2a; font-weight: 900; letter-spacing: .3px; }
-.profile-card { display: grid; grid-template-columns: 160px 1fr; gap: 18px; background: linear-gradient(180deg, rgba(20,26,40,.95), rgba(12,16,28,.95)); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.profile-card { display: grid; grid-template-columns: 200px 1fr; gap: 24px; background: linear-gradient(180deg, rgba(20,26,40,.95), rgba(12,16,28,.95)); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 .profile-avatar-wrap { position: relative; display: grid; place-items: center; }
-.profile-avatar { width: 140px; height: 140px; border-radius: 18px; background: #0b1020; object-fit: contain; border: 2px solid rgba(255,255,255,.08); box-shadow: 0 0 30px rgba(58,191,248,.18); }
+.profile-avatar { width: 180px; height: 180px; border-radius: 18px; background: #0b1020; object-fit: contain; border: 2px solid rgba(255,255,255,.08); box-shadow: 0 0 30px rgba(58,191,248,.18); }
 .profile-status { position: absolute; bottom: -8px; transform: translateY(50%); left: 50%; translate: -50% 0; font-size: .8rem; font-weight: 900; padding: 4px 10px; border-radius: 999px; background: rgba(16,185,129,.2); color: #10b981; border: 1px solid rgba(16,185,129,.4); box-shadow: 0 0 20px rgba(16,185,129,.25); }
 .profile-status.dead { background: rgba(225,29,42,.18); color: #ef4444; border-color: rgba(225,29,42,.5); box-shadow: 0 0 20px rgba(225,29,42,.25); }
-.profile-meta { display: grid; gap: 8px; align-content: start; }
-.profile-name { color: #fff; font-weight: 900; font-size: 1.6rem; }
-.profile-roll { color: #93c5fd; font-weight: 700; }
+.profile-meta { display: grid; gap: 12px; align-content: start; }
+.profile-name { color: #fff; font-weight: 900; font-size: 2rem; }
+.profile-roll { color: #93c5fd; font-weight: 700; font-size: 1.1rem; }
 .profile-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.tag { background: rgba(15,23,42,.7); border: 1px solid rgba(255,255,255,.08); color: #e5e7eb; padding: 6px 10px; border-radius: 999px; font-size: .8rem; }
+.tag { background: rgba(15,23,42,.7); border: 1px solid rgba(255,255,255,.08); color: #e5e7eb; padding: 8px 12px; border-radius: 999px; font-size: .9rem; }
+.profile-contact { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.contact-item { color: #93c5fd; font-size: 1rem; font-weight: 500; }
 
 .profile-admin { background: rgba(17,26,43,.6); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
 .admin-gate { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
