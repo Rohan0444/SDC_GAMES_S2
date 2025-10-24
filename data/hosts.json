@@ -22,6 +22,13 @@
     "quote": "In the game of strategy, timing is everything."
   },
   {
+    "name": "Uddhav Nagar",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/uddhav.jpg",
+    "description": "Balances planning and improvisation to keep things exciting.",
+    "quote": "Adapt, improvise, and keep the game alive."
+  },
+  {
     "name": "Rohith",
     "role": "Event Coordinator",
     "photo": "/images/hosts/rohith.jpg",
@@ -36,7 +43,7 @@
     "quote": "The fun begins when the pressure’s on."
   },
   {
-    "name": "Vikalp",
+    "name": "Vikalp Saxena",
     "role": "Event Coordinator",
     "photo": "/images/hosts/vikalp.jpg",
     "description": "Ensures flawless coordination and a fair play experience for everyone.",
@@ -50,7 +57,7 @@
     "quote": "Precision and passion create perfection."
   },
   {
-    "name": "Akhil",
+    "name": "Nekkanti Akhil",
     "role": "Event Coordinator",
     "photo": "/images/hosts/akhil.jpg",
     "description": "Manages on-ground activities and keeps the excitement at its peak.",
@@ -69,13 +76,6 @@
     "photo": "/images/hosts/harshit.jpg",
     "description": "Ensures every detail fits perfectly into the bigger picture.",
     "quote": "Details make the difference between good and great."
-  },
-  {
-    "name": "Uddhav Nagar",
-    "role": "Event Coordinator",
-    "photo": "/images/hosts/uddhav.jpg",
-    "description": "Balances planning and improvisation to keep things exciting.",
-    "quote": "Adapt, improvise, and keep the game alive."
   },
   {
     "name": "Swajal Gupta",
@@ -148,6 +148,13 @@
     "quote": "Every move counts — make it strategic."
   },
   {
+    "name": "Maitry rathod",
+    "role": "Event Coordinator",
+    "photo": "/images/hosts/devansh.jpg",
+    "description": "Brings creativity and energy to every round.",
+    "quote": "The best games are those that surprise you."
+  },
+  {
     "name": "Devansh Goyal",
     "role": "Event Coordinator",
     "photo": "/images/hosts/devansh.jpg",
@@ -162,7 +169,7 @@
     "quote": "The best games are those that surprise you."
   },
   {
-    "name": "Mahir",
+    "name": "P Mahir",
     "role": "Event Coordinator",
     "photo": "/images/hosts/mahir.jpg",
     "description": "Keeps the event balanced between fun and competition.",
