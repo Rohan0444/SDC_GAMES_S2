@@ -5,27 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet Our Event Team</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/hosts.css">
 </head>
 
 <body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="/" class="logo">SDC GAMES</a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
+                <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
+                <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <!-- navbar -->
-            <nav class="nav">
-                <a href="/" class="logo">SDC GAMES</a>
-                <div class="hamburger" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
-                    <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
-                    <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
-                </ul>
-            </nav>
+        <header class="page-header">
             <h1 class="main-title">Meet Our Event Team</h1>
             <p class="subtitle">The amazing people who bring our events to life</p>
         </header>

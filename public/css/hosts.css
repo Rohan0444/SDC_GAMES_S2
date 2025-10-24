@@ -20,24 +20,45 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
 }
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+  padding: 25px 60px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+  backdrop-filter: blur(15px);
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .logo {
-  font-size: 28px;
+  font-family: 'Orbitron', monospace;
+  font-size: 36px;
   font-weight: 900;
-  color: #e50914;
+  color: #fff;
   text-decoration: none;
-  letter-spacing: -1px;
+  letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+
+.logo:hover {
+  color: #FF6B6B;
 }
 
 .nav-menu {
   display: flex;
   list-style: none;
-  gap: 30px;
+  gap: 40px;
 }
 
 .hamburger {
@@ -71,13 +92,42 @@ body {
 .nav-menu a {
   color: #fff;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 1px;
+  position: relative;
   transition: color 0.3s ease;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+.nav-menu a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #e50914, #00ff88);
+  transition: all 0.3s ease;
+  border-radius: 1px;
 }
 
 .nav-menu a:hover {
-  color: #e50914;
+  color: #FF6B6B;
+}
+
+.nav-menu a:hover::before {
+  width: 100%;
+}
+
+.nav-icon {
+  font-size: 16px;
+  transition: color 0.3s ease;
 }
 
 .nav-buttons {
@@ -120,7 +170,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 120px 20px 20px;
 }
 
 /* Among Us themed animated starfield */
@@ -176,6 +226,7 @@ body::after {
     color: #e11d2a; /* impostor red */
     margin-bottom: 0.5rem;
     letter-spacing: 1px;
+    text-align: center;
     text-shadow: 0 0 15px rgba(225, 29, 42, 0.55), 0 0 30px rgba(225, 29, 42, 0.25);
 }
 
@@ -183,6 +234,8 @@ body::after {
     font-size: 1.2rem;
     color: #c0c3cf;
     font-weight: 300;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 /* Game Master Section */
@@ -438,6 +491,10 @@ body::after {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .header {
+        padding: 20px 25px;
+    }
+
     .nav-menu {
         position: fixed;
         top: 0;
@@ -461,12 +518,12 @@ body::after {
         margin: 20px 0;
         padding: 15px 30px;
         border-radius: 10px;
-        background: rgba(229, 9, 20, 0.1);
+        background: rgba(255, 107, 107, 0.1);
         transition: all 0.3s ease;
     }
 
     .nav-menu a:hover {
-        background: rgba(229, 9, 20, 0.3);
+        background: rgba(255, 107, 107, 0.3);
         transform: scale(1.05);
     }
 
@@ -476,7 +533,7 @@ body::after {
     }
 
     .container {
-        padding: 15px;
+        padding: 100px 15px 15px;
     }
     
     .main-title {
@@ -507,6 +564,13 @@ body::after {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
+        align-items: center;
+    }
+    
+    .host-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     
     .host-content {
