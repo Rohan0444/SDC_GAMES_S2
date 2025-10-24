@@ -19,7 +19,7 @@ router.get("/participants", (req, res) => {
 // Game Hosts route is handled in server.js with hosts data
 
 // Admin route
-router.get("/admin", (req, res) => {
+router.get("/uddzEY9oMH2ruiNeASqu", (req, res) => {
   res.render("pages/admin", { title: "SDC Games | Admin Panel" });
 });
 
