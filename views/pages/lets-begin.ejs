@@ -996,7 +996,46 @@
       
       // Create floating particles for immersion
       createFloatingParticles();
+      
+      // Add click handler to redirect to Game Over page
+      addGameOverRedirect();
     });
+
+    // Add Game Over redirect functionality
+    function addGameOverRedirect() {
+      // Add click handler to the main content area
+      const contentWrapper = document.querySelector('.content-wrapper');
+      if (contentWrapper) {
+        contentWrapper.addEventListener('click', function(e) {
+          // Only redirect if clicking on the main content area, not on specific interactive elements
+          if (e.target === contentWrapper || e.target.classList.contains('page-title') || e.target.classList.contains('page-subtitle')) {
+            // Add a small delay for visual feedback
+            setTimeout(() => {
+              window.location.href = '/lets-begin-2';
+            }, 300);
+          }
+        });
+        
+        // Add cursor pointer to indicate clickability
+        contentWrapper.style.cursor = 'pointer';
+      }
+      
+      // Add click handler to the round info card
+      const roundInfoCard = document.querySelector('.round-info-card');
+      if (roundInfoCard) {
+        roundInfoCard.addEventListener('click', function(e) {
+          // Prevent event bubbling to content wrapper
+          e.stopPropagation();
+          // Add a small delay for visual feedback
+          setTimeout(() => {
+            window.location.href = '/lets-begin-2';
+          }, 300);
+        });
+        
+        // Add cursor pointer to indicate clickability
+        roundInfoCard.style.cursor = 'pointer';
+      }
+    }
 
     // Create floating particles for immersion
     function createFloatingParticles() {

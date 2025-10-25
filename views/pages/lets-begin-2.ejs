@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Over - Among Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
+      color: #fff;
+      overflow-x: hidden;
+      background-image: url('/images/among_us_background.svg');
+      background-size: cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    /* Full-screen immersive background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 0, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 0, 0, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      animation: gameOverPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes gameOverPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+      padding: 25px 60px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-bottom: 1px solid rgba(255, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 36px;
+      font-weight: 900;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+    }
+
+    .logo:hover {
+      color: #FF0000;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 1px;
+      position: relative;
+      transition: color 0.3s ease;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+    }
+
+    .nav-menu a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff0000, #ff6b6b);
+      transition: all 0.3s ease;
+      border-radius: 1px;
+    }
+
+    .nav-menu a:hover {
+      color: #FF0000;
+    }
+
+    .nav-menu a:hover::before {
+      width: 100%;
+    }
+
+    .nav-icon {
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    /* Main Content Section */
+    .main-section {
+      min-height: 100vh;
+      background: linear-gradient(45deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 40px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .main-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('/images/among_us_background.svg') center/cover;
+      opacity: 0.2;
+      z-index: 1;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      animation: gameOverFadeIn 1.5s ease-out;
+      max-width: 900px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+    }
+
+    @keyframes gameOverFadeIn {
+      0% {
+        transform: translateY(50px) scale(0.9);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Game Over Title */
+    .game-over-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 72px;
+      font-weight: 900;
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, #FF0000, #FF6B6B, #FF0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      animation: gameOverGlow 2s ease-in-out infinite, gameOverShake 0.5s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+    }
+
+    @keyframes gameOverGlow {
+      0%, 100% {
+        text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      }
+      50% {
+        text-shadow: 0 0 40px rgba(255, 0, 0, 0.9), 0 0 60px rgba(255, 107, 107, 0.4);
+      }
+    }
+
+    @keyframes gameOverShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+    }
+
+    .game-over-subtitle {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 40px;
+      color: #FF6B6B;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: subtitlePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes subtitlePulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* Game Over Card */
+    .game-over-card {
+      background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(25, 25, 55, 0.95) 100%);
+      border: 3px solid rgba(255, 0, 0, 0.6);
+      border-radius: 25px;
+      padding: 60px;
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transform: none;
+      box-shadow: 
+        0 25px 50px rgba(255, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: cardFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .game-over-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+      animation: gameOverShimmer 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .game-over-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes gameOverShimmer {
+      0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+      }
+    }
+
+    .game-over-card:hover {
+      border-color: #FF0000;
+      box-shadow: 
+        0 30px 60px rgba(255, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transform: scale(1.02);
+    }
+
+    .game-over-icon {
+      font-size: 120px;
+      margin-bottom: 30px;
+      animation: iconBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes iconBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .game-over-message {
+      font-size: 32px;
+      color: #E2E8F0;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    /* Floating Elements */
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .floating-skull {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0.3;
+      animation: skullFloat 15s linear infinite;
+    }
+
+    @keyframes skullFloat {
+      0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 20px 25px;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-menu.active {
+        left: 0;
+      }
+
+      .nav-menu a {
+        font-size: 24px;
+        margin: 20px 0;
+        padding: 15px 30px;
+        border-radius: 10px;
+        background: rgba(255, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+        background: rgba(255, 0, 0, 0.3);
+        transform: scale(1.05);
+      }
+
+      .hamburger {
+        display: flex;
+        z-index: 1001;
+      }
+
+      .game-over-title {
+        font-size: 48px;
+        letter-spacing: 2px;
+      }
+
+      .game-over-subtitle {
+        font-size: 20px;
+      }
+
+      .main-section {
+        padding: 120px 20px 40px;
+      }
+
+      .content-wrapper {
+        width: 95%;
+        max-width: 100%;
+        padding: 0 10px;
+      }
+
+      .game-over-card {
+        padding: 40px 25px;
+        margin: 0 10px;
+        border-radius: 20px;
+      }
+
+      .game-over-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+      }
+
+      .game-over-message {
+        font-size: 24px;
+        margin-bottom: 25px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-over-title {
+        font-size: 36px;
+        letter-spacing: 1px;
+      }
+
+      .game-over-subtitle {
+        font-size: 18px;
+      }
+
+      .game-over-card {
+        padding: 30px 20px;
+        margin: 0 5px;
+        border-radius: 15px;
+      }
+
+      .game-over-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+      }
+
+      .game-over-message {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .game-over-title {
+        font-size: 28px;
+        letter-spacing: 0.5px;
+      }
+
+      .game-over-subtitle {
+        font-size: 16px;
+      }
+
+      .game-over-card {
+        padding: 25px 15px;
+        margin: 0 3px;
+        border-radius: 12px;
+      }
+
+      .game-over-icon {
+        font-size: 50px;
+        margin-bottom: 12px;
+      }
+
+      .game-over-message {
+        font-size: 16px;
+        margin-bottom: 18px;
+      }
+
+
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="logo">SDC GAMES</a>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
+        <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
+        <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Section -->
+  <section class="main-section">
+    <!-- Floating Game Over Elements -->
+    <div class="floating-elements">
+      <div class="floating-skull" style="left: 10%; animation-delay: 0s;">💀</div>
+      <div class="floating-skull" style="left: 20%; animation-delay: -3s;">💀</div>
+      <div class="floating-skull" style="left: 30%; animation-delay: -6s;">💀</div>
+      <div class="floating-skull" style="left: 40%; animation-delay: -9s;">💀</div>
+      <div class="floating-skull" style="left: 50%; animation-delay: -12s;">💀</div>
+      <div class="floating-skull" style="left: 60%; animation-delay: -15s;">💀</div>
+      <div class="floating-skull" style="left: 70%; animation-delay: -18s;">💀</div>
+      <div class="floating-skull" style="left: 80%; animation-delay: -21s;">💀</div>
+      <div class="floating-skull" style="left: 90%; animation-delay: -24s;">💀</div>
+    </div>
+    
+    <div class="content-wrapper">
+      <h1 class="game-over-title">GAME OVER</h1>
+      <p class="game-over-subtitle">Mission Failed</p>
+      
+      <div class="game-over-card">
+        <div class="game-over-icon">💀</div>
+        <p class="game-over-message">GAME OVER</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Hamburger menu toggle
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      const hamburger = document.querySelector('.hamburger');
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    // Close menu when clicking on a link
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.nav-menu a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const navMenu = document.getElementById('navMenu');
+          const hamburger = document.querySelector('.hamburger');
+          navMenu.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+    });
+
+    // Add some interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click effect to buttons
+      const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
+      buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          // Create ripple effect
+          const ripple = document.createElement('span');
+          const rect = this.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size / 2;
+          const y = e.clientY - rect.top - size / 2;
+          
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+          ripple.classList.add('ripple');
+          
+          this.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

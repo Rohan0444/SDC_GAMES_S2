@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Winners - SDC Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F0F23 100%);
+      color: #fff;
+      overflow-x: hidden;
+      background-image: url('/images/among_us_background.svg');
+      background-size: cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Full-screen immersive background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(104, 211, 145, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(58, 191, 248, 0.05) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes backgroundPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+      padding: 25px 60px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+      backdrop-filter: blur(15px);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 36px;
+      font-weight: 900;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+    }
+
+    .logo:hover {
+      color: #FF6B6B;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 1px;
+      position: relative;
+      transition: color 0.3s ease;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+    }
+
+    .nav-menu a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #e50914, #00ff88);
+      transition: all 0.3s ease;
+      border-radius: 1px;
+    }
+
+    .nav-menu a:hover {
+      color: #FF6B6B;
+    }
+
+    .nav-menu a:hover::before {
+      width: 100%;
+    }
+
+    .nav-icon {
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 120px 40px 40px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Page Title */
+    .page-title {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: titleFadeIn 1s ease-out;
+    }
+
+    .page-title h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 64px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #FF6B6B, #FF0000, #68D391);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      animation: titleGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% {
+        text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+      }
+      50% {
+        text-shadow: 0 0 30px rgba(229, 9, 20, 0.8), 0 0 40px rgba(0, 255, 136, 0.3);
+      }
+    }
+
+    .page-title p {
+      font-size: 24px;
+      color: #ccc;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    @keyframes titleFadeIn {
+      0% {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Winners Photo Section */
+    .winners-photo-section {
+      text-align: center;
+      margin-bottom: 80px;
+      animation: sectionFadeIn 1s ease-out 0.3s both;
+    }
+
+    .winners-photo {
+      width: 100%;
+      max-width: 800px;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      border: 3px solid rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+      margin-bottom: 30px;
+    }
+
+    .winners-photo:hover {
+      transform: scale(1.02);
+      box-shadow: 0 30px 60px rgba(255, 107, 107, 0.3);
+    }
+
+    .winners-photo-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: #FF6B6B;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .winners-photo-subtitle {
+      font-size: 18px;
+      color: #A0AEC0;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Winners Cards Section */
+    .winners-cards-section {
+      margin-bottom: 80px;
+      animation: sectionFadeIn 1s ease-out 0.6s both;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 48px;
+      font-weight: 900;
+      color: #FF6B6B;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      font-size: 20px;
+      color: #A0AEC0;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .winners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .winner-card {
+      background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(25, 25, 55, 0.95) 100%);
+      border: 2px solid rgba(255, 107, 107, 0.4);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      animation: cardFadeIn 0.8s ease-out both;
+    }
+
+    .winner-card:nth-child(1) { animation-delay: 0.1s; }
+    .winner-card:nth-child(2) { animation-delay: 0.2s; }
+    .winner-card:nth-child(3) { animation-delay: 0.3s; }
+    .winner-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes cardFadeIn {
+      0% {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .winner-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+      animation: cardShimmer 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .winner-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes cardShimmer {
+      0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+      }
+    }
+
+    .winner-card:hover {
+      border-color: #FF6B6B;
+      box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+      transform: translateY(-10px);
+    }
+
+    .winner-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      border: 4px solid #FF6B6B;
+      box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+      object-fit: cover;
+    }
+
+    .winner-card:hover .winner-avatar {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(255, 107, 107, 0.6);
+    }
+
+    .winner-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: #FF6B6B;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .winner-roll {
+      font-size: 18px;
+      color: #A0AEC0;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .winner-position {
+      display: inline-block;
+      background: linear-gradient(135deg, #FF6B6B, #FF0000);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    /* Organizing Committee Section */
+    .organizing-committee-section {
+      text-align: center;
+      animation: sectionFadeIn 1s ease-out 0.9s both;
+    }
+
+    .organizing-committee-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 48px;
+      font-weight: 900;
+      color: #FF6B6B;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+    }
+
+    .organizing-committee-photo {
+      width: 100%;
+      max-width: 900px;
+      height: 600px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      border: 3px solid rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .organizing-committee-photo:hover {
+      transform: scale(1.02);
+      box-shadow: 0 30px 60px rgba(255, 107, 107, 0.3);
+    }
+
+    @keyframes sectionFadeIn {
+      0% {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 20px 25px;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-menu.active {
+        left: 0;
+      }
+
+      .nav-menu a {
+        font-size: 24px;
+        margin: 20px 0;
+        padding: 15px 30px;
+        border-radius: 10px;
+        background: rgba(255, 107, 107, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+        background: rgba(255, 107, 107, 0.3);
+        transform: scale(1.05);
+      }
+
+      .hamburger {
+        display: flex;
+        z-index: 1001;
+      }
+
+      .main-content {
+        padding: 120px 20px 40px;
+      }
+
+      .page-title h1 {
+        font-size: 48px;
+        letter-spacing: 2px;
+      }
+
+      .page-title p {
+        font-size: 20px;
+      }
+
+      .winners-photo {
+        height: 350px;
+        margin-bottom: 20px;
+      }
+
+      .winners-photo-title {
+        font-size: 24px;
+      }
+
+      .winners-photo-subtitle {
+        font-size: 16px;
+      }
+
+      .section-title h2 {
+        font-size: 36px;
+      }
+
+      .section-title p {
+        font-size: 18px;
+      }
+
+      .winners-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .winner-card {
+        padding: 25px;
+      }
+
+      .winner-avatar {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+      }
+
+      .winner-name {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .winner-roll {
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+
+      .organizing-committee-title {
+        font-size: 36px;
+      }
+
+      .organizing-committee-photo {
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 100px 15px 30px;
+      }
+
+      .page-title h1 {
+        font-size: 36px;
+        letter-spacing: 1px;
+      }
+
+      .page-title p {
+        font-size: 18px;
+      }
+
+      .winners-photo {
+        height: 250px;
+      }
+
+      .winners-photo-title {
+        font-size: 20px;
+      }
+
+      .winners-photo-subtitle {
+        font-size: 14px;
+      }
+
+      .section-title h2 {
+        font-size: 28px;
+      }
+
+      .section-title p {
+        font-size: 16px;
+      }
+
+      .winners-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .winner-card {
+        padding: 20px;
+      }
+
+      .winner-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 12px;
+      }
+
+      .winner-name {
+        font-size: 18px;
+        margin-bottom: 6px;
+      }
+
+      .winner-roll {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .organizing-committee-title {
+        font-size: 28px;
+      }
+
+      .organizing-committee-photo {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .page-title h1 {
+        font-size: 28px;
+        letter-spacing: 0.5px;
+      }
+
+      .page-title p {
+        font-size: 16px;
+      }
+
+      .winners-photo {
+        height: 200px;
+      }
+
+      .winners-photo-title {
+        font-size: 18px;
+      }
+
+      .winners-photo-subtitle {
+        font-size: 12px;
+      }
+
+      .section-title h2 {
+        font-size: 24px;
+      }
+
+      .section-title p {
+        font-size: 14px;
+      }
+
+      .winner-card {
+        padding: 15px;
+      }
+
+      .winner-avatar {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+      }
+
+      .winner-name {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .winner-roll {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .organizing-committee-title {
+        font-size: 24px;
+      }
+
+      .organizing-committee-photo {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="logo">SDC GAMES</a>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/lets-begin"><span class="nav-icon">♥</span>Let's Begin</a></li>
+        <li><a href="/participants"><span class="nav-icon">👥</span>Participants</a></li>
+        <li><a href="/game-hosts"><span class="nav-icon">🎯</span>Game Hosts</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <!-- Page Title -->
+      <div class="page-title">
+        <h1>WINNERS</h1>
+        <p>Congratulations to our champions!</p>
+      </div>
+
+      <!-- Winners Photo Section -->
+      <div class="winners-photo-section">
+        <img src="/images/p1.jpg" alt="Winners with Game Master" class="winners-photo">
+      </div>
+
+      <!-- Winners Cards Section -->
+      <div class="winners-cards-section">
+        <div class="section-title">
+          <h2>SDC Games Champions</h2>
+          <p>Meet our winning crew members</p>
+        </div>
+
+        <div class="winners-grid">
+          <!-- Winner 1 -->
+          <div class="winner-card">
+            <img src="/images/among_us_crewmate_red.svg" alt="Soham Mahajan" class="winner-avatar">
+            <h3 class="winner-name">Soham Mahajan</h3>
+            <p class="winner-roll">24CSB0A74</p>
+            <span class="winner-position">Winner #1</span>
+          </div>
+
+          <!-- Winner 2 -->
+          <div class="winner-card">
+            <img src="/images/among_us_crewmate_blue.svg" alt="Alok Kumar Shah" class="winner-avatar">
+            <h3 class="winner-name">Alok Kumar Shah</h3>
+            <p class="winner-roll">24CSB0A07</p>
+            <span class="winner-position">Winner #2</span>
+          </div>
+
+          <!-- Winner 3 -->
+          <div class="winner-card">
+            <img src="/images/among_us_crewmate_green.svg" alt="P Rishik Karthik" class="winner-avatar">
+            <h3 class="winner-name">P Rishik Karthik</h3>
+            <p class="winner-roll">24EEB0B47</p>
+            <span class="winner-position">Winner #3</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Organizing Committee Section -->
+      <div class="organizing-committee-section">
+        <h2 class="organizing-committee-title">Organizing Committee</h2>
+        <img src="/images/p2.jpg" alt="Organizing Committee" class="organizing-committee-photo">
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Hamburger menu toggle
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      const hamburger = document.querySelector('.hamburger');
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    // Close menu when clicking on a link
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.nav-menu a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const navMenu = document.getElementById('navMenu');
+          const hamburger = document.querySelector('.hamburger');
+          navMenu.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+
+      // Add hover effects to winner cards
+      const winnerCards = document.querySelectorAll('.winner-card');
+      winnerCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-15px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
